@@ -4,6 +4,7 @@
     "includes": [
       "src/**",
       "scripts/**",
+      ".github/workflows/**",
       "*.json",
       "*.mjs",
       "*.ts",

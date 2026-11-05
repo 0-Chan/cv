@@ -13,7 +13,7 @@ export function ResumePage({
   display: ResumeDisplay;
 }) {
   return (
-    <main className="mx-auto grid max-w-content gap-section px-page-mobile py-page-mobile md:px-page-desktop md:py-page-desktop">
+    <main className="mx-auto grid max-w-content gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
       <ProfileHeader profile={resume.profile} />
       {display.sections.map((section) => {
         if (!section.visible) return null;

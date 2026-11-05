@@ -2,7 +2,7 @@
 
 이력서 콘텐츠, 섹션 표시 설정, 디자인 테마를 UI와 분리하는 정적 이력서 웹페이지 프로젝트입니다.
 
-Astro, TypeScript, Tailwind CSS를 사용합니다. 현재는 콘텐츠·표시·테마 설정과 빌드 시 검증 로더가 구현되어 있습니다. 화면은 아직 ‘이력서’ 제목만 표시하며, 설정 내용을 보여주는 섹션 컴포넌트는 구현 예정입니다.
+Astro, React TSX, TypeScript, Tailwind CSS를 사용합니다. 프로필·소개·경력·프로젝트를 빌드 시 HTML로 렌더링합니다. 기술·학력·자격 데이터는 작성할 수 있지만 해당 화면은 아직 구현 전입니다.
 
 ## 실행
 
@@ -137,8 +137,24 @@ summary:
 - `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
-현재 YAML은 빌드에서 읽고 검증하지만 화면은 아직 최소 페이지입니다. 콘텐츠·표시·테마의 실제 화면 적용은 섹션 컴포넌트 구현 후 제공됩니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
+YAML과 표시·테마 설정은 프로필·소개·경력 화면에 적용됩니다. 표시 설정은 구현된 섹션에 적용되며 기술·학력·자격 화면은 후속 구현 대상입니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
 
 ## 외부 데이터 연결
 
 `src/data/local-source.ts`의 공급 함수를 교체합니다. API 응답을 공통 모델로 변환하면 기존 로더가 다시 검증합니다. YAML과 같은 간단한 작성 형태의 JSON을 받는 API도 작성 형식 검증과 변환을 거쳐야 합니다. 컴포넌트에서는 API를 호출하지 않으며 현재 외부 API 요청은 없습니다.
+
+
+## GitHub Pages 배포
+
+워크플로는 `main` push 시 Node 버전 파일과 npm 12.2.0을 사용해 `npm ci`, `npm run verify`를 실행하고 성공한 `dist`만 배포합니다. 최초 사용 전 저장소 Settings → Pages → Source를 GitHub Actions로 설정해야 합니다. 공개 저장소는 GitHub Free에서 사용할 수 있으며 비공개 저장소는 Pages를 지원하는 요금제가 필요합니다.
+
+Pages에서 제공하는 origin과 base path를 `SITE_URL`, `BASE_PATH`로 전달하므로 저장소 이름을 코드에 적지 않습니다. 로컬 개발의 기본 경로는 `/`입니다. 하위 경로를 재현하려면 빌드와 preview에 같은 값을 전달합니다.
+
+```sh
+SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run build
+SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run preview
+```
+
+`/cv`는 예시이며 실제 주소는 저장소 이름에 따라 달라집니다. 로컬 이미지는 `public/images`에 넣고 YAML에는 `/images/logo.png`처럼 사이트 루트 기준으로 작성합니다. 경력 로고 렌더러가 배포 경로를 붙이며 외부 이미지 URL은 유지합니다. HTTPS 사이트의 외부 이미지는 HTTPS 주소를 사용하세요.
+
+최초 배포는 GitHub 기본 주소를 사용합니다. `0-chan.cv` 도메인 연결·DNS·HTTPS 설정은 마지막 작업으로 남겨둡니다. 추후 Pages 설정에서 도메인을 연결한 뒤 재배포하면 새 주소가 반영됩니다. Actions 배포에는 저장소의 CNAME 파일이 필요하지 않습니다.

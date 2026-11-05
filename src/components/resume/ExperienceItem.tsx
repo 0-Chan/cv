@@ -1,5 +1,6 @@
 import type { ResumeDisplay } from "../../models/presentation";
 import type { Experience } from "../../models/resume";
+import { assetUrl } from "./asset-url";
 import { Highlights } from "./Highlights";
 import { ProjectItem } from "./ProjectItem";
 
@@ -17,11 +18,11 @@ export function ExperienceItem({
         <div className="flex items-start gap-content">
           {experience.company.logo && (
             <img
-              src={experience.company.logo.src}
+              src={assetUrl(experience.company.logo.src)}
               alt={experience.company.logo.alt}
               width={48}
               height={48}
-              className="size-12 shrink-0 object-contain"
+              className="size-item shrink-0 object-contain"
               loading="lazy"
             />
           )}

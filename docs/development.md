@@ -2,7 +2,7 @@
 
 ## 확정 사항
 
-데이터 모델·설정·로더는 구현되어 있다. 화면 컴포넌트와 테마의 CSS 연결은 구현 예정이다.
+데이터 모델·설정·로더는 구현되어 있다. React TSX의 프로필·소개·경력·프로젝트와 테마 CSS 연결이 구현되어 있다. 기술·학력·자격 화면은 후속 단계다.
 
 - npm과 lockfile로 의존성을 관리한다. 도입 시 호환 버전을 확인하고 고정한다.
 - Astro + TypeScript strict, Tailwind CSS, Biome, Vitest를 사용한다.
@@ -88,3 +88,12 @@ profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목
 Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 링크·줄바꿈을 지원한다. 표 인식 확장은 표를 일반 문장으로 오인하지 않고 거부하기 위해 사용한다. 문서 제목·목록·표·이미지·코드 블록·HTML·참조형 링크는 오류다. 지원하지 않는 문법이 일반 텍스트로 해석되는 경우(예: 취소선 기호)는 텍스트로 유지한다. 문장 링크의 주소는 HTTP(S)·mailto·tel만 허용한다.
 
 로컬 공급 모듈만 YAML을 `?raw`로 가져온다. 표시·테마는 TypeScript 설정을 유지한다. 기본 정적 페이지는 서버 빌드 중 로더를 호출하며 YAML을 공개 파일로 제공하지 않는다. 브라우저 렌더링과 화면 검증은 별도 구현 단계다.
+
+
+## 정적 UI와 배포 경계
+
+Astro 페이지는 getResumePageData를 한 번 호출하고 문서 레이아웃에 테마를, React ResumePage에 콘텐츠·표시 설정을 전달한다. React 컴포넌트는 client 지시자 없이 HTML로 렌더링한다. RichText·InlineContent는 구조화된 문장을 React 요소로 표현하며 HTML 문자열을 삽입하지 않는다. 상태 없는 정적 목록은 배열 위치를 React key로 사용하고, 해당 lint 예외만 표현식에 명시한다. 콘텐츠 ID는 추가하지 않는다.
+
+테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 md 이상에서 제목 열과 minmax(0, 1fr) 본문 열을 사용한다.
+
+GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SITE_URL과 BASE_PATH는 Pages 메타데이터에서 읽으며 로컬 기본 base는 /다. 로컬 이미지에는 표시 경계에서 BASE_URL을 붙인다. 개인 도메인은 기본 주소 배포 이후에 연결한다.

@@ -40,7 +40,7 @@ npm run verify:static
 
 Biome는 Astro·TypeScript·CSS와 루트 설정 파일을 검사합니다. Markdown 문서, 스킬, lockfile, 생성 산출물은 포맷 대상이 아닙니다. Astro 전체 지원은 실험적 기능을 사용합니다.
 
-Vitest 실행 환경만 준비되어 있으며 테스트 코드는 아직 없습니다. 현재 `npm test`는 테스트 파일이 없다는 오류로 종료됩니다. 빈 테스트를 성공으로 처리하지 않습니다.
+Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 재직 여부를 검사합니다. `npm test -- --reporter=verbose`로 각 테스트의 설명을 확인할 수 있습니다.
 
 ## 설계 문서
 

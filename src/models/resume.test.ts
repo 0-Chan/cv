@@ -11,7 +11,7 @@ const experience = {
 
 describe("날짜 입력 계약", () => {
   it.each(["2024", "2024-01", "2024-12"])(
-    "%s의 입력 정밀도를 유지한다",
+    "입력한 연도 또는 연월을 월·일 보충 없이 그대로 반환한다 — 입력값: %s",
     (value) => {
       expect(dateSchema.parse(value)).toBe(value);
     },
@@ -59,14 +59,35 @@ describe("경력의 날짜와 재직 여부", () => {
   });
 
   it.each([
-    { isCurrent: undefined },
-    { endDate: "" },
-    { endDate: " " },
-    { endDate: null },
-    { isCurrent: true, endDate: "2024" },
-    { startDate: "2025", endDate: "2024-12" },
-    { startDate: "2024-12", endDate: "2024-01" },
-  ])("잘못된 기간 또는 재직 정보를 거부한다: %j", (change) => {
+    {
+      change: { isCurrent: undefined },
+      reason: "현재 재직 여부를 생략하거나 undefined로 지정할 수 없다",
+    },
+    {
+      change: { endDate: "" },
+      reason: "종료일에 빈 문자열을 넣을 수 없으며 값이 없으면 필드를 생략한다",
+    },
+    {
+      change: { endDate: " " },
+      reason: "종료일에 공백만 있는 문자열을 넣을 수 없다",
+    },
+    {
+      change: { endDate: null },
+      reason: "종료일이 없으면 필드를 생략해야 하며 null은 허용하지 않는다",
+    },
+    {
+      change: { isCurrent: true, endDate: "2024" },
+      reason: "현재 재직 중인 경력에는 종료일을 지정할 수 없다",
+    },
+    {
+      change: { startDate: "2025", endDate: "2024-12" },
+      reason: "종료 연도가 시작 연도보다 앞선 기간은 허용하지 않는다",
+    },
+    {
+      change: { startDate: "2024-12", endDate: "2024-01" },
+      reason: "같은 연도에서 종료 월이 시작 월보다 앞선 기간은 허용하지 않는다",
+    },
+  ])("$reason", ({ change }) => {
     expect(
       experienceSchema.safeParse({
         ...experience,

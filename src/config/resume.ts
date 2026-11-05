@@ -13,7 +13,6 @@ export const resumeConfig = {
       isCurrent: false,
       projects: [
         {
-          id: "project-01",
           title: "프로젝트 A",
           description: [{ text: "제품·서비스 소개입니다." }],
           highlights: [

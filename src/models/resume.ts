@@ -13,7 +13,6 @@ import {
 } from "./shared";
 
 export const projectSchema = z.strictObject({
-  id: textSchema,
   title: textSchema,
   description: richTextSchema,
   role: richTextSchema.optional(),
@@ -31,7 +30,7 @@ export const experienceSchema = z
     isCurrent: z.boolean(),
     tags: uniqueList(labelSchema).default([]),
     highlights: uniqueList(textItemSchema).default([]),
-    projects: uniqueList(projectSchema).default([]),
+    projects: z.array(projectSchema).default([]),
   })
   .superRefine((entry, context) => {
     validatePeriod(entry.startDate, entry.endDate, context, "endDate");

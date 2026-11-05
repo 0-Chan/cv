@@ -4,6 +4,8 @@
 
 Astro, React TSX, TypeScript, Tailwind CSS를 사용합니다. 프로필·소개·경력·기술·학력·자격을 빌드 시 HTML로 렌더링합니다. 경력에는 회사 업무 요약과 프로젝트 목록을 표시할 수 있습니다.
 
+[이력서 예시 보기](https://0-chan.github.io/cv/) · [GitHub 저장소](https://github.com/0-Chan/cv)
+
 ## 실행
 
 Node.js 26.0.0과 npm 12.2.0을 기준으로 합니다. Node 버전은 `.node-version`에 명시되어 있습니다.
@@ -155,6 +157,6 @@ SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run build
 SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run preview
 ```
 
-`/cv`는 예시이며 실제 주소는 저장소 이름에 따라 달라집니다. 로컬 이미지는 `public/images`에 넣고 YAML에는 `/images/logo.png`처럼 사이트 루트 기준으로 작성합니다. 회사 로고와 자격 배지 렌더러가 배포 경로를 붙이며 외부 이미지 URL은 유지합니다. HTTPS 사이트의 외부 이미지는 HTTPS 주소를 사용하세요.
+현재 배포 경로는 `/cv/`이며 다른 저장소에 배포하면 저장소 이름에 따라 달라집니다. 로컬 이미지는 `public/images`에 넣고 YAML에는 `/images/logo.png`처럼 사이트 루트 기준으로 작성합니다. 회사 로고와 자격 배지 렌더러가 배포 경로를 붙이며 외부 이미지 URL은 유지합니다. HTTPS 사이트의 외부 이미지는 HTTPS 주소를 사용하세요.
 
 최초 배포는 GitHub 기본 주소를 사용합니다. `0-chan.cv` 도메인 연결·DNS·HTTPS 설정은 마지막 작업으로 남겨둡니다. 추후 Pages 설정에서 도메인을 연결한 뒤 재배포하면 새 주소가 반영됩니다. Actions 배포에는 저장소의 CNAME 파일이 필요하지 않습니다.

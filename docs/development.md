@@ -15,7 +15,7 @@
 
 - 최상위 모델은 profile, summary, experiences, skills, education, certifications다. Zod 스키마와 추론된 TypeScript 타입으로 계약을 공유한다.
 - 필수값·날짜·링크·ID 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
-- 반복 항목에 명시적 ID를 부여한다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
+- 재직 이력에는 ID를 두지 않으며 재입사 구분을 지원 범위에 포함하지 않는다. 프로젝트 등 나머지 반복 항목에는 명시적 ID를 부여한다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
 - 회사 수준 업무 요약과 프로젝트, 프로젝트의 제품 소개와 담당 역할을 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 현재 재직은 명시적으로 판단하며 개월 수를 생성하지 않는다.
 - 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
@@ -65,7 +65,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 |---|---|
 | profile | name, role, contacts(id·label·value), links(id·label·href) |
 | summary | format(paragraphs/list), items(id·content) |
-| experiences | id, company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
+| experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
 | projects | id, title, description(제품 소개), role?, highlights, technologies, links |
 | skills | id, category, items(id·label) |
 | education | id, institution, program, startDate?, endDate?, description? |

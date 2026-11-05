@@ -24,7 +24,6 @@ export const projectSchema = z.strictObject({
 
 export const experienceSchema = z
   .strictObject({
-    id: textSchema,
     company: z.strictObject({ name: textSchema, logo: imageSchema.optional() }),
     role: textSchema,
     startDate: dateSchema.optional(),
@@ -85,7 +84,7 @@ export const resumeSchema = z.strictObject({
     format: z.enum(["paragraphs", "list"]),
     items: uniqueList(textItemSchema),
   }),
-  experiences: uniqueList(experienceSchema),
+  experiences: z.array(experienceSchema),
   skills: uniqueList(
     z.strictObject({
       id: textSchema,

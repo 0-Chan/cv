@@ -3,7 +3,6 @@ import { experienceSchema } from "./resume";
 import { dateSchema } from "./shared";
 
 const experience = {
-  id: "experience-01",
   company: { name: "회사 A" },
   role: "직무",
   isCurrent: false,

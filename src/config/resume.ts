@@ -8,7 +8,6 @@ export const resumeConfig = {
   },
   experiences: [
     {
-      id: "experience-01",
       company: { name: "회사 A" },
       role: "직무",
       isCurrent: false,

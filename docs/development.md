@@ -2,7 +2,7 @@
 
 ## 확정 사항
 
-아래 소스 경로와 인터페이스는 구현 예정 설계다.
+데이터 모델·설정·로더는 구현되어 있다. 화면 컴포넌트와 테마의 CSS 연결은 구현 예정이다.
 
 - npm과 lockfile로 의존성을 관리한다. 도입 시 호환 버전을 확인하고 고정한다.
 - Astro + TypeScript strict, Tailwind CSS, Biome, Vitest를 사용한다.
@@ -18,13 +18,13 @@
 - 반복 항목에 명시적 ID를 부여한다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
 - 회사 수준 업무 요약과 프로젝트, 프로젝트의 제품 소개와 담당 역할을 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 현재 재직은 명시적으로 판단하며 개월 수를 생성하지 않는다.
-- 정확한 필드·날짜 표현·검증 경계는 데이터 모델 구현 전에 계약 표로 확정한다.
+- 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
 
 페이지는 데이터 로딩과 섹션 조합을 담당한다. 프로필·소개·공통 섹션·재직 이력·프로젝트·성과 목록·기술 그룹·학력·자격 컴포넌트는 전달받은 모델만 표시한다.
 
 ## 콘텐츠·표시·테마
 
-| 예정 편집 위치 | 책임 |
+| 편집 위치 | 책임 |
 |---|---|
 | src/config/resume.ts | 최소 샘플 콘텐츠 |
 | src/config/resume-display.ts | 다섯 섹션의 id·title·visible 배열, 공통 표시 문구 |
@@ -56,3 +56,23 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 - [Tailwind + Astro](https://tailwindcss.com/docs/installation/framework-guides/astro)
 - [Tailwind theme](https://tailwindcss.com/docs/theme)
+
+## 구현된 데이터 계약
+
+`src/models/resume.ts`의 스키마에서 `ResumeInput`(편집 입력), `ResumeData`(검증·정규화 결과)를 추론한다. 최상위 여섯 영역은 모두 필수이며, 선택적인 하위 목록만 생략 시 빈 배열로 정규화한다. 알 수 없는 필드와 잘못된 타입은 거부한다.
+
+| 영역 | 주요 필드 |
+|---|---|
+| profile | name, role, contacts(id·label·value), links(id·label·href) |
+| summary | format(paragraphs/list), items(id·content) |
+| experiences | id, company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
+| projects | id, title, description(제품 소개), role?, highlights, technologies, links |
+| skills | id, category, items(id·label) |
+| education | id, institution, program, startDate?, endDate?, description? |
+| certifications | id, name, issuer, issuedAt?, expiresAt?, badge?, verificationLink? |
+
+문장인 content·description·프로젝트 role은 `{ text, strong? }` 조각 배열이다. 조각의 공백은 보존하고 HTML로 해석하지 않는다. ID는 같은 목록 안에서 유일해야 한다. 향후 DOM ID에는 부모 경로를 포함해 다른 목록의 동일 ID와 구분한다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
+
+`src/data/resume.ts`의 `getResumeData()`는 콘텐츠를, `getResumePageData()`는 `{ resume, display, theme }`를 반환한다. 페이지는 후자만 호출한다. 검증 오류는 `ResumeValidationError.issues`에 필드 경로와 메시지를 제공하며 원본 값을 오류 메시지에 넣지 않는다. 공급 함수 예외는 그대로 전파한다.
+
+API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 응답은 공급 함수에서 매핑한다. 빈 문자열·null을 누락값으로 쓰는 API라면 해당 변환은 공급 어댑터에 명시하며 공통 검증 규칙을 완화하지 않는다. 현재 로더는 외부 서버를 호출하지 않는다.

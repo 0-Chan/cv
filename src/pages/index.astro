@@ -1,5 +1,9 @@
 ---
+import { getResumePageData } from "../data/resume";
 import "../styles/global.css";
+
+// Validate the complete config during static generation; rendering follows next.
+await getResumePageData();
 ---
 
 <!doctype html>

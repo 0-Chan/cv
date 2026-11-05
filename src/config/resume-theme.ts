@@ -26,7 +26,7 @@ export const resumeThemeConfig = {
     inline: 8,
     listIndent: 12,
   },
-  widths: { content: 960, sectionLabel: 96, certificationBadge: 160 },
+  widths: { content: 960, sectionLabel: 96, certificationBadge: 32 },
   colors: {
     background: "#ffffff",
     surface: "#f5f5f5",

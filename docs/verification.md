@@ -38,7 +38,9 @@
 | npm run test:e2e (예정) | 승인된 Playwright 테스트 |
 | npm run build | 정적 빌드 |
 | npm run verify:static | 현재 제공하는 타입·lint·포맷 검사·빌드. 테스트는 포함하지 않음 |
-| npm run verify (예정) | 테스트 도입 후 정적 검사·승인된 테스트·빌드를 통합; 브라우저 검증은 빌드 후 |
+| npm run verify:commit | 타입·lint·포맷·Vitest 검사; pre-commit에서 실행 |
+| npm run verify | verify:commit 통과 후 정적 빌드 |
+| npm run prepare | 이 저장소의 Husky hook 등록 |
 
 Vitest는 `src/models/resume.test.ts`의 날짜·재직 여부와 `src/data/yaml-source.test.ts`의 YAML 작성·오류 안내, `src/data/experience-content.test.ts`의 경력 콘텐츠 분리와 역할 생략, `src/data/input-validation.test.ts`의 필수 콘텐츠·빈 값·링크·이미지 입력을 검사한다. 입력 오류는 예외 종류와 작성 필드 경로를 확인하고 정상 입력은 공통 모델 검증 후 값 보존을 확인한다. 테스트 파일이 없으면 실패하며 passWithNoTests를 사용하지 않는다.
 
@@ -46,7 +48,9 @@ Vitest는 `src/models/resume.test.ts`의 날짜·재직 여부와 `src/data/yaml
 
 `src/data/resume.test.ts`와 `src/data/local-source.test.ts`는 설정값 보존과 선택 목록 정규화, 섹션 중복·누락 및 테마 오류 경로, 콘텐츠 타입 오류의 원본 값 미노출, 공급 오류 전파, 빈 YAML 오류를 10개 사례로 검사한다. 설정·공급 모듈 또는 YAML 원문을 mock하며 실제 파일 누락과 실패 빌드 재현은 아직 검증하지 않았다.
 
-잘못된 입력을 오류로 처리해야 해당 테스트가 통과한다. 실제 config의 검증 오류는 정적 페이지 생성 중 빌드로 전파된다. `npm run build` 자체는 Vitest를 실행하지 않으므로 테스트 실패 시 빌드까지 진행하지 않으려면 `npm test && npm run verify:static`을 사용한다.
+잘못된 입력을 오류로 처리해야 해당 테스트가 통과한다. 실제 config의 검증 오류는 정적 페이지 생성 중 빌드로 전파된다. `npm run build` 자체는 Vitest를 실행하지 않으며 전체 검증은 `npm run verify`로 수행한다.
+
+Husky의 pre-commit은 verify:commit을, pre-push는 build를 실행한다. commit-msg는 한글 커밋 제목 형식을 검사한다. hook 직접 실행으로 기존 86개 테스트·정적 검사·빌드 통과, 정상 제목 통과와 빈 제목의 종료 코드 1을 확인했다. 별도 hook 테스트 코드 대신 직접 실행으로 연결을 확인하며, 원격 push는 수행하지 않았다.
 
 Astro build는 타입 검사를 대체하지 않는다. Biome는 TS·JSON·CSS·Astro 및 Tailwind 구문을 대상으로 설정한다. Astro 전체 지원은 실험적이므로 명시적으로 활성화하고 적용 범위를 확인한다. 재현된 오탐만 해당 규칙·파일 범위로 제한해 사유를 기록한다.
 

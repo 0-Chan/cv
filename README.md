@@ -26,10 +26,10 @@ npm run preview
 ## 코드 검사
 
 ```sh
-npm run verify:static
+npm run verify
 ```
 
-타입 검사, Biome lint, 포맷 검사, 정적 빌드를 차례로 실행합니다. 테스트는 포함하지 않습니다.
+타입 검사, Biome lint, 포맷 검사, Vitest, 정적 빌드를 차례로 실행하고 실패한 단계에서 중단합니다.
 
 | 명령 | 역할 |
 |---|---|
@@ -37,10 +37,26 @@ npm run verify:static
 | `npm run format:check` | 포맷 검사 |
 | `npm run format` | 검사 대상 파일의 포맷 수정 |
 | `npm test` | Vitest 실행 |
+| `npm run verify:commit` | 타입·lint·포맷·Vitest 검사 |
+| `npm run verify:static` | 타입·lint·포맷 검사와 빌드, Vitest 제외 |
 
-Biome는 Astro·TypeScript·CSS와 루트 설정 파일을 검사합니다. Markdown 문서, 스킬, lockfile, 생성 산출물은 포맷 대상이 아닙니다. Astro 전체 지원은 실험적 기능을 사용합니다.
+Biome는 Astro·TypeScript·CSS, scripts의 검사 도구와 루트 설정 파일을 검사합니다. Markdown 문서, 스킬, lockfile, 생성 산출물은 포맷 대상이 아닙니다. Astro 전체 지원은 실험적 기능을 사용합니다.
 
 Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 재직 여부를 검사합니다. YAML의 링크·기술 매핑과 섹션 생략, 빈 이름의 필드 오류, 중복 키의 위치 안내도 검사합니다. 회사 요약과 프로젝트의 분리, 선택적인 담당 역할의 생략도 검증합니다. `npm test -- --reporter=verbose`로 각 테스트의 설명을 확인할 수 있습니다.
+
+## Git hook
+
+`npm ci` 또는 `npm install`의 `prepare` 단계에서 Husky를 등록합니다. 수동으로 다시 등록하려면 `npm run prepare`를 실행합니다.
+
+| 시점 | 검사 |
+|---|---|
+| 커밋 전 | 타입·lint·포맷·Vitest |
+| 커밋 제목 입력 후 | `유형: 한글 설명` 형식 |
+| push 전 | 정적 빌드 |
+
+검사가 실패하면 해당 Git 작업이 중단됩니다. 커밋 제목의 유형은 `기능·수정·정리·문서·설정·도구·테스트·되돌림`이며 설명에 한글이 하나 이상 있어야 합니다. `테스트: Vitest로 데이터 검증 추가`처럼 기술명을 함께 사용할 수 있습니다. 본문은 자유롭게 작성하며 자동 생성된 제목에도 같은 규칙을 적용합니다.
+
+hook은 현재 작업 트리를 검사하며 파일을 자동 수정하거나 스테이징하지 않습니다. 부분 스테이징 시 검사 대상과 커밋 내용이 다를 수 있습니다. 로컬 hook은 우회할 수 있으므로 서버 측 강제 검증은 별도 CI가 필요합니다.
 
 ## 설계 문서
 

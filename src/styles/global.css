@@ -1,1 +1,61 @@
 @import "tailwindcss";
+
+@theme inline {
+  --font-resume: var(--resume-font);
+  --text-name: var(--resume-size-name);
+  --text-role: var(--resume-size-role);
+  --text-section: var(--resume-size-section);
+  --text-company: var(--resume-size-company);
+  --text-project: var(--resume-size-project);
+  --text-body: var(--resume-size-body);
+  --text-meta: var(--resume-size-meta);
+  --text-tag: var(--resume-size-tag);
+  --font-weight-regular: var(--resume-weight-regular);
+  --font-weight-medium: var(--resume-weight-medium);
+  --font-weight-semibold: var(--resume-weight-semibold);
+  --font-weight-bold: var(--resume-weight-bold);
+  --leading-heading: var(--resume-leading-heading);
+  --leading-body: var(--resume-leading-body);
+  --spacing-section: var(--resume-space-section);
+  --spacing-item: var(--resume-space-item);
+  --spacing-content: var(--resume-space-content);
+  --spacing-inline: var(--resume-space-inline);
+  --spacing-page-mobile: var(--resume-space-pageXMobile);
+  --spacing-page-desktop: var(--resume-space-pageXDesktop);
+  --container-content: var(--resume-width-content);
+  --color-page: var(--resume-color-background);
+  --color-surface: var(--resume-color-surface);
+  --color-ink: var(--resume-color-text);
+  --color-muted: var(--resume-color-muted);
+  --color-rule: var(--resume-color-border);
+  --color-link: var(--resume-color-link);
+  --color-focus: var(--resume-color-focus);
+}
+
+@layer base {
+  body {
+    overflow-wrap: anywhere;
+  }
+  a {
+    color: var(--resume-color-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+  a:focus-visible {
+    outline: 2px solid var(--resume-color-focus);
+    outline-offset: 4px;
+  }
+  strong {
+    font-weight: var(--resume-weight-bold);
+  }
+}
+
+@utility py-page-mobile {
+  padding-block: var(--resume-space-pageYMobile);
+}
+@utility py-page-desktop {
+  padding-block: var(--resume-space-pageYDesktop);
+}

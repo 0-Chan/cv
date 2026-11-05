@@ -1,0 +1,27 @@
+---
+import type { ResumeTheme } from "../models/presentation";
+import { themeVariables } from "../styles/theme";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  theme: ResumeTheme;
+}
+const { title, theme } = Astro.props;
+const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="ko" style={themeVariables(theme)}>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{title}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+  </head>
+  <body
+    class="bg-page font-resume text-body font-regular leading-body text-ink"
+  >
+    <slot />
+  </body>
+</html>

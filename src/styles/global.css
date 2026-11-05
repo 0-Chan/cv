@@ -24,7 +24,7 @@
   --spacing-page-x-desktop: var(--resume-space-pageXDesktop);
   --spacing-page-y-mobile: var(--resume-space-pageYMobile);
   --spacing-page-y-desktop: var(--resume-space-pageYDesktop);
-  --container-content: var(--resume-width-content);
+  --container-resume: var(--resume-width-content);
   --color-page: var(--resume-color-background);
   --color-surface: var(--resume-color-surface);
   --color-ink: var(--resume-color-text);

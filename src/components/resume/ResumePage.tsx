@@ -17,7 +17,7 @@ export function ResumePage({
 }) {
   const skillGroups = resume.skills.filter((group) => group.items.length > 0);
   return (
-    <main className="mx-auto grid max-w-content gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
+    <main className="mx-auto grid w-full max-w-resume gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
       <ProfileHeader profile={resume.profile} />
       {display.sections.map((section) => {
         if (!section.visible) return null;

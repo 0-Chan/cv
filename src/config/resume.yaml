@@ -4,7 +4,7 @@ profile:
   contacts:
     연락처: "010-9277-4421"
   links:
-    0-Chan: https://github.com/0-chan
+    "https://github.com/0-chan": https://github.com/0-chan
     kyc442194@naver.com: mailto:kyc442194@naver.com
 
 summary:

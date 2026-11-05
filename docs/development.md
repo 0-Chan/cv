@@ -2,7 +2,7 @@
 
 ## 확정 사항
 
-아래 소스 경로와 인터페이스는 구현 예정 설계다. 현재 진행 상태는 README.md에서 확인한다.
+아래 소스 경로와 인터페이스는 구현 예정 설계다.
 
 - npm과 lockfile로 의존성을 관리한다. 도입 시 호환 버전을 확인하고 고정한다.
 - Astro + TypeScript strict, Tailwind CSS, Biome, Vitest를 사용한다.

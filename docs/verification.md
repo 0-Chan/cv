@@ -1,6 +1,6 @@
 # 제품 검증 기준
 
-현재는 설계만 있다. 아래 명령·테스트·CI가 이미 존재하거나 통과했다는 의미가 아니다.
+현재는 최소 정적 페이지와 검사 도구가 구현되어 있다. 이력서 기능의 테스트와 브라우저 자동화는 아직 없다.
 
 ## 요구사항 대응표
 
@@ -26,18 +26,21 @@
 | B1 | JavaScript 비활성화에서도 읽기 가능; 불필요한 외부 요청 없음 | 브라우저 |
 | B2 | fixture·참고 PDF가 배포물에 없음; 데이터 변경은 재빌드로 반영 | 산출물 확인 + 빌드 비교 |
 
-## 도구 설정 계획
+## 검사 명령
 
-| 예정 명령 | 역할 |
+| 명령 | 역할 |
 |---|---|
 | npm run check | astro check: Astro·TypeScript 검사 |
 | npm run lint | Biome lint |
 | npm run format:check | Biome format 검사, 수정 없음 |
 | npm run format | 명시적 포맷 수정; 미승인 테스트 변경 제외 |
 | npm test | 승인된 Vitest 테스트 |
-| npm run test:e2e | 승인된 Playwright 테스트 |
+| npm run test:e2e (예정) | 승인된 Playwright 테스트 |
 | npm run build | 정적 빌드 |
-| npm run verify | 수정 없이 정적 검사·테스트·빌드; 브라우저 검증은 빌드 후 |
+| npm run verify:static | 현재 제공하는 타입·lint·포맷 검사·빌드. 테스트는 포함하지 않음 |
+| npm run verify (예정) | 테스트 도입 후 정적 검사·승인된 테스트·빌드를 통합; 브라우저 검증은 빌드 후 |
+
+Vitest는 실행 환경만 있으며 테스트 파일은 없다. 기본적으로 테스트 파일이 없으면 실패하며 passWithNoTests를 사용하지 않는다.
 
 Astro build는 타입 검사를 대체하지 않는다. Biome는 TS·JSON·CSS·Astro 및 Tailwind 구문을 대상으로 설정한다. Astro 전체 지원은 실험적이므로 명시적으로 활성화하고 적용 범위를 확인한다. 재현된 오탐만 해당 규칙·파일 범위로 제한해 사유를 기록한다.
 

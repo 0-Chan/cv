@@ -3,21 +3,30 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": "^26.0.0" },
+  "engines": {
+    "node": "^26.0.0"
+  },
   "packageManager": "npm@12.2.0",
   "scripts": {
     "dev": "astro dev",
     "preview": "astro preview",
     "check": "astro check",
-    "build": "astro build"
+    "build": "astro build",
+    "lint": "biome lint .",
+    "format:check": "biome format .",
+    "format": "biome format --write .",
+    "test": "vitest run",
+    "verify:static": "npm run check && npm run lint && npm run format:check && npm run build"
   },
   "dependencies": {
+    "@tailwindcss/vite": "4.3.4",
     "astro": "7.4.5",
-    "tailwindcss": "4.3.4",
-    "@tailwindcss/vite": "4.3.4"
+    "tailwindcss": "4.3.4"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
-    "typescript": "5.9.3"
+    "@biomejs/biome": "2.6.5",
+    "typescript": "5.9.3",
+    "vitest": "5.1.0"
   }
 }

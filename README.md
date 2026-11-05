@@ -2,7 +2,7 @@
 
 이력서 콘텐츠, 섹션 표시 설정, 디자인 테마를 UI와 분리하는 정적 이력서 웹페이지 프로젝트입니다.
 
-Astro, React TSX, TypeScript, Tailwind CSS를 사용합니다. 프로필·소개·경력·프로젝트를 빌드 시 HTML로 렌더링합니다. 기술·학력·자격 데이터는 작성할 수 있지만 해당 화면은 아직 구현 전입니다.
+Astro, React TSX, TypeScript, Tailwind CSS를 사용합니다. 프로필·소개·경력·기술·학력·자격을 빌드 시 HTML로 렌더링합니다. 경력에는 회사 업무 요약과 프로젝트 목록을 표시할 수 있습니다.
 
 ## 실행
 
@@ -137,7 +137,7 @@ summary:
 - `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
-YAML과 표시·테마 설정은 프로필·소개·경력 화면에 적용됩니다. 표시 설정은 구현된 섹션에 적용되며 기술·학력·자격 화면은 후속 구현 대상입니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
+YAML과 테마 설정은 전체 이력서 화면에 적용됩니다. 프로필은 맨 위에 표시하고, 나머지 다섯 섹션은 표시 설정의 제목·순서·표시 여부를 따릅니다. 빈 섹션과 기술이 없는 분류는 숨깁니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
 
 ## 외부 데이터 연결
 
@@ -155,6 +155,6 @@ SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run build
 SITE_URL=https://0-chan.github.io BASE_PATH=/cv npm run preview
 ```
 
-`/cv`는 예시이며 실제 주소는 저장소 이름에 따라 달라집니다. 로컬 이미지는 `public/images`에 넣고 YAML에는 `/images/logo.png`처럼 사이트 루트 기준으로 작성합니다. 경력 로고 렌더러가 배포 경로를 붙이며 외부 이미지 URL은 유지합니다. HTTPS 사이트의 외부 이미지는 HTTPS 주소를 사용하세요.
+`/cv`는 예시이며 실제 주소는 저장소 이름에 따라 달라집니다. 로컬 이미지는 `public/images`에 넣고 YAML에는 `/images/logo.png`처럼 사이트 루트 기준으로 작성합니다. 회사 로고와 자격 배지 렌더러가 배포 경로를 붙이며 외부 이미지 URL은 유지합니다. HTTPS 사이트의 외부 이미지는 HTTPS 주소를 사용하세요.
 
 최초 배포는 GitHub 기본 주소를 사용합니다. `0-chan.cv` 도메인 연결·DNS·HTTPS 설정은 마지막 작업으로 남겨둡니다. 추후 Pages 설정에서 도메인을 연결한 뒤 재배포하면 새 주소가 반영됩니다. Actions 배포에는 저장소의 CNAME 파일이 필요하지 않습니다.

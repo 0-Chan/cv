@@ -14,3 +14,15 @@ experiences:
         description: 제품·서비스 소개입니다.
         highlights:
           - 수행 내용입니다.
+
+skills:
+  기술 분류 A:
+    - 기술 A
+
+education:
+  - institution: 기관 A
+    program: 과정 A
+
+certifications:
+  - name: 자격 A
+    issuer: 발급 기관 A

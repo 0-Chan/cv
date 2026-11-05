@@ -11,11 +11,11 @@
 
 ## 책임과 데이터 흐름
 
-`로컬 콘텐츠 → 공급 어댑터 → 검증·정규화 → getResumeData(): Promise<ResumeData> → 페이지 → 표시 컴포넌트`
+`YAML 원문 → 구문 검사 → 작성 형식 검증 → Markdown·공통 모델 변환 → 공통 모델 검증 → getResumeData(): Promise<ResumeData> → 페이지 → 표시 컴포넌트`
 
 - 최상위 모델은 profile, summary, experiences, skills, education, certifications다. Zod 스키마와 추론된 TypeScript 타입으로 계약을 공유한다.
 - 필수값·날짜·링크 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
-- 콘텐츠 항목에는 ID를 두지 않으며 자동 생성도 하지 않는다. 섹션 표시 설정의 고정 키만 사용한다. 재입사 구분은 지원 범위에 포함하지 않는다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
+- 콘텐츠 항목에는 ID를 두지 않으며 자동 생성도 하지 않는다. 섹션 표시 설정의 고정 키만 사용한다. 재입사 구분은 지원 범위에 포함하지 않는다. 작성 문장은 Markdown을 사용한다. 내부에서는 문단과 text·strong·emphasis·code·link·break 노드로 표현하며 HTML 문자열을 저장하지 않는다.
 - 회사 수준 업무 요약과 프로젝트, 프로젝트의 제품 소개와 담당 역할을 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 현재 재직은 명시적으로 판단하며 개월 수를 생성하지 않는다.
 - 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
@@ -26,7 +26,7 @@
 
 | 편집 위치 | 책임 |
 |---|---|
-| src/config/resume.ts | 최소 샘플 콘텐츠 |
+| src/config/resume.yaml | 최소 샘플 콘텐츠 |
 | src/config/resume-display.ts | 다섯 섹션의 id·title·visible 배열, 공통 표시 문구 |
 | src/config/resume-theme.ts | 폰트·크기·굵기·줄 높이·간격·색상·최대 너비 |
 
@@ -59,7 +59,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 ## 구현된 데이터 계약
 
-`src/models/resume.ts`의 스키마에서 `ResumeInput`(편집 입력), `ResumeData`(검증·정규화 결과)를 추론한다. 최상위 여섯 영역은 모두 필수이며, 선택적인 하위 목록만 생략 시 빈 배열로 정규화한다. 알 수 없는 필드와 잘못된 타입은 거부한다.
+`src/models/resume.ts`의 스키마에서 `ResumeInput`(공통 모델 입력), `ResumeData`(검증·정규화 결과)를 추론한다. 최상위 여섯 영역은 모두 필수이며, 선택적인 하위 목록만 생략 시 빈 배열로 정규화한다. 알 수 없는 필드와 잘못된 타입은 거부한다.
 
 | 영역 | 주요 필드 |
 |---|---|
@@ -71,8 +71,20 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | education | institution, program, startDate?, endDate?, description? |
 | certifications | name, issuer, issuedAt?, expiresAt?, badge?, verificationLink? |
 
-문장인 content·description·프로젝트 role은 `{ text, strong? }` 조각 배열이다. 조각의 공백은 보존하고 HTML로 해석하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
+문장인 content·description·프로젝트 role은 문단 배열이다. 각 문단은 인라인 노드 목록을 가지며 strong·emphasis·link는 자식 노드를 갖는다. 일반 줄바꿈은 텍스트 안에 보존하고 Markdown의 명시적 줄바꿈은 break 노드로 표현한다. 렌더러는 텍스트를 이스케이프해야 하며 HTML을 직접 삽입하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
 
 `src/data/resume.ts`의 `getResumeData()`는 콘텐츠를, `getResumePageData()`는 `{ resume, display, theme }`를 반환한다. 페이지는 후자만 호출한다. 검증 오류는 `ResumeValidationError.issues`에 필드 경로와 메시지를 제공하며 원본 값을 오류 메시지에 넣지 않는다. 공급 함수 예외는 그대로 전파한다.
 
 API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 응답은 공급 함수에서 매핑한다. 빈 문자열·null을 누락값으로 쓰는 API라면 해당 변환은 공급 어댑터에 명시하며 공통 검증 규칙을 완화하지 않는다. 현재 로더는 외부 서버를 호출하지 않는다.
+
+## YAML 작성 형식과 변환
+
+작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
+
+profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목록만 빈 목록으로 변환한다. 입력된 빈 문자열·null·잘못된 타입은 오류이며 전체 파일 누락이나 빈 파일을 정상 빈 데이터로 대체하지 않는다. 날짜는 따옴표로 감싼 YYYY 또는 YYYY-MM 문자열이다. 실제 작성 예시는 README에 둔다.
+
+`src/data/yaml-source.ts`의 `parseResumeYaml(source, filename)`가 YAML을 검증·변환하여 ResumeInput을 반환한다. YAML은 1.2 구문으로 해석하고 중복 키·파싱 경고와 오류를 전파한다. 구문 오류에는 파일명·행·열·오류 코드만 기록하며 원문 발췌는 포함하지 않는다. 작성 형식 오류와 Markdown 오류는 작성 필드 경로를 포함한다. getResumeData는 변환 후 공통 모델까지 검증한다.
+
+Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 링크·줄바꿈을 지원한다. 표 인식 확장은 표를 일반 문장으로 오인하지 않고 거부하기 위해 사용한다. 문서 제목·목록·표·이미지·코드 블록·HTML·참조형 링크는 오류다. 지원하지 않는 문법이 일반 텍스트로 해석되는 경우(예: 취소선 기호)는 텍스트로 유지한다. 문장 링크의 주소는 HTTP(S)·mailto·tel만 허용한다.
+
+로컬 공급 모듈만 YAML을 `?raw`로 가져온다. 표시·테마는 TypeScript 설정을 유지한다. 기본 정적 페이지는 서버 빌드 중 로더를 호출하며 YAML을 공개 파일로 제공하지 않는다. 브라우저 렌더링과 화면 검증은 별도 구현 단계다.

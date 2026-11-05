@@ -47,14 +47,82 @@ Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 �
 - [제품 설계](docs/development.md)
 - [제품 검증 기준](docs/verification.md)
 
-## 이력서 설정
+## 이력서 작성
 
-- `src/config/resume.ts`: 이름·소개·경력 등 콘텐츠를 수정합니다. 콘텐츠 항목에는 `id`를 입력하지 않습니다.
-- `src/config/resume-display.ts`: `sections` 배열을 재정렬하거나 `title`, `visible`을 변경합니다. 다섯 섹션은 각각 한 번 포함하고, 숨길 때는 `visible: false`를 사용합니다.
+`src/config/resume.yaml`을 편집합니다. 콘텐츠 ID나 TypeScript 코드를 작성할 필요가 없습니다. `profile.name`, `profile.role`은 필수이고, 내용이 없는 섹션은 생략할 수 있습니다.
+
+```yaml
+profile:
+  name: 이름
+  role: 직무
+  contacts:
+    지역: 지역 이름
+  links:
+    이메일: mailto:name@example.com
+
+summary: |
+  소개 문장에 **굵게**, *기울임*, `코드`를 쓸 수 있습니다.
+  [관련 링크](https://example.com)도 문장 안에 넣습니다.
+
+experiences:
+  - company: 회사 A
+    role: 직무
+    isCurrent: false
+    highlights:
+      - 회사 수준 업무 요약입니다.
+    projects:
+      - title: 프로젝트 A
+        description: 제품·서비스 소개입니다.
+        role: 담당 역할입니다.
+        highlights:
+          - 수행 내용입니다.
+        technologies:
+          - TypeScript
+        links:
+          관련 링크: https://example.com
+
+skills:
+  기술 분류:
+    - TypeScript
+
+education:
+  - institution: 기관 A
+    program: 전공 또는 과정
+
+certifications:
+  - name: 자격 A
+    issuer: 발급 기관
+    verificationLink:
+      자격 확인: https://example.com
+```
+
+소개를 목록으로 표시하려면 `summary`를 다음처럼 작성합니다.
+
+```yaml
+summary:
+  - 첫 번째 소개 문장입니다.
+  - 두 번째 소개 문장입니다.
+```
+
+- 회사 요약(`highlights`)과 프로젝트(`projects`)는 각각 생략할 수 있습니다. 배열에 적은 순서가 유지됩니다.
+- 날짜는 `startDate: "2024"`, `endDate: "2024-03"`처럼 따옴표를 붙인 연도·연월입니다. 일 단위는 지원하지 않습니다.
+- 현재 재직은 `isCurrent: true`로 명시하고 종료일을 생략합니다. 종료일 누락만으로 현재 재직으로 판단하지 않습니다.
+- 자격 날짜는 `issuedAt`, `expiresAt`입니다. `verificationLink`는 표시 이름과 주소 한 쌍입니다.
+- 회사 로고는 회사 항목의 `logo`, 자격 배지는 `badge`에 `{ src: /images/example.png, alt: 이미지 설명 }` 형태로 입력합니다.
+- 선택값은 필드를 생략합니다. 빈 문자열·공백만 있는 문장·`null`은 오류입니다. 전화번호처럼 숫자로 보이는 문자열에도 따옴표를 붙입니다.
+- 문단은 빈 줄로 구분합니다. `|`는 줄바꿈을 보존하고 `>`는 줄을 이어 쓰는 YAML 문법입니다. Markdown의 명시적 줄바꿈은 두 공백 또는 역슬래시 뒤 줄바꿈으로 작성합니다.
+- Markdown은 소개·설명·프로젝트 역할·업무 및 성과에 적용합니다. 이름·제목·기술명은 일반 텍스트입니다. HTML, 이미지, 제목, 표, 코드 블록, 참조형 링크는 지원하지 않으며 목록은 YAML 목록으로 작성합니다.
+- `**강조**`처럼 특수문자로 시작하거나 `: `를 포함하는 한 줄 문장은 따옴표로 감싸거나 `|` 아래에 작성합니다. 들여쓰기는 공백 두 칸을 사용합니다.
+
+문법 오류에는 YAML 파일의 행·열과 오류 코드가, 내용 오류에는 필드 경로가 표시됩니다. 예를 들어 `resume.yaml.experiences.0.startDate`는 첫 번째 회사의 시작일입니다. 숫자로 읽힌 연도는 따옴표로 감싸고, 오타·누락·잘못된 형식을 고친 뒤 다시 빌드합니다.
+
+## 표시와 테마
+
+- `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
-날짜는 `YYYY` 또는 `YYYY-MM`입니다. 선택값은 필드를 생략하며 빈 문자열·공백·null을 넣지 않습니다. 현재 재직 여부는 `isCurrent`로 명시합니다. 종료일 누락만으로 현재 재직을 판단하지 않습니다.
+현재 YAML은 빌드에서 읽고 검증하지만 화면은 아직 최소 페이지입니다. 콘텐츠·표시·테마의 실제 화면 적용은 섹션 컴포넌트 구현 후 제공됩니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
 
-설정은 현재 빌드에서 검증되며, 오류가 있으면 빌드가 실패합니다. 표시·테마 설정의 실제 화면 적용은 섹션 컴포넌트 구현 후 제공됩니다. 정적 배포 결과를 갱신하려면 설정 변경 후 재빌드·재배포해야 합니다.
+## 외부 데이터 연결
 
-외부 API로 전환할 때는 `src/data/local-source.ts`의 공급 함수를 교체합니다. 응답을 공통 콘텐츠 모델로 변환한 뒤 기존 로더 검증을 통과시키며, 컴포넌트에서는 API를 호출하지 않습니다. 현재 외부 API 요청은 없습니다.
+`src/data/local-source.ts`의 공급 함수를 교체합니다. API 응답을 공통 모델로 변환하면 기존 로더가 다시 검증합니다. YAML과 같은 간단한 작성 형태의 JSON을 받는 API도 작성 형식 검증과 변환을 거쳐야 합니다. 컴포넌트에서는 API를 호출하지 않으며 현재 외부 API 요청은 없습니다.

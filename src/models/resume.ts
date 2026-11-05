@@ -7,7 +7,6 @@ import {
   richTextSchema,
   textItemSchema,
   textSchema,
-  uniqueList,
   validatePeriod,
   webLinkSchema,
 } from "./shared";
@@ -16,9 +15,9 @@ export const projectSchema = z.strictObject({
   title: textSchema,
   description: richTextSchema,
   role: richTextSchema.optional(),
-  highlights: uniqueList(textItemSchema).default([]),
-  technologies: uniqueList(labelSchema).default([]),
-  links: uniqueList(webLinkSchema).default([]),
+  highlights: z.array(textItemSchema).default([]),
+  technologies: z.array(labelSchema).default([]),
+  links: z.array(webLinkSchema).default([]),
 });
 
 export const experienceSchema = z
@@ -28,8 +27,8 @@ export const experienceSchema = z
     startDate: dateSchema.optional(),
     endDate: dateSchema.optional(),
     isCurrent: z.boolean(),
-    tags: uniqueList(labelSchema).default([]),
-    highlights: uniqueList(textItemSchema).default([]),
+    tags: z.array(labelSchema).default([]),
+    highlights: z.array(textItemSchema).default([]),
     projects: z.array(projectSchema).default([]),
   })
   .superRefine((entry, context) => {
@@ -45,7 +44,6 @@ export const experienceSchema = z
 
 export const educationSchema = z
   .strictObject({
-    id: textSchema,
     institution: textSchema,
     program: textSchema,
     startDate: dateSchema.optional(),
@@ -58,7 +56,6 @@ export const educationSchema = z
 
 export const certificationSchema = z
   .strictObject({
-    id: textSchema,
     name: textSchema,
     issuer: textSchema,
     issuedAt: dateSchema.optional(),
@@ -74,25 +71,24 @@ export const resumeSchema = z.strictObject({
   profile: z.strictObject({
     name: textSchema,
     role: textSchema,
-    contacts: uniqueList(
-      z.strictObject({ id: textSchema, label: textSchema, value: textSchema }),
-    ).default([]),
-    links: uniqueList(contactLinkSchema).default([]),
+    contacts: z
+      .array(z.strictObject({ label: textSchema, value: textSchema }))
+      .default([]),
+    links: z.array(contactLinkSchema).default([]),
   }),
   summary: z.strictObject({
     format: z.enum(["paragraphs", "list"]),
-    items: uniqueList(textItemSchema),
+    items: z.array(textItemSchema),
   }),
   experiences: z.array(experienceSchema),
-  skills: uniqueList(
+  skills: z.array(
     z.strictObject({
-      id: textSchema,
       category: textSchema,
-      items: uniqueList(labelSchema),
+      items: z.array(labelSchema),
     }),
   ),
-  education: uniqueList(educationSchema),
-  certifications: uniqueList(certificationSchema),
+  education: z.array(educationSchema),
+  certifications: z.array(certificationSchema),
 });
 
 export type ResumeInput = z.input<typeof resumeSchema>;

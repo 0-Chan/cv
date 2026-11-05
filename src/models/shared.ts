@@ -17,29 +17,11 @@ export const richTextSchema = z
   .min(1);
 
 export const textItemSchema = z.strictObject({
-  id: textSchema,
   content: richTextSchema,
 });
 export const labelSchema = z.strictObject({
-  id: textSchema,
   label: textSchema,
 });
-
-export function uniqueList<T extends z.ZodType<{ id: string }>>(item: T) {
-  return z.array(item).superRefine((items, context) => {
-    const seen = new Set<string>();
-    items.forEach((entry, index) => {
-      if (seen.has(entry.id)) {
-        context.addIssue({
-          code: "custom",
-          path: [index, "id"],
-          message: "같은 목록의 ID는 중복될 수 없습니다.",
-        });
-      }
-      seen.add(entry.id);
-    });
-  });
-}
 
 export const dateSchema = z
   .string()
@@ -80,7 +62,6 @@ const contactUrlSchema = textSchema.refine((value) => {
 }, "HTTP(S), mailto 또는 tel 연락처 주소가 필요합니다.");
 
 export const webLinkSchema = z.strictObject({
-  id: textSchema,
   label: textSchema,
   href: z.httpUrl(),
 });

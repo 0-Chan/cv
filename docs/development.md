@@ -14,8 +14,8 @@
 `로컬 콘텐츠 → 공급 어댑터 → 검증·정규화 → getResumeData(): Promise<ResumeData> → 페이지 → 표시 컴포넌트`
 
 - 최상위 모델은 profile, summary, experiences, skills, education, certifications다. Zod 스키마와 추론된 TypeScript 타입으로 계약을 공유한다.
-- 필수값·날짜·링크·ID 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
-- 재직 이력과 프로젝트에는 ID를 두지 않으며 재입사 구분을 지원 범위에 포함하지 않는다. 기술·학력 등 나머지 반복 항목에는 명시적 ID를 부여한다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
+- 필수값·날짜·링크 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
+- 콘텐츠 항목에는 ID를 두지 않으며 자동 생성도 하지 않는다. 섹션 표시 설정의 고정 키만 사용한다. 재입사 구분은 지원 범위에 포함하지 않는다. 강조는 `{ text, strong? }` 조각 배열로 표현하며 원시 HTML을 콘텐츠 형식으로 사용하지 않는다.
 - 회사 수준 업무 요약과 프로젝트, 프로젝트의 제품 소개와 담당 역할을 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 현재 재직은 명시적으로 판단하며 개월 수를 생성하지 않는다.
 - 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
@@ -63,15 +63,15 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 | 영역 | 주요 필드 |
 |---|---|
-| profile | name, role, contacts(id·label·value), links(id·label·href) |
-| summary | format(paragraphs/list), items(id·content) |
+| profile | name, role, contacts(label·value), links(label·href) |
+| summary | format(paragraphs/list), items(content) |
 | experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
 | projects | title, description(제품 소개), role?, highlights, technologies, links |
-| skills | id, category, items(id·label) |
-| education | id, institution, program, startDate?, endDate?, description? |
-| certifications | id, name, issuer, issuedAt?, expiresAt?, badge?, verificationLink? |
+| skills | category, items(label) |
+| education | institution, program, startDate?, endDate?, description? |
+| certifications | name, issuer, issuedAt?, expiresAt?, badge?, verificationLink? |
 
-문장인 content·description·프로젝트 role은 `{ text, strong? }` 조각 배열이다. 조각의 공백은 보존하고 HTML로 해석하지 않는다. ID는 같은 목록 안에서 유일해야 한다. 향후 DOM ID에는 부모 경로를 포함해 다른 목록의 동일 ID와 구분한다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
+문장인 content·description·프로젝트 role은 `{ text, strong? }` 조각 배열이다. 조각의 공백은 보존하고 HTML로 해석하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
 
 `src/data/resume.ts`의 `getResumeData()`는 콘텐츠를, `getResumePageData()`는 `{ resume, display, theme }`를 반환한다. 페이지는 후자만 호출한다. 검증 오류는 `ResumeValidationError.issues`에 필드 경로와 메시지를 제공하며 원본 값을 오류 메시지에 넣지 않는다. 공급 함수 예외는 그대로 전파한다.
 

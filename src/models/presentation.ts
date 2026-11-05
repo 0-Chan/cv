@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { textSchema, uniqueList } from "./shared";
+import { textSchema } from "./shared";
 
 export const sectionIds = [
   "summary",
@@ -9,7 +9,7 @@ export const sectionIds = [
   "certifications",
 ] as const;
 export const displaySchema = z.strictObject({
-  sections: uniqueList(
+  sections: uniqueSections(
     z.strictObject({
       id: z.enum(sectionIds),
       title: textSchema,
@@ -74,3 +74,19 @@ export const themeSchema = z.strictObject({
 
 export type ResumeDisplay = z.infer<typeof displaySchema>;
 export type ResumeTheme = z.infer<typeof themeSchema>;
+
+function uniqueSections<T extends z.ZodType<{ id: string }>>(item: T) {
+  return z.array(item).superRefine((items, context) => {
+    const seen = new Set<string>();
+    items.forEach((entry, index) => {
+      if (seen.has(entry.id)) {
+        context.addIssue({
+          code: "custom",
+          path: [index, "id"],
+          message: "섹션 키는 중복될 수 없습니다.",
+        });
+      }
+      seen.add(entry.id);
+    });
+  });
+}

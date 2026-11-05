@@ -49,7 +49,7 @@ Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 �
 
 ## 이력서 설정
 
-- `src/config/resume.ts`: 이름·소개·경력 등 콘텐츠를 수정합니다. 재직 이력과 프로젝트에는 `id`를 입력하지 않습니다. 기술·학력 등 ID가 있는 항목은 제목을 바꾸거나 순서를 옮겨도 ID를 유지합니다.
+- `src/config/resume.ts`: 이름·소개·경력 등 콘텐츠를 수정합니다. 콘텐츠 항목에는 `id`를 입력하지 않습니다.
 - `src/config/resume-display.ts`: `sections` 배열을 재정렬하거나 `title`, `visible`을 변경합니다. 다섯 섹션은 각각 한 번 포함하고, 숨길 때는 `visible: false`를 사용합니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 

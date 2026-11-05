@@ -3,7 +3,7 @@ import { resumeSchema } from "../models/resume";
 import { parseResumeYaml } from "./yaml-source";
 
 describe("YAML 이력서 작성", () => {
-  it("연락처·기술을 간단한 매핑으로 작성하고 빈 섹션은 생략할 수 있다", () => {
+  it("링크·기술을 간단한 매핑으로 작성하고 빈 섹션은 생략할 수 있다", () => {
     const result = resumeSchema.parse(
       parseResumeYaml(`
 profile:
@@ -54,7 +54,7 @@ profile:
     ].join("\n");
 
     expect(() => parseResumeYaml(source)).toThrow(
-      /resume\.yaml:\d+:\d+.*DUPLICATE_KEY/,
+      /resume\.yaml:3:3:.*DUPLICATE_KEY/,
     );
   });
 });

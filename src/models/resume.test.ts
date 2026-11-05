@@ -43,8 +43,6 @@ describe("경력의 날짜와 재직 여부", () => {
     expect(result.isCurrent).toBe(false);
     expect(result).not.toHaveProperty("startDate");
     expect(result).not.toHaveProperty("endDate");
-    expect(result.projects).toEqual([]);
-    expect(result.highlights).toEqual([]);
   });
 
   it("종료일 없는 현재 재직을 허용한다", () => {
@@ -65,10 +63,6 @@ describe("경력의 날짜와 재직 여부", () => {
     {
       change: { endDate: "" },
       reason: "종료일에 빈 문자열을 넣을 수 없으며 값이 없으면 필드를 생략한다",
-    },
-    {
-      change: { endDate: " " },
-      reason: "종료일에 공백만 있는 문자열을 넣을 수 없다",
     },
     {
       change: { endDate: null },

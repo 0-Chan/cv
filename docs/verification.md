@@ -51,7 +51,7 @@ Vitest는 `src/models/resume.test.ts`의 날짜·재직 여부와 `src/data/yaml
 
 잘못된 입력을 오류로 처리해야 해당 테스트가 통과한다. 실제 config의 검증 오류는 정적 페이지 생성 중 빌드로 전파된다. `npm run build` 자체는 Vitest를 실행하지 않으며 전체 검증은 `npm run verify`로 수행한다.
 
-Husky의 pre-commit은 verify:commit을, pre-push는 build를 실행한다. commit-msg는 한글 커밋 제목 형식을 검사한다. hook 직접 실행으로 기존 86개 테스트·정적 검사·빌드 통과, 정상 제목 통과와 빈 제목의 종료 코드 1을 확인했다. 별도 hook 테스트 코드 대신 직접 실행으로 연결을 확인하며, 원격 push는 수행하지 않았다.
+Husky의 pre-commit은 verify:commit을, pre-push는 build를 실행한다. commit-msg는 한글 커밋 제목 형식을 검사한다. hook 직접 실행으로 기존 86개 테스트·정적 검사·빌드 통과, 정상 제목 통과와 빈 제목의 종료 코드 1을 확인했다. 별도 hook 테스트 코드 대신 직접 실행과 실제 커밋·push로 연결을 확인했다.
 
 Astro build는 타입 검사를 대체하지 않는다. Biome는 TS·JSON·CSS·Astro 및 Tailwind 구문을 대상으로 설정한다. Astro 전체 지원은 실험적이므로 명시적으로 활성화하고 적용 범위를 확인한다. 재현된 오탐만 해당 규칙·파일 범위로 제한해 사유를 기록한다.
 
@@ -77,6 +77,6 @@ Biome 검사 범위에는 src 아래 YAML도 포함한다. 정상 빌드 성공�
 
 루트와 /cv 하위 경로 빌드에서 로고 3개·배지 2개의 주소와 대체 텍스트를 확인했고, 두 산출물의 이미지 파일은 원본 자산과 일치한다. /cv 빌드의 canonical·CSS 경로도 확인했다. 명시적인 현재 재직 표시와 제공된 날짜를 유지하며, 날짜가 없는 자격에는 취득·만료 항목이 출력되지 않는다. 제공되지 않은 확인 링크와 경력 개월 수는 생성하지 않는다. 실제 콘텐츠로 타입·Biome·기존 테스트 86개와 두 경로의 빌드가 통과했다.
 
-기존 샘플 배포에서는 GitHub Actions의 타입·Biome·기존 테스트 86개·정적 빌드·Pages 배포가 통과했다. 공개 주소 https://0-chan.github.io/cv/의 HTML·CSS가 HTTPS로 HTTP 200을 반환하고 canonical과 CSS 경로가 `/cv/`를 사용하는 것을 확인했다. 본문 너비와 간격 토큰의 이름 충돌을 수정했으며 배포 CSS의 `max-w-resume`은 최대 너비 960px 변수를, `gap-content`는 간격 16px 변수를 각각 참조한다.
+실제 이력서와 최신 UI의 GitHub Actions 타입·Biome·기존 테스트 86개·정적 빌드·Pages 배포가 통과했다. 공개 주소 https://0-chan.github.io/cv/의 HTML·CSS·이미지 5개가 HTTPS로 HTTP 200을 반환하고 canonical·CSS·이미지 경로가 `/cv/`를 사용하는 것을 확인했다. 공개 HTML·CSS에서 프로필 세 행, 자격증 배지 96px, 섹션명 열 96px·가로 간격 8px·목록 들여쓰기 12px와 최대 너비 960px의 연결을 확인했다. 내려받은 이미지 5개는 저장소 자산과 해시가 일치한다.
 
-브라우저 연결 도구의 `The browser access host is unavailable` 오류로 반응형·키보드·장문·테마 변경·섹션 순서 및 숨김·프로젝트 없는 경력의 실제 화면과 브라우저 이미지 요청은 아직 미검증이다. 별도 fixture나 임시 테스트 코드는 작성하지 않았다. 실제 콘텐츠는 로컬에만 반영했고 원격 push·재배포와 개인 도메인 연결은 수행하지 않았다.
+브라우저 연결 도구의 `The browser access host is unavailable` 오류로 반응형·키보드·장문·테마 변경·섹션 순서 및 숨김·프로젝트 없는 경력의 실제 화면과 브라우저 이미지 요청은 아직 미검증이다. 별도 fixture나 임시 테스트 코드는 작성하지 않았다. 실제 콘텐츠의 원격 push·기본 주소 배포는 완료했으며 개인 도메인 연결은 수행하지 않았다.

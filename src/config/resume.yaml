@@ -1,0 +1,16 @@
+profile:
+  name: 이름
+  role: 직무
+
+summary: |
+  소개 문장입니다. **강조할 내용**을 작성합니다.
+
+experiences:
+  - company: 회사 A
+    role: 직무
+    isCurrent: false
+    projects:
+      - title: 프로젝트 A
+        description: 제품·서비스 소개입니다.
+        highlights:
+          - 수행 내용입니다.

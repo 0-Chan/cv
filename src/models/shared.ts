@@ -1,4 +1,8 @@
 import { z } from "zod";
+import { richTextSchema } from "./rich-text";
+import { contactUrlSchema } from "./urls";
+
+export { richTextSchema } from "./rich-text";
 
 // Validate without trimming: rich-text segments may contain meaningful spaces.
 export const textSchema = z
@@ -6,15 +10,6 @@ export const textSchema = z
   .refine((value) => value.trim().length > 0, {
     message: "빈 문자열이나 공백만 있는 값은 사용할 수 없습니다.",
   });
-
-export const richTextSchema = z
-  .array(
-    z.strictObject({
-      text: textSchema,
-      strong: z.boolean().optional(),
-    }),
-  )
-  .min(1);
 
 export const textItemSchema = z.strictObject({
   content: richTextSchema,
@@ -53,13 +48,6 @@ export function validatePeriod(
     });
   }
 }
-
-const contactUrlSchema = textSchema.refine((value) => {
-  if (/^https?:\/\//i.test(value)) return z.httpUrl().safeParse(value).success;
-  if (value.startsWith("mailto:"))
-    return z.email().safeParse(value.slice(7)).success;
-  return /^tel:\+?[0-9][0-9(). -]*$/.test(value);
-}, "HTTP(S), mailto 또는 tel 연락처 주소가 필요합니다.");
 
 export const webLinkSchema = z.strictObject({
   label: textSchema,

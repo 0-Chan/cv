@@ -20,6 +20,7 @@
   --spacing-item: var(--resume-space-item);
   --spacing-content: var(--resume-space-content);
   --spacing-inline: var(--resume-space-inline);
+  --spacing-list-indent: var(--resume-space-listIndent);
   --spacing-certification-badge: var(--resume-width-certificationBadge);
   --spacing-page-x-mobile: var(--resume-space-pageXMobile);
   --spacing-page-x-desktop: var(--resume-space-pageXDesktop);

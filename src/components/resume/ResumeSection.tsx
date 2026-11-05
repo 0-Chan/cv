@@ -13,7 +13,7 @@ export function ResumeSection({
   return (
     <section
       aria-labelledby={id}
-      className="grid min-w-0 gap-content border-t border-rule pt-item md:grid-cols-[var(--resume-width-sectionLabel)_minmax(0,1fr)]"
+      className="grid min-w-0 gap-x-inline gap-y-content border-t border-rule pt-item md:grid-cols-[var(--resume-width-sectionLabel)_minmax(0,1fr)]"
     >
       <h2 id={id} className="text-section font-semibold leading-heading">
         {title}

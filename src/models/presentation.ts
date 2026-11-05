@@ -59,6 +59,7 @@ export const themeSchema = z.strictObject({
     item: space,
     content: space,
     inline: space,
+    listIndent: space,
   }),
   widths: z.strictObject({
     content: size,

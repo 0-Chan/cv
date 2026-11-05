@@ -10,14 +10,12 @@ export function CertificationItem({
   labels: Pick<ResumeDisplay["labels"], "issuedAt" | "expiresAt">;
 }) {
   return (
-    <article className="flex min-w-0 items-start gap-content border-rule not-first:border-t not-first:pt-item">
+    <article className="flex min-w-0 flex-col items-start gap-content border-rule not-first:border-t not-first:pt-item sm:flex-row">
       {certification.badge && (
         <img
           src={assetUrl(certification.badge.src)}
           alt={certification.badge.alt}
-          width={48}
-          height={48}
-          className="size-item shrink-0 object-contain"
+          className="size-certification-badge max-w-full shrink-0 object-contain"
           loading="lazy"
         />
       )}

@@ -60,7 +60,11 @@ export const themeSchema = z.strictObject({
     content: space,
     inline: space,
   }),
-  widths: z.strictObject({ content: size, sectionLabel: size }),
+  widths: z.strictObject({
+    content: size,
+    sectionLabel: size,
+    certificationBadge: size,
+  }),
   colors: z.strictObject({
     background: color,
     surface: color,

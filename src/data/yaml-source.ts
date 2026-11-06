@@ -102,7 +102,7 @@ export function parseResumeYaml(
     ),
     skills: Object.entries(data.skills).map(([category, items]) => ({
       category,
-      items: labels(items),
+      items: sentences(items, `skills.${category}`),
     })),
     education: data.education.map(({ description, ...entry }, index) => ({
       ...entry,

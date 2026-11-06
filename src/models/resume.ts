@@ -84,7 +84,7 @@ export const resumeSchema = z.strictObject({
   skills: z.array(
     z.strictObject({
       category: textSchema,
-      items: z.array(labelSchema),
+      items: z.array(textItemSchema),
     }),
   ),
   education: z.array(educationSchema),

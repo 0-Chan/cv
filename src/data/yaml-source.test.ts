@@ -3,7 +3,7 @@ import { resumeSchema } from "../models/resume";
 import { parseResumeYaml } from "./yaml-source";
 
 describe("YAML 이력서 작성", () => {
-  it("링크·기술을 간단한 매핑으로 작성하고 빈 섹션은 생략할 수 있다", () => {
+  it("링크·기술 매핑의 값과 강조를 보존하고 빈 섹션은 빈 목록으로 만든다", () => {
     const result = resumeSchema.parse(
       parseResumeYaml(`
 profile:
@@ -13,7 +13,7 @@ profile:
     이메일: mailto:name@example.com
 skills:
   기술 분류:
-    - Astro
+    - "**Astro:** 정적 페이지를 만듭니다."
     - TypeScript
 `),
     );
@@ -24,11 +24,16 @@ skills:
       contacts: [],
       links: [{ label: "이메일", href: "mailto:name@example.com" }],
     });
-    expect(result.skills).toEqual([
-      {
-        category: "기술 분류",
-        items: [{ label: "Astro" }, { label: "TypeScript" }],
-      },
+    expect(result.skills).toHaveLength(1);
+    expect(result.skills[0].category).toBe("기술 분류");
+    expect(
+      result.skills[0].items.map((item) => item.content[0].children),
+    ).toEqual([
+      [
+        { type: "strong", children: [{ type: "text", text: "Astro:" }] },
+        { type: "text", text: " 정적 페이지를 만듭니다." },
+      ],
+      [{ type: "text", text: "TypeScript" }],
     ]);
     expect(result.experiences).toEqual([]);
     expect(result.education).toEqual([]);

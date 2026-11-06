@@ -36,7 +36,7 @@
 
 Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 CSS 변수로 전달하고 @theme inline에 연결한다. 컴포넌트는 고정된 의미 중심 유틸리티 이름을 사용한다. 동적 문자열 조합으로 클래스를 생성하지 않는다.
 
-초기값은 시스템 한국어 폰트, 본문 16px·줄 높이 약 1.75, 최대 너비 960px, 데스크톱 섹션명 열 96px·본문과의 가로 간격 8px이다. 소개·경력 목록의 들여쓰기는 테마의 spacing.listIndent로 관리하며 기본값은 12px이다. Tailwind md 아래에서 한 열로 전환하고 모바일·데스크톱 여백은 테마에서 관리한다. 외부 폰트 요청은 초기 범위에 없다.
+초기값은 시스템 한국어 폰트, 본문 16px·줄 높이 약 1.75, 최대 너비 960px, 데스크톱 섹션명 열 96px·본문과의 가로 간격 8px이다. 소개·경력·기술 목록의 들여쓰기는 테마의 spacing.listIndent로 관리하며 기본값은 12px이다. Tailwind md 아래에서 한 열로 전환하고 모바일·데스크톱 여백은 테마에서 관리한다. 외부 폰트 요청은 초기 범위에 없다.
 
 ## 화면 계약
 
@@ -69,7 +69,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | summary | format(paragraphs/list), items(content) |
 | experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
 | projects | title, description(제품 소개), role?, highlights, technologies, links |
-| skills | category, items(label) |
+| skills | category, items(content: RichText) |
 | education | institution, program, startDate?, endDate?, description? |
 | certifications | name, issuer, issuedAt?, expiresAt?, badge?, verificationLink? |
 
@@ -81,7 +81,7 @@ API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 
 
 ## YAML 작성 형식과 변환
 
-작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
+작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
 
 profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목록만 빈 목록으로 변환한다. 입력된 빈 문자열·null·잘못된 타입은 오류이며 전체 파일 누락이나 빈 파일을 정상 빈 데이터로 대체하지 않는다. 날짜는 따옴표로 감싼 YYYY 또는 YYYY-MM 문자열이다. 실제 작성 예시는 README에 둔다.
 
@@ -103,6 +103,6 @@ GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SI
 
 ## 기술·학력·자격 표시
 
-ResumePage는 다섯 섹션의 표시 설정을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용하며 모델과 로더는 변경하지 않는다.
+ResumePage는 다섯 섹션의 표시 설정을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
 
 각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection의 반응형 배치를 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득·만료 문구는 표시 설정에서 받고 값이 없는 정보는 생략한다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다.

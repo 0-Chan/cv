@@ -1,7 +1,13 @@
 import type { ResumeTheme } from "../models/presentation";
 import { BAEKSANGJI } from "../styles/paper-texture.ts";
 
-const paper = { ...BAEKSANGJI };
+const paper = {
+  ...BAEKSANGJI,
+  freq: 0.019957572775684933,
+  oct: 2,
+  ss: 0.8,
+  tile: 240,
+};
 
 export const resumeThemeConfig = {
   paper,

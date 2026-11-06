@@ -11,7 +11,7 @@
     "prepare": "husky",
     "dev": "astro dev",
     "preview": "astro preview",
-    "paper:generate": "node scripts/gen-paper-css.ts",
+    "paper:generate": "node scripts/gen-paper-css.ts && biome format --write src/styles/paper.generated.css",
     "check": "astro check",
     "build": "astro build",
     "lint": "biome lint .",

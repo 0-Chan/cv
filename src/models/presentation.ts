@@ -67,6 +67,7 @@ export const themeSchema = z.strictObject({
     content: size,
     companyLogo: size,
     certificationBadge: size,
+    sectionAccent: size,
   }),
   colors: z.strictObject({
     background: color,

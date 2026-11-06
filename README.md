@@ -138,7 +138,7 @@ summary:
 ## 표시와 테마
 
 - `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다.
-- `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
+- `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`, 구분선의 주황색 길이는 `widths.sectionAccent`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
 YAML과 테마 설정은 전체 이력서 화면에 적용됩니다. 프로필은 맨 위에 표시하고, 나머지 다섯 섹션은 표시 설정의 제목·순서·표시 여부를 따릅니다. 빈 섹션과 기술이 없는 분류는 숨깁니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
 

@@ -30,7 +30,12 @@ export const resumeThemeConfig = {
     compact: 4,
     listIndent: 12,
   },
-  widths: { content: 840, companyLogo: 32, certificationBadge: 96 },
+  widths: {
+    content: 840,
+    companyLogo: 32,
+    certificationBadge: 96,
+    sectionAccent: 60,
+  },
   colors: {
     background: "#ffffff",
     surface: "#f5f5f5",

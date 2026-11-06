@@ -54,18 +54,13 @@ export const educationSchema = z
     validatePeriod(entry.startDate, entry.endDate, context, "endDate"),
   );
 
-export const certificationSchema = z
-  .strictObject({
-    name: textSchema,
-    issuer: textSchema,
-    issuedAt: dateSchema.optional(),
-    expiresAt: dateSchema.optional(),
-    badge: imageSchema.optional(),
-    verificationLink: webLinkSchema.optional(),
-  })
-  .superRefine((entry, context) =>
-    validatePeriod(entry.issuedAt, entry.expiresAt, context, "expiresAt"),
-  );
+export const certificationSchema = z.strictObject({
+  name: textSchema,
+  issuer: textSchema,
+  issuedAt: dateSchema.optional(),
+  badge: imageSchema.optional(),
+  verificationLink: webLinkSchema.optional(),
+});
 
 export const resumeSchema = z.strictObject({
   profile: z.strictObject({

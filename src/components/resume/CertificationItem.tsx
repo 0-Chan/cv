@@ -7,7 +7,7 @@ export function CertificationItem({
   labels,
 }: {
   certification: ResumeData["certifications"][number];
-  labels: Pick<ResumeDisplay["labels"], "issuedAt" | "expiresAt">;
+  labels: Pick<ResumeDisplay["labels"], "issuedAt">;
 }) {
   return (
     <article className="flex min-w-0 flex-col items-start gap-content border-rule not-first:border-t not-first:pt-item sm:flex-row">
@@ -15,7 +15,7 @@ export function CertificationItem({
         <img
           src={assetUrl(certification.badge.src)}
           alt={certification.badge.alt}
-          className="size-certification-badge max-w-full shrink-0 object-contain"
+          className="size-certification-badge max-w-full shrink-0 object-contain object-top"
           loading="lazy"
         />
       )}
@@ -24,20 +24,12 @@ export function CertificationItem({
           {certification.name}
         </h3>
         <p>{certification.issuer}</p>
-        {(certification.issuedAt || certification.expiresAt) && (
+        {certification.issuedAt && (
           <dl className="flex flex-wrap gap-x-content gap-y-inline text-meta text-muted">
-            {certification.issuedAt && (
-              <div className="flex flex-wrap gap-inline">
-                <dt>{labels.issuedAt}</dt>
-                <dd>{certification.issuedAt}</dd>
-              </div>
-            )}
-            {certification.expiresAt && (
-              <div className="flex flex-wrap gap-inline">
-                <dt>{labels.expiresAt}</dt>
-                <dd>{certification.expiresAt}</dd>
-              </div>
-            )}
+            <div className="flex flex-wrap gap-inline">
+              <dt>{labels.issuedAt}</dt>
+              <dd>{certification.issuedAt}</dd>
+            </div>
           </dl>
         )}
         {certification.verificationLink && (

@@ -12,6 +12,5 @@ export const resumeDisplayConfig = {
     current: "현재",
     projectRole: "담당 역할",
     issuedAt: "취득",
-    expiresAt: "만료",
   },
 } satisfies ResumeDisplay;

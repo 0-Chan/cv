@@ -139,7 +139,6 @@ certifications:
   - name: AWS Certified Solutions Architect - Associate (SAA)
     issuer: Amazon Web Services (AWS)
     issuedAt: "2026-10"
-    expiresAt: "2029-10"
     badge:
       src: /images/resume/aws-solutions-architect-associate.png
       alt: AWS Certified Solutions Architect Associate 자격 배지

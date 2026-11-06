@@ -45,23 +45,18 @@ const education = z
   .superRefine((entry, context) =>
     validatePeriod(entry.startDate, entry.endDate, context, "endDate"),
   );
-const certification = z
-  .strictObject({
-    name: textSchema,
-    issuer: textSchema,
-    issuedAt: dateSchema.optional(),
-    expiresAt: dateSchema.optional(),
-    badge: imageSchema.optional(),
-    verificationLink: webLinks
-      .refine(
-        (links) => Object.keys(links).length === 1,
-        "확인 링크는 이름과 주소 한 쌍으로 작성합니다.",
-      )
-      .optional(),
-  })
-  .superRefine((entry, context) =>
-    validatePeriod(entry.issuedAt, entry.expiresAt, context, "expiresAt"),
-  );
+const certification = z.strictObject({
+  name: textSchema,
+  issuer: textSchema,
+  issuedAt: dateSchema.optional(),
+  badge: imageSchema.optional(),
+  verificationLink: webLinks
+    .refine(
+      (links) => Object.keys(links).length === 1,
+      "확인 링크는 이름과 주소 한 쌍으로 작성합니다.",
+    )
+    .optional(),
+});
 
 export const resumeAuthoringSchema = z.strictObject({
   profile: z.strictObject({

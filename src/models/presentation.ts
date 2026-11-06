@@ -20,7 +20,6 @@ export const displaySchema = z.strictObject({
     current: textSchema,
     projectRole: textSchema,
     issuedAt: textSchema,
-    expiresAt: textSchema,
   }),
 });
 

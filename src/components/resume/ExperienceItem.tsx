@@ -67,7 +67,6 @@ export function ExperienceItem({
           // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 프로젝트 목록이며 콘텐츠 ID를 요구하지 않는다.
           key={index}
           project={project}
-          roleLabel={labels.projectRole}
         />
       ))}
     </article>

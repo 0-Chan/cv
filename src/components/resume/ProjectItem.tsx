@@ -2,25 +2,18 @@ import type { Project } from "../../models/resume";
 import { Highlights } from "./Highlights";
 import { RichText } from "./RichText";
 
-export function ProjectItem({
-  project,
-  roleLabel,
-}: {
-  project: Project;
-  roleLabel: string;
-}) {
+export function ProjectItem({ project }: { project: Project }) {
   return (
     <article className="grid min-w-0 gap-content border-t border-rule pt-content">
       <h4 className="text-project font-semibold leading-heading">
         {project.title}
       </h4>
-      <RichText content={project.description} />
-      {project.role && (
-        <div className="grid gap-inline">
-          <p className="text-meta font-medium text-muted">{roleLabel}</p>
-          <RichText content={project.role} />
+      <div className="grid min-w-0 gap-inline">
+        <div className="text-muted">
+          <RichText content={project.description} />
         </div>
-      )}
+        {project.role && <RichText content={project.role} />}
+      </div>
       <Highlights items={project.highlights} />
       {project.technologies.length > 0 && (
         <ul className="flex flex-wrap gap-inline text-tag text-muted">

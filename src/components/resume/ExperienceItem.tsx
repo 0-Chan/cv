@@ -13,21 +13,11 @@ export function ExperienceItem({
 }) {
   const end = experience.isCurrent ? labels.current : experience.endDate;
   return (
-    <article className="grid min-w-0 gap-content border-rule not-first:border-t not-first:pt-item">
+    <article className="grid min-w-0 gap-content border-rule not-first:border-t not-first:pt-company-half">
       <header className="grid gap-inline">
         <div className="flex items-start gap-content">
-          {experience.company.logo && (
-            <img
-              src={assetUrl(experience.company.logo.src)}
-              alt={experience.company.logo.alt}
-              width={48}
-              height={48}
-              className="size-item shrink-0 object-contain"
-              loading="lazy"
-            />
-          )}
-          <div className="grid min-w-0 flex-1 gap-inline">
-            <h3 className="text-company font-bold leading-heading">
+          <div className="grid min-w-0 flex-1 gap-compact">
+            <h3 className="text-company font-bold leading-heading text-heading">
               {experience.company.name}
             </h3>
             <p className="font-medium">{experience.role}</p>
@@ -49,6 +39,16 @@ export function ExperienceItem({
               </p>
             )}
           </div>
+          {experience.company.logo && (
+            <img
+              src={assetUrl(experience.company.logo.src)}
+              alt={experience.company.logo.alt}
+              width={32}
+              height={32}
+              className="size-company-logo shrink-0 object-contain"
+              loading="lazy"
+            />
+          )}
         </div>
         {experience.tags.length > 0 && (
           <ul className="flex flex-wrap gap-inline text-tag text-muted">
@@ -61,14 +61,18 @@ export function ExperienceItem({
           </ul>
         )}
       </header>
-      <Highlights items={experience.highlights} />
-      {experience.projects.map((project, index) => (
-        <ProjectItem
-          // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 프로젝트 목록이며 콘텐츠 ID를 요구하지 않는다.
-          key={index}
-          project={project}
-        />
-      ))}
+      {(experience.highlights.length > 0 || experience.projects.length > 0) && (
+        <div className="grid min-w-0 gap-project">
+          <Highlights items={experience.highlights} />
+          {experience.projects.map((project, index) => (
+            <ProjectItem
+              // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 프로젝트 목록이며 콘텐츠 ID를 요구하지 않는다.
+              key={index}
+              project={project}
+            />
+          ))}
+        </div>
+      )}
     </article>
   );
 }

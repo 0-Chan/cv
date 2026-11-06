@@ -1,6 +1,7 @@
 import type { ResumeData } from "../../models/resume";
 import { Highlights } from "./Highlights";
 import { RichText } from "./RichText";
+import { ResumeSection } from "./ResumeSection";
 
 export function SummaryBlock({
   summary,
@@ -11,13 +12,7 @@ export function SummaryBlock({
 }) {
   if (summary.items.length === 0) return null;
   return (
-    <section
-      aria-labelledby="summary"
-      className="grid gap-content bg-surface p-content"
-    >
-      <h2 id="summary" className="text-section font-semibold leading-heading">
-        {title}
-      </h2>
+    <ResumeSection id="summary" title={title}>
       {summary.format === "list" ? (
         <Highlights items={summary.items} />
       ) : (
@@ -26,6 +21,6 @@ export function SummaryBlock({
           <RichText key={index} content={item.content} />
         ))
       )}
-    </section>
+    </ResumeSection>
   );
 }

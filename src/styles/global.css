@@ -17,11 +17,16 @@
   --leading-heading: var(--resume-leading-heading);
   --leading-body: var(--resume-leading-body);
   --spacing-section: var(--resume-space-section);
+  --spacing-section-content: var(--resume-space-sectionContent);
+  --spacing-company-half: calc(var(--resume-space-company) / 2);
+  --spacing-project: var(--resume-space-project);
   --spacing-item: var(--resume-space-item);
   --spacing-content: var(--resume-space-content);
   --spacing-inline: var(--resume-space-inline);
+  --spacing-compact: var(--resume-space-compact);
   --spacing-list-indent: var(--resume-space-listIndent);
   --spacing-certification-badge: var(--resume-width-certificationBadge);
+  --spacing-company-logo: var(--resume-width-companyLogo);
   --spacing-page-x-mobile: var(--resume-space-pageXMobile);
   --spacing-page-x-desktop: var(--resume-space-pageXDesktop);
   --spacing-page-y-mobile: var(--resume-space-pageYMobile);
@@ -32,6 +37,8 @@
   --color-ink: var(--resume-color-text);
   --color-muted: var(--resume-color-muted);
   --color-rule: var(--resume-color-border);
+  --color-accent: var(--resume-color-accent);
+  --color-heading: var(--resume-color-headingStart);
   --color-link: var(--resume-color-link);
   --color-focus: var(--resume-color-focus);
 }
@@ -53,6 +60,59 @@
     outline-offset: 4px;
   }
   strong {
-    font-weight: var(--resume-weight-bold);
+    font-weight: var(--resume-weight-semibold);
+  }
+}
+
+@layer components {
+  .resume-section-title {
+    position: relative;
+    border-bottom: 1px solid var(--resume-color-border);
+    padding-bottom: var(--resume-space-content);
+    color: var(--resume-color-headingStart);
+  }
+
+  .resume-section-title::after {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: var(--resume-space-sectionContent);
+    height: 1px;
+    background: var(--resume-color-accent);
+    content: "";
+  }
+
+  .resume-highlights > li::marker {
+    color: var(--resume-color-headingStart);
+  }
+}
+
+@supports (background-clip: text) {
+  @media screen and (forced-colors: none) {
+    .resume-section-title > span {
+      background-image: linear-gradient(
+        90deg,
+        var(--resume-color-headingStart),
+        var(--resume-color-headingEnd)
+      );
+      background-clip: text;
+      color: transparent;
+    }
+  }
+}
+
+@media print {
+  .resume-section-title,
+  .resume-section-title > span {
+    background: none;
+    color: var(--resume-color-text);
+  }
+}
+
+@media (forced-colors: active) {
+  .resume-section-title,
+  .resume-section-title > span {
+    background: none;
+    color: CanvasText;
   }
 }

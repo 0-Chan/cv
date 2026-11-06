@@ -11,14 +11,22 @@ export function ResumeSection({
   children: ReactNode;
 }) {
   return (
-    <section
-      aria-labelledby={id}
-      className="grid min-w-0 gap-x-inline gap-y-content border-t border-rule pt-item md:grid-cols-[var(--resume-width-sectionLabel)_minmax(0,1fr)]"
-    >
-      <h2 id={id} className="text-section font-semibold leading-heading">
-        {title}
+    <section aria-labelledby={id} className="grid min-w-0 gap-section-content">
+      <h2
+        id={id}
+        className="resume-section-title text-section font-bold leading-heading"
+      >
+        <span>{title}</span>
       </h2>
-      <div className="grid min-w-0 gap-item">{children}</div>
+      <div
+        className={
+          id === "experiences"
+            ? "grid min-w-0 gap-company-half"
+            : "grid min-w-0 gap-item"
+        }
+      >
+        {children}
+      </div>
     </section>
   );
 }

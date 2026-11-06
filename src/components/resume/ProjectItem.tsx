@@ -4,16 +4,18 @@ import { RichText } from "./RichText";
 
 export function ProjectItem({ project }: { project: Project }) {
   return (
-    <article className="grid min-w-0 gap-content border-t border-rule pt-content">
-      <h4 className="text-project font-semibold leading-heading">
-        {project.title}
-      </h4>
-      <div className="grid min-w-0 gap-inline">
-        <div className="text-muted">
-          <RichText content={project.description} />
+    <article className="grid min-w-0 gap-content">
+      <header className="grid min-w-0 gap-inline">
+        <h4 className="text-project font-bold leading-heading">
+          {project.title}
+        </h4>
+        <div className="grid min-w-0 gap-compact">
+          <div className="text-muted">
+            <RichText content={project.description} />
+          </div>
+          {project.role && <RichText content={project.role} />}
         </div>
-        {project.role && <RichText content={project.role} />}
-      </div>
+      </header>
       <Highlights items={project.highlights} />
       {project.technologies.length > 0 && (
         <ul className="flex flex-wrap gap-inline text-tag text-muted">

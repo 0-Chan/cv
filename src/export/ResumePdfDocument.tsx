@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type { ResumeDisplay, ResumeTheme } from "../models/presentation";
 import type { ResumeData } from "../models/resume";
 import type { InlineNode, RichText } from "../models/rich-text";
@@ -338,7 +338,7 @@ export function ResumePdfDocument({
                   {index > 0 && (
                     <View style={styles.companyDivider} minPresenceAhead={96} />
                   )}
-                  <View minPresenceAhead={60}>
+                  <View wrap={false} minPresenceAhead={60}>
                     <View style={styles.companyHeading}>
                       <Text style={styles.company}>
                         {experience.company.name}
@@ -403,12 +403,18 @@ export function ResumePdfDocument({
             case "skills":
               content = section.content.map((group, index) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 기술 분류 목록이다.
-                <View key={index} style={index > 0 ? styles.content : {}}>
-                  <Text style={styles.title} minPresenceAhead={60}>
+                <Fragment key={index}>
+                  <Text
+                    style={[
+                      styles.title,
+                      ...(index > 0 ? [styles.content] : []),
+                    ]}
+                    minPresenceAhead={60}
+                  >
                     {group.category}
                   </Text>
                   <List styles={styles} items={group.items} />
-                </View>
+                </Fragment>
               ));
               break;
             case "education":

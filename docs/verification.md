@@ -106,4 +106,4 @@ X1~X3의 타입·Biome·기존 Vitest 86개와 루트 및 `/cv/` 정적 빌드�
 
 `pdfinfo`에서 A4 4페이지, `pdffonts`에서 나눔고딕 Regular·Bold의 임베딩과 Unicode 매핑, `pdfinfo -url`에서 프로필 링크를 확인했다. `pdftotext -layout`으로 실제 콘텐츠와 한글을 추출했고 `pdftoppm -scale-to 1400 -png`로 모든 페이지를 펼쳐 제목·이미지·줄바꿈·페이지 경계의 잘림 여부를 직접 검토했다. 한글 어절 중간에 붙던 하이픈을 제거했고 모든 페이지의 빈 배경 지점은 RGB 255·255·255다. PDF 렌더링 검토는 브라우저 화면 검증과 구분한다.
 
-Markdown 원문에서 다섯 섹션과 회사·프로젝트의 제목 계층, 소개→역할→성과 순서, 강조와 링크·날짜 보존, 장식 이미지 제외를 확인했다. 표시·순서·빈 섹션 처리는 화면·PDF·Markdown이 같은 함수를 사용함을 코드로 확인했으며 별도 설정 교체 fixture는 만들지 않았다. `/cv/` preview의 페이지·PDF·Markdown은 각각 HTTP 200이며 PDF와 Markdown의 Content-Type은 application/pdf·text/markdown이다. 브라우저 접근 제한으로 실제 클릭 다운로드·키보드·모바일 숨김·인쇄 미리보기는 미검증이다. 물리 프린터 출력과 원격 배포도 수행하지 않았다.
+Markdown 원문에서 다섯 섹션과 회사·프로젝트의 제목 계층, 소개→역할→성과 순서, 강조와 링크·날짜 보존, 장식 이미지 제외를 확인했다. 표시·순서·빈 섹션 처리는 화면·PDF·Markdown이 같은 함수를 사용함을 코드로 확인했으며 별도 설정 교체 fixture는 만들지 않았다. `/cv/` preview의 페이지·PDF·Markdown은 각각 HTTP 200이며 PDF와 Markdown의 Content-Type은 application/pdf·text/markdown이다. 콘텐츠 변경 후 회사 정보 헤더의 분리와 기술 분류 제목만 페이지 끝에 남는 현상을 재현해 수정하고 PDF 4페이지를 다시 렌더링해 확인했다. 브라우저 접근 제한으로 실제 클릭 다운로드·키보드·모바일 숨김·인쇄 미리보기와 물리 프린터 출력은 미검증이다. 원격 배포 확인은 GitHub Actions 결과와 공개 파일 응답으로 구분한다.

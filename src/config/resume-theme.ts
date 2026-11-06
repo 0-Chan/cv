@@ -34,7 +34,7 @@ export const resumeThemeConfig = {
     content: 840,
     companyLogo: 32,
     certificationBadge: 96,
-    sectionAccent: 60,
+    sectionAccent: 53,
   },
   colors: {
     background: "#ffffff",

@@ -1,4 +1,5 @@
 ---
+import { assetUrl } from "../components/resume/asset-url";
 import type { ResumeTheme } from "../models/presentation";
 import { themeVariables } from "../styles/theme";
 import "../styles/global.css";
@@ -17,6 +18,14 @@ const canonical = Astro.site && new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
+    <link rel="icon" type="image/x-icon" href={assetUrl("/favicon.ico")}>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={assetUrl("/favicon-32.png")}
+    >
+    <link rel="icon" type="image/svg+xml" href={assetUrl("/favicon.svg")}>
     {canonical && <link rel="canonical" href={canonical} />}
   </head>
   <body

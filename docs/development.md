@@ -112,6 +112,14 @@ GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SI
 
 ## 기술·학력·자격 표시
 
-ResumePage는 다섯 섹션의 표시 설정을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
+ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
 
 각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 96px 영역에서 비율을 유지하며 모든 화면에서 자격 텍스트 왼쪽 상단에 정렬한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.
+
+## 내보내기
+
+`src/presentation/resume.ts`의 getVisibleResumeSections는 검증된 ResumeData·ResumeDisplay에서 표시할 섹션·제목·내용을 반환한다. 화면·PDF·Markdown은 이 함수를 공유해 순서·숨김·빈 목록 처리를 일치시킨다. 프로필 연락처 순서도 공통 함수로 관리하며 콘텐츠 모델은 바꾸지 않는다.
+
+정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않으며 제목의 minPresenceAhead와 문단의 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
+
+ResumeExport는 전달받은 프로필 이름으로 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 모바일·인쇄에서는 숨긴다. native details/summary의 키보드 동작을 사용하고, 작은 클라이언트 스크립트가 Escape·바깥 클릭·포커스 이탈 시 닫기와 window.print를 담당한다. React hydration과 PDF 생성 라이브러리를 클라이언트에 추가하지 않는다. 인쇄 CSS는 html·body 배경을 #fff로 지정해 종이 질감을 제거하고 제목은 단색으로 표시한다. 다운로드 파일은 데이터·표시·테마와 함께 재빌드·재배포할 때 갱신된다.

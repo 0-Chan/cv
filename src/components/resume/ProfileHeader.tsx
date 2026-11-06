@@ -1,24 +1,11 @@
 import type { ResumeData } from "../../models/resume";
+import { getProfileDetails } from "../../presentation/resume";
 
 export function ProfileHeader({ profile }: { profile: ResumeData["profile"] }) {
-  const links = profile.links.map((link) => ({
-    ...link,
-    protocol: new URL(link.href).protocol,
-  }));
-  const details = [
-    ...links.filter(
-      (link) => link.protocol === "http:" || link.protocol === "https:",
-    ),
-    ...profile.contacts.map((contact) => ({
-      label: contact.value,
-      href: undefined,
-    })),
-    ...links.filter((link) => link.protocol === "tel:"),
-    ...links.filter((link) => link.protocol === "mailto:"),
-  ];
+  const details = getProfileDetails(profile);
 
   return (
-    <header className="grid gap-content">
+    <header className="grid min-w-0 flex-1 gap-content">
       <div className="flex flex-wrap items-baseline gap-content">
         <h1 className="text-name font-bold leading-heading">{profile.name}</h1>
         <p className="text-role text-muted">{profile.role}</p>

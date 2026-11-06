@@ -1,9 +1,12 @@
+import type { ReactNode } from "react";
 import type { ResumeDisplay } from "../../models/presentation";
 import type { ResumeData } from "../../models/resume";
+import { getVisibleResumeSections } from "../../presentation/resume";
 import { CertificationItem } from "./CertificationItem";
 import { EducationItem } from "./EducationItem";
 import { ExperienceItem } from "./ExperienceItem";
 import { ProfileHeader } from "./ProfileHeader";
+import { ResumeExport } from "./ResumeExport";
 import { ResumeSection } from "./ResumeSection";
 import { SkillGroup } from "./SkillGroup";
 import { SummaryBlock } from "./SummaryBlock";
@@ -15,92 +18,62 @@ export function ResumePage({
   resume: ResumeData;
   display: ResumeDisplay;
 }) {
-  const skillGroups = resume.skills.filter((group) => group.items.length > 0);
+  const sections = getVisibleResumeSections(resume, display);
   return (
     <main className="mx-auto grid w-full max-w-resume gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
-      <ProfileHeader profile={resume.profile} />
-      {display.sections.map((section) => {
-        if (!section.visible) return null;
+      <div className="flex min-w-0 items-start gap-content">
+        <ProfileHeader profile={resume.profile} />
+        <ResumeExport name={resume.profile.name} />
+      </div>
+      {sections.map((section) => {
+        let content: ReactNode;
         switch (section.id) {
           case "summary":
             return (
               <SummaryBlock
                 key={section.id}
-                summary={resume.summary}
+                summary={section.content}
                 title={section.title}
               />
             );
           case "experiences":
-            return (
-              resume.experiences.length > 0 && (
-                <ResumeSection
-                  key={section.id}
-                  id={section.id}
-                  title={section.title}
-                >
-                  {resume.experiences.map((experience, index) => (
-                    <ExperienceItem
-                      // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 경력 목록이며 콘텐츠 ID를 요구하지 않는다.
-                      key={index}
-                      experience={experience}
-                      labels={display.labels}
-                    />
-                  ))}
-                </ResumeSection>
-              )
-            );
+            content = section.content.map((experience, index) => (
+              <ExperienceItem
+                // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 경력 목록이며 콘텐츠 ID를 요구하지 않는다.
+                key={index}
+                experience={experience}
+                labels={display.labels}
+              />
+            ));
+            break;
           case "skills":
-            return (
-              skillGroups.length > 0 && (
-                <ResumeSection
-                  key={section.id}
-                  id={section.id}
-                  title={section.title}
-                >
-                  {skillGroups.map((group, index) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 기술 분류 목록이다.
-                    <SkillGroup key={index} group={group} />
-                  ))}
-                </ResumeSection>
-              )
-            );
+            content = section.content.map((group, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 기술 분류 목록이다.
+              <SkillGroup key={index} group={group} />
+            ));
+            break;
           case "education":
-            return (
-              resume.education.length > 0 && (
-                <ResumeSection
-                  key={section.id}
-                  id={section.id}
-                  title={section.title}
-                >
-                  {resume.education.map((education, index) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 학력 목록이며 콘텐츠 ID를 요구하지 않는다.
-                    <EducationItem key={index} education={education} />
-                  ))}
-                </ResumeSection>
-              )
-            );
+            content = section.content.map((education, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 학력 목록이다.
+              <EducationItem key={index} education={education} />
+            ));
+            break;
           case "certifications":
-            return (
-              resume.certifications.length > 0 && (
-                <ResumeSection
-                  key={section.id}
-                  id={section.id}
-                  title={section.title}
-                >
-                  {resume.certifications.map((certification, index) => (
-                    <CertificationItem
-                      // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 자격 목록이며 콘텐츠 ID를 요구하지 않는다.
-                      key={index}
-                      certification={certification}
-                      labels={display.labels}
-                    />
-                  ))}
-                </ResumeSection>
-              )
-            );
-          default:
-            return null;
+            content = section.content.map((certification, index) => (
+              <CertificationItem
+                // biome-ignore lint/suspicious/noArrayIndexKey: 상태 없는 정적 자격 목록이다.
+                key={index}
+                certification={certification}
+                labels={display.labels}
+              />
+            ));
+            break;
         }
+        return (
+          <ResumeSection key={section.id} id={section.id} title={section.title}>
+            {content}
+          </ResumeSection>
+        );
       })}
     </main>
   );

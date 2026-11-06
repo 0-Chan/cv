@@ -95,6 +95,27 @@
   .resume-highlights > li::marker {
     color: var(--resume-color-headingStart);
   }
+
+  .resume-export summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .resume-export-action {
+    display: block;
+    border-radius: 2px;
+    padding: var(--resume-space-inline) var(--resume-space-content);
+    color: var(--resume-color-text);
+    text-decoration: none;
+  }
+
+  .resume-export-action:hover {
+    background-color: var(--resume-color-surface);
+  }
+
+  .resume-export :is(summary, button, a):focus-visible {
+    outline: 2px solid var(--resume-color-focus);
+    outline-offset: 2px;
+  }
 }
 
 @supports (background-clip: text) {
@@ -112,8 +133,44 @@
 }
 
 @media print {
-  .paper-surface {
-    background: Canvas;
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html,
+  body.paper-surface {
+    background: #fff;
+    min-height: 0;
+  }
+
+  .resume-export,
+  #paper-texture-dev,
+  astro-dev-toolbar {
+    display: none;
+  }
+
+  main {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  main > :not(:first-child) {
+    margin-top: var(--resume-space-section);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 2;
+    widows: 2;
   }
 
   .resume-section-title,

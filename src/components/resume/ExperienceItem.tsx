@@ -38,7 +38,7 @@ export function ExperienceItem({
                     {experience.startDate}
                   </time>
                 )}
-                {experience.startDate && end && " — "}
+                {experience.startDate && end && " ~ "}
                 {experience.isCurrent
                   ? labels.current
                   : experience.endDate && (

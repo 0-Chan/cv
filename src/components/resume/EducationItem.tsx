@@ -16,7 +16,7 @@ export function EducationItem({
         {(education.startDate || education.endDate) && (
           <p className="text-meta text-muted">
             {education.startDate}
-            {education.startDate && education.endDate && " — "}
+            {education.startDate && education.endDate && " ~ "}
             {education.endDate}
           </p>
         )}

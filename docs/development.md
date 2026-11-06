@@ -101,7 +101,7 @@ Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 �
 
 Astro 페이지는 getResumePageData를 한 번 호출하고 문서 레이아웃에 테마를, React ResumePage에 콘텐츠·표시 설정을 전달한다. React 컴포넌트는 client 지시자 없이 HTML로 렌더링한다. RichText·InlineContent는 구조화된 문장을 React 요소로 표현하며 HTML 문자열을 삽입하지 않는다. 상태 없는 정적 목록은 배열 위치를 React key로 사용하고, 해당 lint 예외만 표현식에 명시한다. 콘텐츠 ID는 추가하지 않는다.
 
-테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 제목·구분선 아래에 본문을 한 열로 배치한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 제목 행 맨 왼쪽에 배치한다.
+테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 제목·구분선 아래에 본문을 한 열로 배치한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
 
 GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SITE_URL과 BASE_PATH는 Pages 메타데이터에서 읽으며 로컬 기본 base는 /다. 로컬 이미지에는 표시 경계에서 BASE_URL을 붙인다. 개인 도메인은 기본 주소 배포 이후에 연결한다.
 
@@ -110,4 +110,4 @@ GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SI
 
 ResumePage는 다섯 섹션의 표시 설정을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
 
-각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 96px 영역에서 비율을 유지해 항목의 왼쪽 상단에 정렬하고, sm 아래에서는 텍스트 위에 왼쪽 정렬로 표시한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.
+각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 96px 영역에서 비율을 유지하며 모든 화면에서 자격 텍스트 왼쪽 상단에 정렬한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paperSchema } from "./paper.ts";
 import { textSchema } from "./shared";
 
 export const sectionIds = [
@@ -30,6 +31,7 @@ const color = z
   .regex(/^#[0-9a-fA-F]{6}$/, "색상은 #RRGGBB 형식이어야 합니다.");
 
 export const themeSchema = z.strictObject({
+  paper: paperSchema,
   fontFamily: textSchema,
   fontSizes: z.strictObject({
     name: size,

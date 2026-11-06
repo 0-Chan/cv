@@ -1,6 +1,10 @@
 import type { ResumeTheme } from "../models/presentation";
+import { BAEKSANGJI } from "../styles/paper-texture.ts";
+
+const paper = { ...BAEKSANGJI };
 
 export const resumeThemeConfig = {
+  paper,
   fontFamily:
     'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
   fontSizes: {
@@ -37,15 +41,15 @@ export const resumeThemeConfig = {
     sectionAccent: 53,
   },
   colors: {
-    background: "#ffffff",
+    background: paper.color,
     surface: "#f5f5f5",
     text: "#171717",
-    muted: "#525252",
+    muted: "#4b4b4b",
     border: "#d4d4d4",
     accent: "#ff7500",
-    headingStart: "#b94e00",
-    headingEnd: "#c45100",
-    link: "#b94e00",
+    headingStart: "#a34200",
+    headingEnd: "#b44900",
+    link: "#7c3200",
     focus: "#1d4ed8",
   },
 } satisfies ResumeTheme;

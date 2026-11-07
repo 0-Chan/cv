@@ -75,6 +75,12 @@
     background-blend-mode: var(--paper-blend);
   }
 
+  @media screen and (forced-colors: none) {
+    .resume-brand-image {
+      mix-blend-mode: multiply;
+    }
+  }
+
   .resume-section-title {
     position: relative;
     border-bottom: 1px solid var(--resume-color-border);

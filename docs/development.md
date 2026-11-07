@@ -36,7 +36,7 @@
 
 Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 CSS 변수로 전달하고 @theme inline에 연결한다. 컴포넌트는 고정된 의미 중심 유틸리티 이름을 사용한다. 동적 문자열 조합으로 클래스를 생성하지 않는다.
 
-배경은 `ResumeTheme.paper`의 `PaperParams`로 관리한다. `src/styles/paper-texture.ts`는 제공된 백상지 프리셋과 SVG 필터·data URI 변환을 유지하며, 별도 이미지 파일이나 브라우저 JavaScript 없이 배경을 표시한다. `colors.background`는 같은 `paper.color`에서 가져온다. `npm run paper:generate`가 검증된 설정을 `src/styles/paper.generated.css`의 정적 변수로 생성하고 전역 CSS가 가져온다. 테마 변경 후 생성 명령을 실행하는 편집 흐름을 사용한다. `body.paper-surface` 전체에 적용하고 태그·이미지의 기존 배경은 유지한다. 인쇄·고대비 모드에서는 질감을 끄며 다크 모드는 추가하지 않는다.
+배경은 `ResumeTheme.paper`의 `PaperParams`로 관리한다. `src/styles/paper-texture.ts`는 제공된 백상지 프리셋과 SVG 필터·data URI 변환을 유지하며, 별도 이미지 파일이나 브라우저 JavaScript 없이 배경을 표시한다. `colors.background`는 같은 `paper.color`에서 가져온다. `npm run paper:generate`가 검증된 설정을 `src/styles/paper.generated.css`의 정적 변수로 생성하고 전역 CSS가 가져온다. 테마 변경 후 생성 명령을 실행하는 편집 흐름을 사용한다. `body.paper-surface` 전체에 적용하고 태그의 기존 배경은 유지한다. 회사 로고·자격 배지의 `resume-brand-image`는 일반 화면에서 `mix-blend-mode: multiply`로 이미지의 흰 배경을 종이색·질감과 합성한다. 이미지 원본은 유지하며 인쇄·고대비 모드에는 이미지 합성을 적용하지 않는다. 인쇄·고대비 모드에서는 질감을 끄며 다크 모드는 추가하지 않는다.
 
 개발 패널은 `src/dev`의 React TSX와 Shadow DOM 스타일로 구현한다. Astro integration의 `astro:config:setup`에서 `command === "dev"`일 때만 React 개발 런타임 초기화와 DEV 분기의 동적 import를 주입한다. 프로덕션 빌드와 preview에는 패널 진입 스크립트를 주입하지 않는다. 패널은 전달받은 초기 설정과 검증된 브라우저 저장값을 사용하며 컴포넌트에서 이력서 데이터에 접근하지 않는다. 조정값의 저장 키는 `dev:paper-texture`, 위치·열림 상태는 `dev:paper-texture:ui`다. 480px 이하에서는 접힌 상태로 시작하고 위치를 화면 안으로 제한한다.
 

@@ -26,7 +26,7 @@ export function ExperienceItem({
                 alt={experience.company.logo.alt}
                 width={32}
                 height={32}
-                className="size-company-logo shrink-0 object-contain"
+                className="resume-brand-image size-company-logo shrink-0 object-contain"
                 loading="lazy"
               />
             )}

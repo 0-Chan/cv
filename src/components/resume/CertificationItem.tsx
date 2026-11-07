@@ -15,7 +15,7 @@ export function CertificationItem({
         <img
           src={assetUrl(certification.badge.src)}
           alt={certification.badge.alt}
-          className="size-certification-badge max-w-full shrink-0 object-contain object-top"
+          className="resume-brand-image size-certification-badge max-w-full shrink-0 object-contain object-top"
           loading="lazy"
         />
       )}

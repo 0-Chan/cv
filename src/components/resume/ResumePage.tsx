@@ -14,16 +14,18 @@ import { SummaryBlock } from "./SummaryBlock";
 export function ResumePage({
   resume,
   display,
+  markdown,
 }: {
   resume: ResumeData;
   display: ResumeDisplay;
+  markdown: string;
 }) {
   const sections = getVisibleResumeSections(resume, display);
   return (
     <main className="mx-auto grid w-full max-w-resume gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
       <div className="flex min-w-0 items-start gap-content">
         <ProfileHeader profile={resume.profile} />
-        <ResumeExport name={resume.profile.name} />
+        <ResumeExport name={resume.profile.name} markdown={markdown} />
       </div>
       {sections.map((section) => {
         let content: ReactNode;

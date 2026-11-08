@@ -107,7 +107,9 @@
   }
 
   .resume-export-action {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--resume-space-inline);
     border-radius: 2px;
     padding: var(--resume-space-inline) var(--resume-space-content);
     color: var(--resume-color-text);
@@ -116,6 +118,33 @@
 
   .resume-export-action:hover {
     background-color: var(--resume-color-surface);
+  }
+
+  .resume-export-action[aria-disabled="true"] {
+    cursor: progress;
+    opacity: 0.6;
+  }
+
+  .resume-export-status {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    margin-top: var(--resume-space-inline);
+    width: 20rem;
+    max-width: calc(100vw - 2 * var(--resume-space-pageXMobile));
+    border: 1px solid var(--resume-color-border);
+    border-radius: 4px;
+    background: #fff;
+    padding: var(--resume-space-inline) var(--resume-space-content);
+    color: var(--resume-color-text);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  }
+
+  .resume-export-status:empty {
+    border: 0;
+    padding: 0;
+    box-shadow: none;
   }
 
   .resume-export :is(summary, button, a):focus-visible {

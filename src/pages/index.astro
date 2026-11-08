@@ -1,16 +1,18 @@
 ---
 import { ResumePage } from "../components/resume/ResumePage";
 import { getResumePageData } from "../data/resume";
+import { renderResumeMarkdown } from "../export/markdown";
 import ResumeLayout from "../layouts/ResumeLayout.astro";
 
 const { resume, display, theme } = await getResumePageData();
+const markdown = renderResumeMarkdown(resume, display);
 ---
 
 <ResumeLayout
   title={`${resume.profile.name} · ${resume.profile.role}`}
   theme={theme}
 >
-  <ResumePage resume={resume} display={display} />
+  <ResumePage resume={resume} display={display} markdown={markdown} />
   <script>
   import "../scripts/resume-export";
   </script>

@@ -122,4 +122,10 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 
 정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 목록과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 
-ResumeExport는 전달받은 프로필 이름으로 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 모바일·인쇄에서는 숨긴다. native details/summary의 키보드 동작을 사용하고, 작은 클라이언트 스크립트가 Escape·바깥 클릭·포커스 이탈 시 닫기와 window.print를 담당한다. React hydration과 PDF 생성 라이브러리를 클라이언트에 추가하지 않는다. 인쇄 CSS는 html·body 배경을 #fff로 지정해 종이 질감을 제거하고 제목은 단색으로 표시한다. 다운로드 파일은 데이터·표시·테마와 함께 재빌드·재배포할 때 갱신된다.
+ResumeExport는 전달받은 프로필 이름으로 PDF 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 메뉴는 PDF 다운로드·프린터 출력 다음에 구분선과 MD 복사하기를 배치한다. Export 버튼의 IconFileExport와 각 항목의 IconFileTypePdf·IconPrinter·IconMarkdown은 @tabler/icons-react의 정적 SVG이며 18px·stroke 1.75·currentColor를 사용한다. 아이콘은 aria-hidden·focusable=false로 장식 처리한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 메뉴·알림을 모바일·인쇄에서는 숨긴다.
+
+페이지는 빌드 시 renderResumeMarkdown으로 만든 원문을 ResumePage·ResumeExport의 markdown 문자열 prop으로 전달한다. 원문은 React가 HTML 이스케이프하는 숨겨진 읽기 전용 textarea에 저장하고, 클릭 이벤트 안에서 navigator.clipboard.writeText를 바로 호출한다. Markdown 생성 코드를 클라이언트에 포함하거나 클릭 후 네트워크로 원문을 읽지 않는다. 기존 resume.md 엔드포인트는 같은 생성 함수를 사용해 유지한다.
+
+복사 중에는 aria-disabled와 실행 가드로 중복 요청을 막고 키보드 포커스를 유지한다. 성공하면 메뉴를 닫고 메뉴 안에 포커스가 남아 있을 때만 Export 버튼으로 돌린다. 메뉴 밖의 role=status 영역에 완료 문구를 3초 동안 표시한다. API 미지원·권한 거부 등으로 실패하면 메뉴를 강제로 닫지 않고 재시도할 때까지 권한 확인 안내를 표시한다. 안내는 펼친 메뉴 아래에 배치해 복사 버튼을 가리지 않으며, 다음 복사 또는 메뉴 재열기 때 초기화한다.
+
+native details/summary의 키보드 동작을 사용하고, 작은 클라이언트 스크립트가 Escape·바깥 클릭·포커스 이탈 시 닫기와 window.print를 담당한다. React hydration과 PDF 생성 라이브러리를 클라이언트에 추가하지 않는다. 인쇄 CSS는 html·body 배경을 #fff로 지정해 종이 질감을 제거하고 제목은 단색으로 표시한다. 다운로드 파일과 복사 원문은 데이터·표시·테마와 함께 재빌드·재배포할 때 갱신된다.

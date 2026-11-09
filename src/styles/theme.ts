@@ -1,8 +1,10 @@
 import type { ResumeTheme } from "../models/presentation";
 
 export function themeVariables(theme: ResumeTheme): Record<string, string> {
+  const shadow = theme.shadows.projectTitle;
   const variables: Record<string, string> = {
     "--resume-font": theme.fontFamily,
+    "--resume-shadow-projectTitle": `${shadow.x}px ${shadow.y}px ${shadow.blur}px color-mix(in srgb, ${theme.colors.text} ${shadow.opacity * 100}%, transparent)`,
   };
   for (const [group, values, unit] of [
     ["size", theme.fontSizes, "px"],

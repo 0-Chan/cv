@@ -5,9 +5,14 @@
   --font-resume: var(--resume-font);
   --text-name: var(--resume-size-name);
   --text-role: var(--resume-size-role);
+  --text-summary-lead: var(--resume-size-summaryLead);
   --text-section: var(--resume-size-section);
   --text-company: var(--resume-size-company);
   --text-project: var(--resume-size-project);
+  --text-skill-category: var(--resume-size-skillCategory);
+  --text-certification: var(--resume-size-certification);
+  --text-shadow-project-title: var(--resume-shadow-projectTitle);
+  --text-issue: var(--resume-size-issue);
   --text-body: var(--resume-size-body);
   --text-meta: var(--resume-size-meta);
   --text-tag: var(--resume-size-tag);
@@ -21,7 +26,10 @@
   --spacing-section-content: var(--resume-space-sectionContent);
   --spacing-company-half: calc(var(--resume-space-company) / 2);
   --spacing-project: var(--resume-space-project);
+  --spacing-project-half: calc(var(--resume-space-project) / 2);
+  --spacing-issue: var(--resume-space-issue);
   --spacing-item: var(--resume-space-item);
+  --spacing-divided-item-half: calc(var(--resume-space-dividedItem) / 2);
   --spacing-content: var(--resume-space-content);
   --spacing-inline: var(--resume-space-inline);
   --spacing-compact: var(--resume-space-compact);
@@ -35,11 +43,13 @@
   --container-resume: var(--resume-width-content);
   --color-page: var(--resume-color-background);
   --color-surface: var(--resume-color-surface);
+  --color-tag-surface: var(--resume-color-tagBackground);
   --color-ink: var(--resume-color-text);
   --color-muted: var(--resume-color-muted);
   --color-rule: var(--resume-color-border);
   --color-accent: var(--resume-color-accent);
   --color-heading: var(--resume-color-headingStart);
+  --color-issue-heading: var(--resume-color-issueHeading);
   --color-link: var(--resume-color-link);
   --color-focus: var(--resume-color-focus);
 }
@@ -67,6 +77,18 @@
 }
 
 @layer components {
+  .resume-page > section {
+    margin-top: var(--resume-space-section);
+  }
+
+  .resume-page > :first-child + section {
+    margin-top: var(--resume-space-profile);
+  }
+
+  .resume-page > [data-resume-section="summary"] + section {
+    margin-top: var(--resume-space-afterSummary);
+  }
+
   .paper-surface {
     background-color: var(--paper-color, var(--resume-color-background));
     background-image: var(--paper-texture);
@@ -98,8 +120,9 @@
     content: "";
   }
 
-  .resume-highlights > li::marker {
-    color: var(--resume-color-headingStart);
+  .resume-project + .resume-project {
+    border-top: 1px solid var(--resume-color-border);
+    padding-top: calc(var(--resume-space-project) / 2);
   }
 
   .resume-export summary::-webkit-details-marker {
@@ -191,14 +214,12 @@
     padding: 0;
   }
 
-  main > :not(:first-child) {
-    margin-top: var(--resume-space-section);
-  }
-
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     break-after: avoid;
   }
 

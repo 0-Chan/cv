@@ -4,12 +4,17 @@ import { contactUrlSchema } from "./urls";
 
 const strings = z.array(textSchema);
 const webLinks = z.record(textSchema, z.httpUrl());
+const issue = z.strictObject({
+  title: textSchema,
+  description: textSchema,
+  approach: strings.min(1),
+  outcomes: strings.min(1),
+});
 const project = z.strictObject({
   title: textSchema,
   description: textSchema,
-  role: textSchema.optional(),
-  highlights: strings.default([]),
-  technologies: strings.default([]),
+  role: textSchema,
+  issues: z.array(issue).min(1),
   links: webLinks.default({}),
 });
 const experience = z
@@ -49,6 +54,7 @@ const certification = z.strictObject({
   name: textSchema,
   issuer: textSchema,
   issuedAt: dateSchema.optional(),
+  reason: textSchema.optional(),
   badge: imageSchema.optional(),
   verificationLink: webLinks
     .refine(
@@ -65,7 +71,25 @@ export const resumeAuthoringSchema = z.strictObject({
     contacts: z.record(textSchema, textSchema).default({}),
     links: z.record(textSchema, contactUrlSchema).default({}),
   }),
-  summary: z.union([textSchema, strings]).optional(),
+  summary: z
+    .union([
+      textSchema,
+      strings,
+      z
+        .strictObject({
+          lead: textSchema.optional(),
+          body: textSchema.optional(),
+          items: strings.optional(),
+        })
+        .refine(
+          ({ body, items }) => body === undefined || items === undefined,
+          {
+            path: ["body"],
+            message: "소개 본문은 body 또는 items 중 하나만 작성합니다.",
+          },
+        ),
+    ])
+    .optional(),
   experiences: z.array(experience).default([]),
   skills: z.record(textSchema, strings).default({}),
   education: z.array(education).default([]),

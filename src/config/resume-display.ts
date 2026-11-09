@@ -2,7 +2,7 @@ import type { ResumeDisplay } from "../models/presentation";
 
 export const resumeDisplayConfig = {
   sections: [
-    { id: "summary", title: "소개", visible: true },
+    { id: "summary", title: "소개", visible: true, showTitle: false },
     { id: "experiences", title: "경력", visible: true },
     { id: "skills", title: "기술", visible: true },
     { id: "education", title: "학력", visible: true },
@@ -10,6 +10,13 @@ export const resumeDisplayConfig = {
   ],
   labels: {
     current: "현재",
+    durationYear: "년",
+    durationMonth: "개월",
     issuedAt: "취득",
+    certificationReason: "사유",
+    projectRole: "주요 기여",
+    issue: "이슈",
+    approach: "해결 방향",
+    outcomes: "성과",
   },
 } satisfies ResumeDisplay;

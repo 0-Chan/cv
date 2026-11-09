@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import type { ResumeDisplay } from "../../models/presentation";
 import type { ResumeData } from "../../models/resume";
-import { getVisibleResumeSections } from "../../presentation/resume";
+import {
+  getVisibleResumeSections,
+  getVisibleSummaryLead,
+} from "../../presentation/resume";
 import { CertificationItem } from "./CertificationItem";
 import { EducationItem } from "./EducationItem";
 import { ExperienceItem } from "./ExperienceItem";
@@ -22,9 +25,12 @@ export function ResumePage({
 }) {
   const sections = getVisibleResumeSections(resume, display);
   return (
-    <main className="mx-auto grid w-full max-w-resume gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
+    <main className="resume-page mx-auto grid w-full max-w-resume px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
       <div className="flex min-w-0 items-start gap-content">
-        <ProfileHeader profile={resume.profile} />
+        <ProfileHeader
+          profile={resume.profile}
+          summaryLead={getVisibleSummaryLead(resume, display)}
+        />
         <ResumeExport name={resume.profile.name} markdown={markdown} />
       </div>
       {sections.map((section) => {
@@ -36,6 +42,7 @@ export function ResumePage({
                 key={section.id}
                 summary={section.content}
                 title={section.title}
+                showTitle={section.showTitle}
               />
             );
           case "experiences":
@@ -72,7 +79,12 @@ export function ResumePage({
             break;
         }
         return (
-          <ResumeSection key={section.id} id={section.id} title={section.title}>
+          <ResumeSection
+            key={section.id}
+            id={section.id}
+            title={section.title}
+            showTitle={section.showTitle}
+          >
             {content}
           </ResumeSection>
         );

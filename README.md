@@ -1,3 +1,5 @@
+![이력서 페이지 미리보기](assets/images/airy-floating-resume.png)
+
 # Astro 이력서 프로젝트
 
 이력서 콘텐츠, 섹션 표시 설정, 디자인 테마를 UI와 분리하는 정적 이력서 웹페이지 프로젝트입니다.
@@ -44,7 +46,7 @@ npm run verify
 
 Biome는 Astro·TypeScript·CSS, scripts의 검사 도구와 루트 설정 파일을 검사합니다. Markdown 문서, 스킬, lockfile, 생성 산출물은 포맷 대상이 아닙니다. Astro 전체 지원은 실험적 기능을 사용합니다.
 
-Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 재직 여부를 검사합니다. YAML의 링크·기술 매핑과 섹션 생략, 빈 이름의 필드 오류, 중복 키의 위치 안내도 검사합니다. 회사 요약과 프로젝트의 분리, 선택적인 담당 역할의 생략도 검증합니다. `npm test -- --reporter=verbose`로 각 테스트의 설명을 확인할 수 있습니다.
+Vitest로 날짜 입력 형식, 선택 날짜 누락, 기간 순서와 현재 재직 여부를 검사합니다. YAML의 링크·기술 매핑과 섹션 생략, 빈 이름의 필드 오류, 중복 키의 위치 안내도 검사합니다. 회사 요약과 프로젝트의 분리, 주요 기여·이슈의 필수 입력과 이슈별 문제·해결 방향·성과 보존도 검증합니다. `npm test -- --reporter=verbose`로 각 테스트의 설명을 확인할 수 있습니다.
 
 ## Git hook
 
@@ -91,11 +93,15 @@ experiences:
     projects:
       - title: 프로젝트 A
         description: 제품·서비스 소개입니다.
-        role: 담당 역할입니다.
-        highlights:
-          - 수행 내용입니다.
-        technologies:
-          - TypeScript
+        role: 주요 기여입니다.
+        issues:
+          - title: 이슈 제목입니다.
+            description: 문제 상황을 설명합니다.
+            approach:
+              - 첫 번째 해결 방향입니다.
+              - 두 번째 해결 방향입니다.
+            outcomes:
+              - 수행 결과와 성과입니다.
         links:
           관련 링크: https://example.com
 
@@ -123,24 +129,59 @@ summary:
   - 두 번째 소개 문장입니다.
 ```
 
+이름·직무 바로 아래의 소개 문장은 `summary.lead`, 연락처 아래의 소개 본문은 `summary.body`에 작성합니다. 본문은 빈 줄로 문단을 구분합니다.
+
+```yaml
+summary:
+  lead: 이름과 직무 아래에 표시할 소개 문장입니다.
+  body: |
+    첫 번째 소개 문단입니다.
+
+    두 번째 소개 문단입니다.
+```
+
+첫 문장과 본문은 각각 생략할 수 있습니다. 소개 본문을 목록으로 표시하려면 `body` 대신 `items`에 문자열 목록을 작성합니다. `body`와 `items`는 동시에 사용할 수 없습니다. 본문·목록 없이 첫 문장만 작성하면 프로필에 그 문장만 표시하고 빈 소개 섹션은 생략합니다. 소개의 `visible: false`는 첫 문장과 본문을 함께 숨깁니다.
+
 - 회사 요약(`highlights`)과 프로젝트(`projects`)는 각각 생략할 수 있습니다. 배열에 적은 순서가 유지됩니다.
 - 날짜는 `startDate: "2024"`, `endDate: "2024-03"`처럼 따옴표를 붙인 연도·연월입니다. 일 단위는 지원하지 않습니다.
 - 현재 재직은 `isCurrent: true`로 명시하고 종료일을 생략합니다. 종료일 누락만으로 현재 재직으로 판단하지 않습니다.
-- 자격 취득 날짜는 선택 필드인 `issuedAt`으로 입력합니다. `verificationLink`는 표시 이름과 주소 한 쌍입니다.
+- 자격 취득 날짜는 선택 필드인 `issuedAt`으로 입력합니다. `verificationLink`는 표시 이름과 주소 한 쌍입니다. 취득 사유는 선택 필드 `reason`에 Markdown 문장으로 작성하며 각 자격증의 마지막에 표시합니다. 생략하면 사유 라벨과 여백도 숨깁니다.
 - 회사 로고는 회사 항목의 `logo`, 자격 배지는 `badge`에 `{ src: /images/example.png, alt: 이미지 설명 }` 형태로 입력합니다.
 - 선택값은 필드를 생략합니다. 빈 문자열·공백만 있는 문장·`null`은 오류입니다. 전화번호처럼 숫자로 보이는 문자열에도 따옴표를 붙입니다.
 - 문단은 빈 줄로 구분합니다. `|`는 줄바꿈을 보존하고 `>`는 줄을 이어 쓰는 YAML 문법입니다. Markdown의 명시적 줄바꿈은 두 공백 또는 역슬래시 뒤 줄바꿈으로 작성합니다.
-- Markdown은 소개·설명·프로젝트 역할·업무 및 성과·기술 섹션의 항목에 적용합니다. 기술 항목은 `**기술명:** 설명`이나 단순 기술명으로 작성할 수 있습니다. 이름·제목·태그·프로젝트의 관련 기술은 일반 텍스트입니다. HTML, 이미지, 제목, 표, 코드 블록, 참조형 링크는 지원하지 않으며 목록은 YAML 목록으로 작성합니다.
+- 프로젝트는 설명·주요 기여와 하나 이상의 `issues`를 작성합니다. 각 이슈의 `title`·`description`·`approach`·`outcomes`는 필수이며 해결 방향·성과 목록은 비울 수 없습니다.
+- 회사 수준 `highlights`는 유지하지만 프로젝트에는 사용하지 않습니다. 이슈 번호는 화면의 순서로 표시하므로 직접 입력하지 않습니다.
+- Markdown은 소개·프로젝트 및 이슈 설명·주요 기여·해결 방향·성과·기술 섹션의 항목·자격 취득 사유에 적용합니다. 기술 항목은 `**기술명:** 설명`이나 단순 기술명으로 작성할 수 있습니다. 이름·제목·태그는 일반 텍스트입니다. HTML, 이미지, 제목, 표, 코드 블록, 참조형 링크는 지원하지 않으며 목록은 YAML 목록으로 작성합니다.
 - `**강조**`처럼 특수문자로 시작하거나 `: `를 포함하는 한 줄 문장은 따옴표로 감싸거나 `|` 아래에 작성합니다. 들여쓰기는 공백 두 칸을 사용합니다.
 
 문법 오류에는 YAML 파일의 행·열과 오류 코드가, 내용 오류에는 필드 경로가 표시됩니다. 예를 들어 `resume.yaml.experiences.0.startDate`는 첫 번째 회사의 시작일입니다. 숫자로 읽힌 연도는 따옴표로 감싸고, 오타·누락·잘못된 형식을 고친 뒤 다시 빌드합니다.
 
+### 재직 기간
+
+경력의 날짜 뒤에는 입사월과 퇴사월을 포함한 근속 기간을 표시합니다. 예를 들어 `2021-01 ~ 2022-06`은 `2021-01 ~ 2022-06 (1년 6개월)`로 표시됩니다. 같은 달에 입·퇴사하면 `(1개월)`, 정확히 12개월이면 `(1년)`입니다. YAML에 근속 기간을 따로 입력하지 않습니다.
+
+`isCurrent: true`인 경력은 빌드 시 서울 시간대의 현재 월까지 계산합니다. 예를 들어 2026년 11월에 빌드하면 `2023-02 ~ 현재 (3년 10개월)`입니다. 웹·PDF·Markdown은 같은 계산 함수와 빌드 기준월을 사용합니다. 필요한 날짜가 없거나 연도만 입력한 경우, 현재 재직의 입사월이 기준월보다 미래인 경우에는 날짜 표시는 유지하고 괄호의 근속 기간만 생략합니다.
+
 ## 표시와 테마
 
-- `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다.
-- `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`, 구분선의 주황색 길이는 `widths.sectionAccent`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
+- `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다. 본문을 유지하고 제목·구분선만 숨기려면 `showTitle: false`를 지정합니다. 생략하면 제목을 표시하며, 현재 소개에만 `false`를 지정했습니다. 제목을 숨겨도 접근성 이름으로 사용할 `title`은 유지합니다. `labels`에서 주요 기여·이슈·해결 방향·성과·자격 취득 사유의 표시 문구를 바꿉니다. 프로젝트의 `description`은 라벨 없이 제목 바로 아래에 회색 텍스트로 표시합니다.
+- `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 기술 분류 제목 크기는 `fontSizes.skillCategory`, 자격증 이름 크기는 `fontSizes.certification`, 이슈 제목 크기는 `fontSizes.issue`, 이슈 사이 간격은 `spacing.issue`로 조절합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`, 구분선의 주황색 길이는 `widths.sectionAccent`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
+
+프로필과 첫 번째 표시 섹션 사이 간격은 `spacing.profile`로 조절하며 기본값은 40px입니다. 소개 다음 섹션까지의 간격은 `spacing.afterSummary`의 40px입니다. 나머지 간격은 `spacing.section`·`company`·`project`·`issue`로 묶음별 조절합니다. `spacing.item`은 기술 분류 사이, `spacing.dividedItem`은 학력·자격 구분선 양쪽을 합친 간격이며 구분선 두께는 제외합니다.
+
+외부 프로필 링크는 별도 행에 표시하고, `profile.contacts`의 값은 작성 순서대로 ` / `로 연결해 한 행에 표시합니다. 전화번호와 일반 텍스트 이메일은 각각 `contacts`에 작성하면 됩니다. 공간이 부족하면 자연스럽게 줄바꿈합니다. 행 사이는 `spacing.compact`의 4px입니다. 이름·직무와 소개 첫 문장, 첫 문장과 연락처, 소개 본문 문단 사이는 `spacing.content`의 12px로 구분합니다. 본문은 들여쓰기 없이 표시하며 목록으로 작성한 경우에만 `spacing.inline`의 8px 간격을 사용합니다. 프로필의 마지막 연락처에서 소개 본문까지, 소개에서 다음 섹션까지 각각 40px 간격을 유지합니다. 웹·PDF·Markdown은 이름·직무 → 소개 첫 문장 → 연락처 → 소개 본문 순서로 표시합니다.
+
+소개 첫 문장은 웹·PDF에서 18px의 기울임으로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. Markdown에는 문장 내용을 유지합니다.
+
+경력 태그 칩의 배경색은 `colors.tagBackground`에서 조절합니다. 기본값은 `#DEDEDE`입니다. 이슈 제목 색상은 `colors.issueHeading`이며 기본값은 옅은 갈색 `#AD6F46`입니다.
+
+근속 기간의 `년`·`개월` 표시는 `src/config/resume-display.ts`의 `labels.durationYear`·`labels.durationMonth`에서 바꿉니다.
+
+화면의 프로젝트명 그림자는 `shadows.projectTitle`에서 조절합니다. `x`·`y`·`blur`는 px, `opacity`는 0~1이며 색상은 `colors.text`를 따릅니다. 인쇄·고대비 모드와 PDF에는 그림자를 적용하지 않습니다.
 
 YAML과 테마 설정은 전체 이력서 화면에 적용됩니다. 프로필은 맨 위에 표시하고, 나머지 다섯 섹션은 표시 설정의 제목·순서·표시 여부를 따릅니다. 빈 섹션과 기술이 없는 분류는 숨깁니다. 정적 배포 결과를 갱신하려면 변경 후 재빌드·재배포해야 합니다.
+
+기술은 YAML에서 분류별 목록으로 작성하며 웹·PDF·Markdown에서는 분류 제목 아래에 `JavaScript, TypeScript, React, Next.js`처럼 쉼표로 연결해 표시합니다. 폭이 부족하면 자연스럽게 줄바꿈합니다.
 
 ### 백상지 배경 조절
 
@@ -176,7 +217,11 @@ PDF와 Markdown은 빌드할 때 생성합니다. 콘텐츠나 섹션 표시 설
 
 ## GitHub Pages 배포
 
-워크플로는 `main` push 시 Node 버전 파일과 npm 12.2.0을 사용해 `npm ci`, `npm run verify`를 실행하고 성공한 `dist`만 배포합니다. 최초 사용 전 저장소 Settings → Pages → Source를 GitHub Actions로 설정해야 합니다. 공개 저장소는 GitHub Free에서 사용할 수 있으며 비공개 저장소는 Pages를 지원하는 요금제가 필요합니다.
+워크플로는 `main` push와 매월 1일 오전 9시 10분(Asia/Seoul)에 Node 버전 파일과 npm 12.2.0을 사용해 `npm ci`, `npm run verify`를 실행하고 성공한 `dist`만 배포합니다. 월별 빌드는 현재 재직의 근속 기간을 웹·PDF·Markdown에 함께 갱신합니다. 이 예약 실행은 워크플로 변경을 기본 브랜치인 `main`에 push한 뒤 적용됩니다. Actions의 **이력서 검사와 Pages 배포 → Run workflow**에서도 수동으로 실행할 수 있습니다.
+
+GitHub의 예약 실행은 지연될 수 있으며, 공개 저장소에서 60일간 활동이 없으면 자동으로 비활성화될 수 있습니다. 비활성화된 경우 Actions의 해당 워크플로에서 **Enable workflow**로 다시 켜고 **Run workflow**로 갱신합니다. 다음 빌드·배포 전까지 사이트에는 마지막으로 빌드한 근속 기간이 유지됩니다. 자세한 제약은 [GitHub의 schedule 안내](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)를 참고하세요.
+
+최초 사용 전 저장소 Settings → Pages → Source를 GitHub Actions로 설정해야 합니다. 공개 저장소는 GitHub Free에서 사용할 수 있으며 비공개 저장소는 Pages를 지원하는 요금제가 필요합니다.
 
 Pages에서 제공하는 origin과 base path를 `SITE_URL`, `BASE_PATH`로 전달하므로 저장소 이름을 코드에 적지 않습니다. 로컬 개발의 기본 경로는 `/`입니다. 하위 경로를 재현하려면 빌드와 preview에 같은 값을 전달합니다.
 

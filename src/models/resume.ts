@@ -11,12 +11,18 @@ import {
   webLinkSchema,
 } from "./shared";
 
+export const projectIssueSchema = z.strictObject({
+  title: textSchema,
+  description: richTextSchema,
+  approach: z.array(textItemSchema).min(1),
+  outcomes: z.array(textItemSchema).min(1),
+});
+
 export const projectSchema = z.strictObject({
   title: textSchema,
   description: richTextSchema,
-  role: richTextSchema.optional(),
-  highlights: z.array(textItemSchema).default([]),
-  technologies: z.array(labelSchema).default([]),
+  role: richTextSchema,
+  issues: z.array(projectIssueSchema).min(1),
   links: z.array(webLinkSchema).default([]),
 });
 
@@ -58,6 +64,7 @@ export const certificationSchema = z.strictObject({
   name: textSchema,
   issuer: textSchema,
   issuedAt: dateSchema.optional(),
+  reason: richTextSchema.optional(),
   badge: imageSchema.optional(),
   verificationLink: webLinkSchema.optional(),
 });
@@ -72,6 +79,7 @@ export const resumeSchema = z.strictObject({
     links: z.array(contactLinkSchema).default([]),
   }),
   summary: z.strictObject({
+    lead: richTextSchema.optional(),
     format: z.enum(["paragraphs", "list"]),
     items: z.array(textItemSchema),
   }),
@@ -90,3 +98,4 @@ export type ResumeInput = z.input<typeof resumeSchema>;
 export type ResumeData = z.output<typeof resumeSchema>;
 export type Experience = z.output<typeof experienceSchema>;
 export type Project = z.output<typeof projectSchema>;
+export type ProjectIssue = z.output<typeof projectIssueSchema>;

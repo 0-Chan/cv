@@ -10,9 +10,17 @@ const experience = {
   role: "직무",
   isCurrent: false,
 };
+const issue = {
+  title: "이슈 A",
+  description: "문제 상황입니다.",
+  approach: ["해결 방향입니다."],
+  outcomes: ["성과입니다."],
+};
 const project = {
   title: "프로젝트 A",
   description: "제품·서비스 소개입니다.",
+  role: "핵심 역할입니다.",
+  issues: [issue],
 };
 const certification = { name: "자격 A", issuer: "발급 기관 A" };
 
@@ -77,6 +85,11 @@ describe("필수 콘텐츠 입력", () => {
       "experiences.0.projects.0.description",
     ],
     [
+      "프로젝트 핵심 역할",
+      projectInput({ role: undefined }),
+      "experiences.0.projects.0.role",
+    ],
+    [
       "학력 기관명",
       { education: [{ program: "과정 A" }] },
       "education.0.institution",
@@ -112,19 +125,34 @@ describe("빈 콘텐츠 입력", () => {
       "summary",
     ],
     [
-      "선택적인 프로젝트 역할도 빈 문자열로 작성하면 오류를 알린다",
+      "프로젝트 핵심 역할이 빈 문자열이면 해당 필드의 오류를 알린다",
       projectInput({ role: "" }),
       "experiences.0.projects.0.role",
     ],
     [
-      "역할이 없으면 필드를 생략해야 하며 null을 작성하면 오류를 알린다",
+      "프로젝트 핵심 역할에 null을 작성하면 해당 필드의 오류를 알린다",
       projectInput({ role: null }),
       "experiences.0.projects.0.role",
     ],
     [
-      "성과 목록에 공백뿐인 문장을 넣으면 해당 항목의 오류를 알린다",
-      projectInput({ highlights: [" "] }),
-      "experiences.0.projects.0.highlights.0",
+      "이슈 성과에 공백뿐인 문장을 넣으면 해당 항목의 오류를 알린다",
+      projectInput({ issues: [{ ...issue, outcomes: [" "] }] }),
+      "experiences.0.projects.0.issues.0.outcomes.0",
+    ],
+    [
+      "이슈 목록이 비어 있으면 프로젝트의 이슈 필드 오류를 알린다",
+      projectInput({ issues: [] }),
+      "experiences.0.projects.0.issues",
+    ],
+    [
+      "해결 방향이 비어 있으면 해당 이슈의 해결 방향 오류를 알린다",
+      projectInput({ issues: [{ ...issue, approach: [] }] }),
+      "experiences.0.projects.0.issues.0.approach",
+    ],
+    [
+      "성과가 비어 있으면 해당 이슈의 성과 오류를 알린다",
+      projectInput({ issues: [{ ...issue, outcomes: [] }] }),
+      "experiences.0.projects.0.issues.0.outcomes",
     ],
     [
       "기술 목록에 빈 문자열을 넣으면 해당 항목의 오류를 알린다",

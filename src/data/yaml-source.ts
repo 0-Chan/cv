@@ -41,6 +41,8 @@ export function parseResumeYaml(
   const data = parseConfig(resumeAuthoringSchema, raw, filename);
   const markdown = (value: string, path: string) =>
     parseResumeMarkdown(value, `${filename}.${path}`);
+  const paragraphs = (value: string, path: string) =>
+    markdown(value, path).map((paragraph) => ({ content: [paragraph] }));
   const sentences = (values: string[], path: string) =>
     values.map((value, index) => ({
       content: markdown(value, `${path}.${index}`),
@@ -48,15 +50,26 @@ export function parseResumeYaml(
   const labels = (values: string[]) => values.map((label) => ({ label }));
   const links = (values: Record<string, string>) =>
     Object.entries(values).map(([label, href]) => ({ label, href }));
-  const summary: ResumeInput["summary"] =
-    typeof data.summary === "string"
-      ? {
-          format: "paragraphs",
-          items: markdown(data.summary, "summary").map((paragraph) => ({
-            content: [paragraph],
-          })),
-        }
-      : { format: "list", items: sentences(data.summary ?? [], "summary") };
+  let summary: ResumeInput["summary"];
+  if (typeof data.summary === "string") {
+    summary = {
+      format: "paragraphs",
+      items: paragraphs(data.summary, "summary"),
+    };
+  } else if (data.summary === undefined || Array.isArray(data.summary)) {
+    summary = {
+      format: "list",
+      items: sentences(data.summary ?? [], "summary"),
+    };
+  } else {
+    const { lead, body, items } = data.summary;
+    summary = {
+      ...(lead === undefined ? {} : { lead: markdown(lead, "summary.lead") }),
+      ...(body === undefined
+        ? { format: "list", items: sentences(items ?? [], "summary.items") }
+        : { format: "paragraphs", items: paragraphs(body, "summary.body") }),
+    };
+  }
   return {
     profile: {
       ...data.profile,
@@ -75,25 +88,26 @@ export function parseResumeYaml(
         highlights: sentences(highlights, `experiences.${index}.highlights`),
         projects: projects.map(
           (
-            {
-              description,
-              role,
-              highlights,
-              technologies,
-              links: projectLinks,
-              ...project
-            },
+            { description, role, issues, links: projectLinks, ...project },
             projectIndex,
           ) => {
             const path = `experiences.${index}.projects.${projectIndex}`;
             return {
               ...project,
               description: markdown(description, `${path}.description`),
-              ...(role === undefined
-                ? {}
-                : { role: markdown(role, `${path}.role`) }),
-              highlights: sentences(highlights, `${path}.highlights`),
-              technologies: labels(technologies),
+              role: markdown(role, `${path}.role`),
+              issues: issues.map((issue, issueIndex) => {
+                const issuePath = `${path}.issues.${issueIndex}`;
+                return {
+                  title: issue.title,
+                  description: markdown(
+                    issue.description,
+                    `${issuePath}.description`,
+                  ),
+                  approach: sentences(issue.approach, `${issuePath}.approach`),
+                  outcomes: sentences(issue.outcomes, `${issuePath}.outcomes`),
+                };
+              }),
               links: links(projectLinks),
             };
           },
@@ -116,11 +130,14 @@ export function parseResumeYaml(
           }),
     })),
     certifications: data.certifications.map(
-      ({ verificationLink, ...entry }) => ({
+      ({ verificationLink, reason, ...entry }, index) => ({
         ...entry,
         ...(verificationLink === undefined
           ? {}
           : { verificationLink: links(verificationLink)[0] }),
+        ...(reason === undefined
+          ? {}
+          : { reason: markdown(reason, `certifications.${index}.reason`) }),
       }),
     ),
   };

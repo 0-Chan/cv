@@ -3,6 +3,10 @@ name: 이력서 검사와 Pages 배포
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "10 9 1 * *"
+      timezone: Asia/Seoul
+  workflow_dispatch:
 
 permissions:
   contents: read

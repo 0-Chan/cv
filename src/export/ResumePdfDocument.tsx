@@ -150,6 +150,7 @@ function createStyles(theme: ResumeTheme) {
       gap: pt(spacing.content),
     },
     certificationText: { flex: 1, minWidth: 0 },
+    certificationTitle: { fontSize: pt(fontSizes.certification) },
     companyDivider: {
       borderTopWidth: 0.75,
       borderTopColor: colors.border,
@@ -478,7 +479,7 @@ export function ResumePdfDocument({
                         minPresenceAhead={96}
                       />
                     )}
-                    <View wrap={false} minPresenceAhead={60}>
+                    <View wrap={false} minPresenceAhead={120}>
                       <View style={styles.companyHeading}>
                         <Text style={styles.company}>
                           {experience.company.name}
@@ -652,7 +653,7 @@ export function ResumePdfDocument({
             case "certifications":
               content = section.content.map((item, index) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 자격 목록이다.
-                <View key={index}>
+                <View key={index} wrap={false}>
                   {index > 0 && <View style={styles.itemDivider} />}
                   <View style={styles.certification} minPresenceAhead={96}>
                     {item.badge && (
@@ -662,7 +663,10 @@ export function ResumePdfDocument({
                       />
                     )}
                     <View style={styles.certificationText}>
-                      <Text style={styles.title} minPresenceAhead={36}>
+                      <Text
+                        style={[styles.title, styles.certificationTitle]}
+                        minPresenceAhead={36}
+                      >
                         {item.name}
                       </Text>
                       <Text>{item.issuer}</Text>

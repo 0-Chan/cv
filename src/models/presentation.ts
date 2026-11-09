@@ -48,6 +48,7 @@ export const themeSchema = z.strictObject({
     section: size,
     company: size,
     project: size,
+    certification: size,
     issue: size,
     body: size,
     meta: size,

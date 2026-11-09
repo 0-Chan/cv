@@ -20,6 +20,7 @@ export const resumeThemeConfig = {
     section: 32,
     company: 26,
     project: 24,
+    certification: 20,
     issue: 20,
     body: 16,
     meta: 14,

@@ -11,13 +11,13 @@ export function ProjectItem({
   labels: ResumeDisplay["labels"];
 }) {
   return (
-    <article className="grid min-w-0 gap-content">
+    <article className="resume-project grid min-w-0 gap-section-content">
       <header className="grid min-w-0 gap-inline">
         <h4 className="text-project font-bold leading-heading">
           {project.title}
         </h4>
-        <dl className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] gap-x-inline gap-y-compact">
-          <dt className="font-medium text-muted">
+        <dl className="grid min-w-0 grid-cols-1 gap-x-inline gap-y-compact text-meta sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-y-inline">
+          <dt className="mt-inline font-medium text-muted first:mt-0 sm:mt-0">
             {labels.projectDescription}:
           </dt>
           <dd className="min-w-0 text-muted">
@@ -25,21 +25,23 @@ export function ProjectItem({
           </dd>
           {project.technologies.length > 0 && (
             <>
-              <dt className="font-medium text-muted">
+              <dt className="mt-inline font-medium text-muted sm:mt-0">
                 {labels.projectTechnologies}:
               </dt>
-              <dd className="min-w-0">
+              <dd className="min-w-0 text-muted">
                 {project.technologies.map((item) => item.label).join(", ")}
               </dd>
             </>
           )}
-          <dt className="font-medium text-muted">{labels.projectRole}:</dt>
-          <dd className="min-w-0">
+          <dt className="mt-inline font-medium text-muted sm:mt-0">
+            {labels.projectRole}:
+          </dt>
+          <dd className="min-w-0 text-body">
             <RichText content={project.role} />
           </dd>
         </dl>
       </header>
-      <div className="grid min-w-0 gap-project">
+      <div className="grid min-w-0 gap-issue">
         {project.issues.map((issue, index) => (
           <IssueItem
             // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 이슈 목록이며 번호는 표시 순서다.

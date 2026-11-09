@@ -101,11 +101,27 @@ function createStyles(theme: ResumeTheme) {
       marginBottom: pt(spacing.inline),
     },
     issueTitle: {
-      fontSize: pt(fontSizes.body),
+      fontSize: pt(fontSizes.issue),
       fontWeight: 700,
       lineHeight: lineHeights.heading,
       marginBottom: pt(spacing.content),
     },
+    issueNumber: {
+      fontSize: pt(fontSizes.meta),
+      fontWeight: 500,
+      color: colors.muted,
+      lineHeight: lineHeights.heading,
+      marginBottom: pt(spacing.compact),
+    },
+    issueHeading: { marginTop: pt(spacing.issue) },
+    stage: {
+      fontSize: pt(fontSizes.meta),
+      fontWeight: 600,
+      color: colors.muted,
+      lineHeight: lineHeights.heading,
+      marginTop: pt(spacing.content),
+    },
+    label: { fontWeight: 500 },
     companyHeading: {
       flexDirection: "row",
       alignItems: "center",
@@ -139,7 +155,12 @@ function createStyles(theme: ResumeTheme) {
       borderTopColor: colors.border,
       marginVertical: pt(spacing.item / 2),
     },
-    project: { marginTop: pt(spacing.project) },
+    project: { marginTop: pt(spacing.sectionContent) },
+    projectDivider: {
+      borderTopWidth: 0.75,
+      borderTopColor: colors.border,
+      marginVertical: pt(spacing.project / 2),
+    },
     content: { marginTop: pt(spacing.content) },
     paragraph: { marginBottom: pt(spacing.content) },
     compact: { marginTop: pt(spacing.compact) },
@@ -276,22 +297,24 @@ function LabeledRich({
   label,
   content,
   styles,
-  muted = false,
+  secondary = false,
 }: {
   label: string;
   content: RichText;
   styles: PdfStyles;
-  muted?: boolean;
+  secondary?: boolean;
 }) {
   return content.map((paragraph, index) => (
     <Text
       // biome-ignore lint/suspicious/noArrayIndexKey: PDF의 정적인 메타 문단이다.
       key={index}
-      style={[styles.compact, ...(muted ? [styles.muted] : [])]}
+      style={[styles.compact, ...(secondary ? [styles.meta] : [])]}
       orphans={2}
       widows={2}
     >
-      {index === 0 && <Text style={styles.bold}>{label}: </Text>}
+      {index === 0 && (
+        <Text style={[styles.meta, styles.label]}>{label}: </Text>
+      )}
       <Inline nodes={paragraph.children} styles={styles} />
     </Text>
   ));
@@ -407,8 +430,17 @@ export function ResumePdfDocument({
                   {experience.projects.map((project, projectIndex) => (
                     // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 목록이다.
                     <Fragment key={projectIndex}>
+                      {projectIndex > 0 && (
+                        <View
+                          style={styles.projectDivider}
+                          minPresenceAhead={120}
+                        />
+                      )}
                       <Text
-                        style={[styles.title, styles.project]}
+                        style={[
+                          styles.title,
+                          ...(projectIndex === 0 ? [styles.project] : []),
+                        ]}
                         minPresenceAhead={96}
                       >
                         {project.title}
@@ -417,11 +449,11 @@ export function ResumePdfDocument({
                         label={display.labels.projectDescription}
                         styles={styles}
                         content={project.description}
-                        muted
+                        secondary
                       />
                       {project.technologies.length > 0 && (
-                        <Text style={styles.compact}>
-                          <Text style={styles.bold}>
+                        <Text style={[styles.compact, styles.meta]}>
+                          <Text style={styles.label}>
                             {display.labels.projectTechnologies}:{" "}
                           </Text>
                           {project.technologies
@@ -437,18 +469,18 @@ export function ResumePdfDocument({
                       {project.issues.map((issue, issueIndex) => (
                         // biome-ignore lint/suspicious/noArrayIndexKey: 이슈 번호는 빌드 시 표시 순서다.
                         <Fragment key={issueIndex}>
-                          <Text
-                            style={[styles.issueTitle, styles.project]}
+                          <View
+                            style={styles.issueHeading}
+                            wrap={false}
                             minPresenceAhead={54}
                           >
-                            {display.labels.issue} {issueIndex + 1} —{" "}
-                            {issue.title}
-                          </Text>
+                            <Text style={styles.issueNumber}>
+                              {display.labels.issue} {issueIndex + 1}
+                            </Text>
+                            <Text style={styles.issueTitle}>{issue.title}</Text>
+                          </View>
                           <Rich styles={styles} content={issue.description} />
-                          <Text
-                            style={[styles.bold, styles.content]}
-                            minPresenceAhead={42}
-                          >
+                          <Text style={styles.stage} minPresenceAhead={42}>
                             {display.labels.approach}
                           </Text>
                           <List
@@ -456,10 +488,7 @@ export function ResumePdfDocument({
                             items={issue.approach}
                             ordered
                           />
-                          <Text
-                            style={[styles.bold, styles.content]}
-                            minPresenceAhead={42}
-                          >
+                          <Text style={styles.stage} minPresenceAhead={42}>
                             {display.labels.outcomes}
                           </Text>
                           <List styles={styles} items={issue.outcomes} />

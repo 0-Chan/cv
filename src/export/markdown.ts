@@ -53,7 +53,10 @@ const paragraph = (value: string): BlockContent => ({
   type: "paragraph",
   children: [text(value)],
 });
-const heading = (depth: 1 | 2 | 3 | 4 | 5, value: string): BlockContent => ({
+const heading = (
+  depth: 1 | 2 | 3 | 4 | 5 | 6,
+  value: string,
+): BlockContent => ({
   type: "heading",
   depth,
   children: [text(value)],
@@ -145,14 +148,12 @@ export function renderResumeMarkdown(
             );
             project.issues.forEach((issue, index) => {
               children.push(
-                heading(
-                  5,
-                  `${display.labels.issue} ${index + 1} — ${issue.title}`,
-                ),
+                paragraph(`${display.labels.issue} ${index + 1}`),
+                heading(5, issue.title),
                 ...paragraphs(issue.description),
-                paragraph(display.labels.approach),
+                heading(6, display.labels.approach),
                 ...highlights(issue.approach, true),
-                paragraph(display.labels.outcomes),
+                heading(6, display.labels.outcomes),
                 ...highlights(issue.outcomes),
               );
             });

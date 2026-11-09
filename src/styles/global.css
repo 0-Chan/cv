@@ -8,6 +8,7 @@
   --text-section: var(--resume-size-section);
   --text-company: var(--resume-size-company);
   --text-project: var(--resume-size-project);
+  --text-issue: var(--resume-size-issue);
   --text-body: var(--resume-size-body);
   --text-meta: var(--resume-size-meta);
   --text-tag: var(--resume-size-tag);
@@ -21,6 +22,8 @@
   --spacing-section-content: var(--resume-space-sectionContent);
   --spacing-company-half: calc(var(--resume-space-company) / 2);
   --spacing-project: var(--resume-space-project);
+  --spacing-project-half: calc(var(--resume-space-project) / 2);
+  --spacing-issue: var(--resume-space-issue);
   --spacing-item: var(--resume-space-item);
   --spacing-content: var(--resume-space-content);
   --spacing-inline: var(--resume-space-inline);
@@ -102,6 +105,11 @@
     color: var(--resume-color-headingStart);
   }
 
+  .resume-project + .resume-project {
+    border-top: 1px solid var(--resume-color-border);
+    padding-top: calc(var(--resume-space-project) / 2);
+  }
+
   .resume-export summary::-webkit-details-marker {
     display: none;
   }
@@ -169,7 +177,9 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     break-after: avoid;
   }
 

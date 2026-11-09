@@ -13,7 +13,7 @@ export function ExperienceItem({
 }) {
   const end = experience.isCurrent ? labels.current : experience.endDate;
   return (
-    <article className="grid min-w-0 gap-content border-rule not-first:border-t not-first:pt-company-half">
+    <article className="grid min-w-0 gap-section-content border-rule not-first:border-t not-first:pt-company-half">
       <header className="grid gap-inline">
         <div className="grid min-w-0 gap-compact">
           <div className="flex min-w-0 items-center gap-inline">
@@ -62,7 +62,7 @@ export function ExperienceItem({
         )}
       </header>
       {(experience.highlights.length > 0 || experience.projects.length > 0) && (
-        <div className="grid min-w-0 gap-project">
+        <div className="grid min-w-0 gap-project-half">
           <Highlights items={experience.highlights} />
           {experience.projects.map((project, index) => (
             <ProjectItem

@@ -71,7 +71,16 @@ export const resumeAuthoringSchema = z.strictObject({
     contacts: z.record(textSchema, textSchema).default({}),
     links: z.record(textSchema, contactUrlSchema).default({}),
   }),
-  summary: z.union([textSchema, strings]).optional(),
+  summary: z
+    .union([
+      textSchema,
+      strings,
+      z.strictObject({
+        lead: textSchema.optional(),
+        items: strings.default([]),
+      }),
+    ])
+    .optional(),
   experiences: z.array(experience).default([]),
   skills: z.record(textSchema, strings).default({}),
   education: z.array(education).default([]),

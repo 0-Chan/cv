@@ -129,6 +129,16 @@ summary:
   - 두 번째 소개 문장입니다.
 ```
 
+첫 문장 뒤에 목록을 이어 쓰려면 `lead`와 `items`를 구분합니다. `lead`와 목록은 각각 생략할 수 있습니다.
+
+```yaml
+summary:
+  lead: 소개의 첫 문장입니다.
+  items:
+    - 첫 번째 요약입니다.
+    - 두 번째 요약입니다.
+```
+
 - 회사 요약(`highlights`)과 프로젝트(`projects`)는 각각 생략할 수 있습니다. 배열에 적은 순서가 유지됩니다.
 - 날짜는 `startDate: "2024"`, `endDate: "2024-03"`처럼 따옴표를 붙인 연도·연월입니다. 일 단위는 지원하지 않습니다.
 - 현재 재직은 `isCurrent: true`로 명시하고 종료일을 생략합니다. 종료일 누락만으로 현재 재직으로 판단하지 않습니다.
@@ -145,10 +155,12 @@ summary:
 
 ## 표시와 테마
 
-- `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다. `labels`에서 프로젝트 설명·기술 스택·핵심 역할·이슈·해결 방향·성과의 표시 문구를 바꿉니다.
+- `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다. 본문을 유지하고 제목·구분선만 숨기려면 `showTitle: false`를 지정합니다. 생략하면 제목을 표시하며, 현재 소개에만 `false`를 지정했습니다. 제목을 숨겨도 접근성 이름으로 사용할 `title`은 유지합니다. `labels`에서 프로젝트 설명·기술 스택·핵심 역할·이슈·해결 방향·성과의 표시 문구를 바꿉니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 이슈 제목 크기는 `fontSizes.issue`, 이슈 사이 간격은 `spacing.issue`로 조절합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`, 구분선의 주황색 길이는 `widths.sectionAccent`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
 프로필과 첫 번째 표시 섹션 사이 간격은 `spacing.profile`로 조절하며 기본값은 40px입니다. 나머지 간격은 `spacing.section`·`company`·`project`·`issue`로 묶음별 조절합니다. `spacing.item`은 기술 분류 사이, `spacing.dividedItem`은 학력·자격 구분선 양쪽을 합친 간격이며 구분선 두께는 제외합니다.
+
+연락처 행 사이는 `spacing.compact`의 4px입니다. 소개의 첫 문장과 목록은 `spacing.content`의 12px, 목록 항목은 `spacing.inline`의 8px로 구분합니다. 소개 제목을 숨겨도 프로필에서 소개 본문까지 40px, 다음 섹션까지 80px 간격은 유지합니다. 웹·PDF·Markdown은 같은 소개 내용과 제목 표시 설정을 사용합니다.
 
 경력 태그 칩의 배경색은 `colors.tagBackground`에서 조절합니다. 기본값은 `#DEDEDE`입니다. 이슈 제목 색상은 `colors.issueHeading`이며 기본값은 옅은 갈색 `#AD6F46`입니다.
 

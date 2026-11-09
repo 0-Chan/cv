@@ -15,6 +15,7 @@ export const displaySchema = z.strictObject({
       id: z.enum(sectionIds),
       title: textSchema,
       visible: z.boolean(),
+      showTitle: z.boolean().optional(),
     }),
   ).length(sectionIds.length),
   labels: z.strictObject({

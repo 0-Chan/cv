@@ -27,10 +27,10 @@
 | 편집 위치 | 책임 |
 |---|---|
 | src/config/resume.yaml | 실제 이력서 콘텐츠 |
-| src/config/resume-display.ts | 다섯 섹션의 id·title·visible 배열, 공통 표시 문구 |
+| src/config/resume-display.ts | 다섯 섹션의 id·title·visible·showTitle 배열, 공통 표시 문구 |
 | src/config/resume-theme.ts | 폰트·크기·굵기·줄 높이·간격·색상·최대 너비 |
 
-설정을 각각 검증하고 공통 진입점에서 조합한다. 표시 배열 순서를 DOM에 적용한다. 콘텐츠 API 모델에는 테마나 Tailwind 클래스를 섞지 않는다.
+설정을 각각 검증하고 공통 진입점에서 조합한다. 표시 배열 순서를 DOM에 적용한다. showTitle은 생략 시 true로 해석하며 false이면 본문과 접근성 이름을 유지하고 제목·구분선·장식을 생략한다. 현재 소개는 visible: true·showTitle: false다. 콘텐츠 API 모델에는 테마나 Tailwind 클래스를 섞지 않는다.
 
 회사 로고와 자격 배지는 `public/images/resume/`에 저장하고 YAML에서 주소와 대체 텍스트를 지정한다. 원본 PDF는 로컬 자료로 유지하며 Git과 배포 산출물에 포함하지 않는다. 경력·성과·날짜는 원문에 근거하고 불명확한 항목은 확인 후 반영한다.
 
@@ -77,7 +77,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | 영역 | 주요 필드 |
 |---|---|
 | profile | name, role, contacts(label·value), links(label·href) |
-| summary | format(paragraphs/list), items(content) |
+| summary | lead?(RichText), format(paragraphs/list), items(content) |
 | experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
 | projects | title, description(프로젝트 설명), role(핵심 역할), technologies, issues, links |
 | project issues | title, description(문제 상황), approach(번호 목록), outcomes(성과 목록) |
@@ -93,7 +93,7 @@ API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 
 
 ## YAML 작성 형식과 변환
 
-작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 프로젝트 issues의 description은 Markdown 문자열, approach·outcomes는 Markdown 문자열 목록으로 작성한다. 프로젝트의 평면 highlights 형식은 지원하지 않는다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
+작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열·문자열 목록 또는 `{ lead?, items? }` 객체로 작성한다. 문자열의 각 문단은 개별 문단 항목으로 변환하고 목록 형식도 유지한다. 객체의 lead는 첫 문장인 RichText, items는 format: list의 항목 목록으로 변환하며 각각 생략할 수 있다. 둘 다 없으면 소개 전체를 숨긴다. 프로젝트 issues의 description은 Markdown 문자열, approach·outcomes는 Markdown 문자열 목록으로 작성한다. 프로젝트의 평면 highlights 형식은 지원하지 않는다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
 
 profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목록만 빈 목록으로 변환한다. 입력된 빈 문자열·null·잘못된 타입은 오류이며 전체 파일 누락이나 빈 파일을 정상 빈 데이터로 대체하지 않는다. 날짜는 따옴표로 감싼 YYYY 또는 YYYY-MM 문자열이다. 실제 작성 예시는 README에 둔다.
 
@@ -108,7 +108,7 @@ Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 �
 
 Astro 페이지는 getResumePageData를 한 번 호출하고 문서 레이아웃에 테마를, React ResumePage에 콘텐츠·표시 설정을 전달한다. React 컴포넌트는 client 지시자 없이 HTML로 렌더링한다. RichText·InlineContent는 구조화된 문장을 React 요소로 표현하며 HTML 문자열을 삽입하지 않는다. 상태 없는 정적 목록은 배열 위치를 React key로 사용하고, 해당 lint 예외만 표현식에 명시한다. 콘텐츠 ID는 추가하지 않는다.
 
-테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 제목·구분선 아래에 본문을 한 열로 배치한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
+테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 본문을 한 열로 배치한다. 제목 표시를 끈 섹션은 aria-label로 이름을 제공하고 제목을 가리키는 aria-labelledby는 출력하지 않는다. 소개의 첫 문장과 목록 사이는 spacing.content의 12px, 목록 항목 사이는 spacing.inline의 8px이다. 연락처 행 사이는 spacing.compact의 4px이며 웹·PDF에 동일하게 적용한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
 
 GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SITE_URL과 BASE_PATH는 Pages 메타데이터에서 읽으며 로컬 기본 base는 /다. 로컬 이미지에는 표시 경계에서 BASE_URL을 붙인다. 개인 도메인은 기본 주소 배포 이후에 연결한다.
 

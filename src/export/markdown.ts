@@ -100,10 +100,11 @@ export function renderResumeMarkdown(
     ),
   ];
   for (const section of getVisibleResumeSections(resume, display)) {
-    children.push(heading(2, section.title));
+    if (section.showTitle) children.push(heading(2, section.title));
     switch (section.id) {
       case "summary":
         children.push(
+          ...(section.content.lead ? paragraphs(section.content.lead) : []),
           ...(section.content.format === "list"
             ? highlights(section.content.items)
             : section.content.items.flatMap((item) =>

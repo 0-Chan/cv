@@ -6,21 +6,29 @@ import { ResumeSection } from "./ResumeSection";
 export function SummaryBlock({
   summary,
   title,
+  showTitle = true,
 }: {
   summary: ResumeData["summary"];
   title: string;
+  showTitle?: boolean;
 }) {
-  if (summary.items.length === 0) return null;
+  if (!summary.lead?.length && summary.items.length === 0) return null;
   return (
-    <ResumeSection id="summary" title={title}>
-      {summary.format === "list" ? (
-        <Highlights items={summary.items} />
-      ) : (
-        summary.items.map((item, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 소개 문단이다.
-          <RichText key={index} content={item.content} />
-        ))
-      )}
+    <ResumeSection id="summary" title={title} showTitle={showTitle}>
+      <div className="grid min-w-0 gap-content">
+        {summary.lead && <RichText content={summary.lead} />}
+        {summary.items.length > 0 &&
+          (summary.format === "list" ? (
+            <Highlights items={summary.items} />
+          ) : (
+            <div className="grid min-w-0 gap-item">
+              {summary.items.map((item, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 소개 문단이다.
+                <RichText key={index} content={item.content} />
+              ))}
+            </div>
+          ))}
+      </div>
     </ResumeSection>
   );
 }

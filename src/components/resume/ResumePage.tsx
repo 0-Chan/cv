@@ -34,6 +34,7 @@ export function ResumePage({
                 key={section.id}
                 summary={section.content}
                 title={section.title}
+                showTitle={section.showTitle}
               />
             );
           case "experiences":
@@ -70,7 +71,12 @@ export function ResumePage({
             break;
         }
         return (
-          <ResumeSection key={section.id} id={section.id} title={section.title}>
+          <ResumeSection
+            key={section.id}
+            id={section.id}
+            title={section.title}
+            showTitle={section.showTitle}
+          >
             {content}
           </ResumeSection>
         );

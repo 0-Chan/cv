@@ -70,7 +70,7 @@ function createStyles(theme: ResumeTheme) {
     },
     role: { fontSize: pt(fontSizes.role), color: colors.muted },
     contact: { fontSize: pt(fontSizes.meta) },
-    contactGap: { marginBottom: pt(spacing.inline) },
+    contactGap: { marginBottom: pt(spacing.compact) },
     section: { marginTop: pt(spacing.section) },
     sectionTitle: {
       fontSize: pt(fontSizes.section),
@@ -416,17 +416,31 @@ export function ResumePdfDocument({
           let content: ReactNode;
           switch (section.id) {
             case "summary":
-              content =
-                section.content.format === "list" ? (
-                  <List styles={styles} items={section.content.items} />
-                ) : (
-                  section.content.items.map((item, index) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 소개 문단이다.
-                    <View key={index} style={styles.paragraph}>
-                      <Rich styles={styles} content={item.content} />
-                    </View>
-                  ))
-                );
+              content = (
+                <>
+                  {section.content.lead && (
+                    <Rich styles={styles} content={section.content.lead} />
+                  )}
+                  {section.content.format === "list" ? (
+                    <List styles={styles} items={section.content.items} />
+                  ) : (
+                    section.content.items.map((item, index) => (
+                      <View
+                        // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 소개 문단이다.
+                        key={index}
+                        style={[
+                          ...(section.content.lead && index === 0
+                            ? [styles.content]
+                            : []),
+                          styles.paragraph,
+                        ]}
+                      >
+                        <Rich styles={styles} content={item.content} />
+                      </View>
+                    ))
+                  )}
+                </>
+              );
               break;
             case "experiences":
               content = section.content.map((experience, index) => (
@@ -632,6 +646,16 @@ export function ResumePdfDocument({
                 </View>
               ));
               break;
+          }
+          if (!section.showTitle) {
+            return (
+              <View
+                key={section.id}
+                style={sectionIndex > 0 ? styles.section : undefined}
+              >
+                {content}
+              </View>
+            );
           }
           return (
             <Fragment key={section.id}>

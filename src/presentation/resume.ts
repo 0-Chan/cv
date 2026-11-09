@@ -5,6 +5,7 @@ export type VisibleResumeSection = {
   [Id in ResumeDisplay["sections"][number]["id"]]: {
     id: Id;
     title: string;
+    showTitle: boolean;
     content: ResumeData[Id];
   };
 }[ResumeDisplay["sections"][number]["id"]];
@@ -15,32 +16,32 @@ export function getVisibleResumeSections(
   display: ResumeDisplay,
 ): VisibleResumeSection[] {
   const result: VisibleResumeSection[] = [];
-  for (const { id, title, visible } of display.sections) {
+  for (const { id, title, visible, showTitle = true } of display.sections) {
     if (!visible) continue;
     switch (id) {
       case "summary":
-        if (resume.summary.items.length) {
-          result.push({ id, title, content: resume.summary });
+        if (resume.summary.lead?.length || resume.summary.items.length) {
+          result.push({ id, title, showTitle, content: resume.summary });
         }
         break;
       case "skills": {
         const content = resume.skills.filter((group) => group.items.length);
-        if (content.length) result.push({ id, title, content });
+        if (content.length) result.push({ id, title, showTitle, content });
         break;
       }
       case "experiences":
         if (resume.experiences.length) {
-          result.push({ id, title, content: resume.experiences });
+          result.push({ id, title, showTitle, content: resume.experiences });
         }
         break;
       case "education":
         if (resume.education.length) {
-          result.push({ id, title, content: resume.education });
+          result.push({ id, title, showTitle, content: resume.education });
         }
         break;
       case "certifications":
         if (resume.certifications.length) {
-          result.push({ id, title, content: resume.certifications });
+          result.push({ id, title, showTitle, content: resume.certifications });
         }
         break;
     }

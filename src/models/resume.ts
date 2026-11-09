@@ -79,6 +79,7 @@ export const resumeSchema = z.strictObject({
     links: z.array(contactLinkSchema).default([]),
   }),
   summary: z.strictObject({
+    lead: richTextSchema.optional(),
     format: z.enum(["paragraphs", "list"]),
     items: z.array(textItemSchema),
   }),

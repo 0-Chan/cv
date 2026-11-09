@@ -48,15 +48,28 @@ export function parseResumeYaml(
   const labels = (values: string[]) => values.map((label) => ({ label }));
   const links = (values: Record<string, string>) =>
     Object.entries(values).map(([label, href]) => ({ label, href }));
-  const summary: ResumeInput["summary"] =
-    typeof data.summary === "string"
-      ? {
-          format: "paragraphs",
-          items: markdown(data.summary, "summary").map((paragraph) => ({
-            content: [paragraph],
-          })),
-        }
-      : { format: "list", items: sentences(data.summary ?? [], "summary") };
+  let summary: ResumeInput["summary"];
+  if (typeof data.summary === "string") {
+    summary = {
+      format: "paragraphs",
+      items: markdown(data.summary, "summary").map((paragraph) => ({
+        content: [paragraph],
+      })),
+    };
+  } else if (data.summary === undefined || Array.isArray(data.summary)) {
+    summary = {
+      format: "list",
+      items: sentences(data.summary ?? [], "summary"),
+    };
+  } else {
+    summary = {
+      ...(data.summary.lead === undefined
+        ? {}
+        : { lead: markdown(data.summary.lead, "summary.lead") }),
+      format: "list",
+      items: sentences(data.summary.items, "summary.items"),
+    };
+  }
   return {
     profile: {
       ...data.profile,

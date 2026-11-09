@@ -35,7 +35,7 @@ export const resumeThemeConfig = {
     sectionContent: 24,
     company: 64,
     project: 48,
-    issue: 16,
+    issue: 32,
     item: 40,
     dividedItem: 72,
     content: 12,

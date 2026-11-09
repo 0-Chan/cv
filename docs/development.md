@@ -108,7 +108,7 @@ Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 �
 
 Astro 페이지는 getResumePageData를 한 번 호출하고 문서 레이아웃에 테마를, React ResumePage에 콘텐츠·표시 설정을 전달한다. React 컴포넌트는 client 지시자 없이 HTML로 렌더링한다. RichText·InlineContent는 구조화된 문장을 React 요소로 표현하며 HTML 문자열을 삽입하지 않는다. 상태 없는 정적 목록은 배열 위치를 React key로 사용하고, 해당 lint 예외만 표현식에 명시한다. 콘텐츠 ID는 추가하지 않는다.
 
-테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 본문을 한 열로 배치한다. 제목 표시를 끈 섹션은 aria-label로 이름을 제공하고 제목을 가리키는 aria-labelledby는 출력하지 않는다. 소개의 첫 문장과 목록 사이는 spacing.content의 12px, 목록 항목 사이는 spacing.inline의 8px이다. 연락처 행 사이는 spacing.compact의 4px이며 웹·PDF에 동일하게 적용한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
+테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개에도 재사용하며 본문을 한 열로 배치한다. 제목 표시를 끈 섹션은 aria-label로 이름을 제공하고 제목을 가리키는 aria-labelledby는 출력하지 않는다. 소개의 첫 문장은 fontSizes.summaryLead의 20px·기울임으로 표시하며 목록은 본문 크기를 유지한다. PDF는 해당 첫 문장에만 skewX(-10deg) 변환을 적용하고 Markdown에는 시각적 스타일을 추가하지 않는다. 소개의 첫 문장과 목록 사이는 spacing.content의 12px, 목록 항목 사이는 spacing.inline의 8px이다. 연락처 행 사이는 spacing.compact의 4px이며 웹·PDF에 동일하게 적용한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
 
 GitHub Pages는 main push의 검사 성공 후 dist artifact를 배포한다. SITE_URL과 BASE_PATH는 Pages 메타데이터에서 읽으며 로컬 기본 base는 /다. 로컬 이미지에는 표시 경계에서 BASE_URL을 붙인다. 개인 도메인은 기본 주소 배포 이후에 연결한다.
 

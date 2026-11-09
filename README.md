@@ -162,6 +162,8 @@ summary:
 
 연락처 행 사이는 `spacing.compact`의 4px입니다. 소개의 첫 문장과 목록은 `spacing.content`의 12px, 목록 항목은 `spacing.inline`의 8px로 구분합니다. 소개 제목을 숨겨도 프로필에서 소개 본문까지 40px, 다음 섹션까지 80px 간격은 유지합니다. 웹·PDF·Markdown은 같은 소개 내용과 제목 표시 설정을 사용합니다.
 
+소개 첫 문장은 웹·PDF에서 20px의 기울임으로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. Markdown에는 문장 내용을 유지합니다.
+
 경력 태그 칩의 배경색은 `colors.tagBackground`에서 조절합니다. 기본값은 `#DEDEDE`입니다. 이슈 제목 색상은 `colors.issueHeading`이며 기본값은 옅은 갈색 `#AD6F46`입니다.
 
 화면의 프로젝트명 그림자는 `shadows.projectTitle`에서 조절합니다. `x`·`y`·`blur`는 px, `opacity`는 0~1이며 색상은 `colors.text`를 따릅니다. 인쇄·고대비 모드와 PDF에는 그림자를 적용하지 않습니다.

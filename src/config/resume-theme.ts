@@ -16,6 +16,7 @@ export const resumeThemeConfig = {
   fontSizes: {
     name: 40,
     role: 20,
+    summaryLead: 20,
     section: 32,
     company: 26,
     project: 24,

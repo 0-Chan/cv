@@ -71,6 +71,12 @@ function createStyles(theme: ResumeTheme) {
     role: { fontSize: pt(fontSizes.role), color: colors.muted },
     contact: { fontSize: pt(fontSizes.meta) },
     contactGap: { marginBottom: pt(spacing.compact) },
+    // 나눔고딕에 기울임체가 없어 소개 첫 문장에만 기울임 변환을 적용한다.
+    summaryLead: {
+      fontSize: pt(fontSizes.summaryLead),
+      transform: "skewX(-10deg)",
+      transformOrigin: "left bottom",
+    },
     section: { marginTop: pt(spacing.section) },
     sectionTitle: {
       fontSize: pt(fontSizes.section),
@@ -419,7 +425,9 @@ export function ResumePdfDocument({
               content = (
                 <>
                   {section.content.lead && (
-                    <Rich styles={styles} content={section.content.lead} />
+                    <View style={styles.summaryLead}>
+                      <Rich styles={styles} content={section.content.lead} />
+                    </View>
                   )}
                   {section.content.format === "list" ? (
                     <List styles={styles} items={section.content.items} />

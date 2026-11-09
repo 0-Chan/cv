@@ -16,7 +16,11 @@ export function SummaryBlock({
   return (
     <ResumeSection id="summary" title={title} showTitle={showTitle}>
       <div className="grid min-w-0 gap-content">
-        {summary.lead && <RichText content={summary.lead} />}
+        {summary.lead && (
+          <div className="text-summary-lead italic">
+            <RichText content={summary.lead} />
+          </div>
+        )}
         {summary.items.length > 0 &&
           (summary.format === "list" ? (
             <Highlights items={summary.items} />

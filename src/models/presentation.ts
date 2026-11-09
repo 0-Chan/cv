@@ -43,6 +43,7 @@ export const themeSchema = z.strictObject({
   fontSizes: z.strictObject({
     name: size,
     role: size,
+    summaryLead: size,
     section: size,
     company: size,
     project: size,

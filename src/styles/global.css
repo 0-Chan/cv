@@ -5,6 +5,7 @@
   --font-resume: var(--resume-font);
   --text-name: var(--resume-size-name);
   --text-role: var(--resume-size-role);
+  --text-summary-lead: var(--resume-size-summaryLead);
   --text-section: var(--resume-size-section);
   --text-company: var(--resume-size-company);
   --text-project: var(--resume-size-project);

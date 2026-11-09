@@ -123,7 +123,7 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 
 ## 내보내기
 
-`src/presentation/resume.ts`의 getVisibleResumeSections는 검증된 ResumeData·ResumeDisplay에서 표시할 섹션·제목·내용을 반환한다. 화면·PDF·Markdown은 이 함수를 공유해 순서·숨김·빈 목록 처리를 일치시킨다. 프로필 연락처 순서도 공통 함수로 관리하며 콘텐츠 모델은 바꾸지 않는다.
+`src/presentation/resume.ts`의 getVisibleResumeSections는 검증된 ResumeData·ResumeDisplay에서 표시할 섹션·제목·내용을 반환한다. 화면·PDF·Markdown은 이 함수를 공유해 순서·숨김·빈 목록 처리를 일치시킨다. 프로필 연락처는 getProfileDetails로 관리하며 콘텐츠 모델은 바꾸지 않는다. HTTP(S) 프로필 링크를 먼저 각각 표시하고 contacts의 값은 작성 순서대로 ` / `로 연결한 일반 텍스트 한 행에 표시한다. contacts가 비어 있으면 행을 생략하고, 한 항목이면 구분자를 붙이지 않는다. 공간이 부족하면 줄바꿈하며 기존 tel·mailto 링크는 뒤에 별도 항목으로 유지한다.
 
 정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 목록과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 

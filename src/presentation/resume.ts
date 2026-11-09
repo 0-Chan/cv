@@ -69,10 +69,14 @@ export function getProfileDetails(profile: ResumeData["profile"]) {
     ...links.filter(
       (link) => link.protocol === "http:" || link.protocol === "https:",
     ),
-    ...profile.contacts.map((contact) => ({
-      label: contact.value,
-      href: undefined,
-    })),
+    ...(profile.contacts.length
+      ? [
+          {
+            label: profile.contacts.map((contact) => contact.value).join(" / "),
+            href: undefined,
+          },
+        ]
+      : []),
     ...links.filter((link) => link.protocol === "tel:"),
     ...links.filter((link) => link.protocol === "mailto:"),
   ];

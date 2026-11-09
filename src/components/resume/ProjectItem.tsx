@@ -36,7 +36,7 @@ export function ProjectItem({
           <dt className="mt-compact font-medium text-muted sm:mt-0">
             {labels.projectRole}:
           </dt>
-          <dd className="min-w-0 text-body">
+          <dd className="min-w-0 text-muted">
             <RichText content={project.role} compact />
           </dd>
         </dl>

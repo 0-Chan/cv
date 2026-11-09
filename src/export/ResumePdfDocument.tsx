@@ -316,21 +316,16 @@ function LabeledRich({
   label,
   content,
   styles,
-  secondary = false,
 }: {
   label: string;
   content: RichText;
   styles: PdfStyles;
-  secondary?: boolean;
 }) {
   return content.map((paragraph, index) => (
     <Text
       // biome-ignore lint/suspicious/noArrayIndexKey: PDF의 정적인 메타 문단이다.
       key={index}
-      style={[
-        index === 0 ? styles.compact : styles.inline,
-        ...(secondary ? [styles.meta] : []),
-      ]}
+      style={[index === 0 ? styles.compact : styles.inline, styles.meta]}
       orphans={2}
       widows={2}
     >
@@ -471,7 +466,6 @@ export function ResumePdfDocument({
                         label={display.labels.projectDescription}
                         styles={styles}
                         content={project.description}
-                        secondary
                       />
                       {project.technologies.length > 0 && (
                         <Text style={[styles.compact, styles.meta]}>

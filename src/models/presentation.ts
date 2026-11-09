@@ -91,6 +91,7 @@ export const themeSchema = z.strictObject({
     accent: color,
     headingStart: color,
     headingEnd: color,
+    issueHeading: color,
     link: color,
     focus: color,
   }),

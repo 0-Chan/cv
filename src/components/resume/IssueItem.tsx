@@ -15,7 +15,7 @@ export function IssueItem({
   return (
     <section className="grid min-w-0 gap-inline">
       <header className="grid min-w-0 gap-compact">
-        <h5 className="text-issue font-bold leading-heading text-heading">
+        <h5 className="text-issue font-bold leading-heading text-issue-heading">
           {labels.issue}
           {number}. {issue.title}
         </h5>

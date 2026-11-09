@@ -60,6 +60,7 @@ export const resumeThemeConfig = {
     accent: "#ff7500",
     headingStart: "#a34200",
     headingEnd: "#b44900",
+    issueHeading: "#ad6f46",
     link: "#7c3200",
     focus: "#1d4ed8",
   },

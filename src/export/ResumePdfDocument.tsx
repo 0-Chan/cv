@@ -104,7 +104,7 @@ function createStyles(theme: ResumeTheme) {
     issueTitle: {
       fontSize: pt(fontSizes.issue),
       fontWeight: 700,
-      color: colors.headingStart,
+      color: colors.issueHeading,
       lineHeight: lineHeights.heading,
       marginBottom: pt(spacing.compact),
     },

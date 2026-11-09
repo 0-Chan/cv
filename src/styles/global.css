@@ -45,6 +45,7 @@
   --color-rule: var(--resume-color-border);
   --color-accent: var(--resume-color-accent);
   --color-heading: var(--resume-color-headingStart);
+  --color-issue-heading: var(--resume-color-issueHeading);
   --color-link: var(--resume-color-link);
   --color-focus: var(--resume-color-focus);
 }

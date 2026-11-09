@@ -42,7 +42,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 기본값은 시스템 한국어 폰트, 본문 16px·줄 높이 1.75, 최대 너비 840px이다. 좌우 여백은 모바일 20px·md 이상 40px로 본문의 최대 너비는 760px이다. 화면 크기에 관계없이 제목과 본문을 한 열로 배치한다. 소개·경력·기술 목록의 들여쓰기는 spacing.listIndent의 12px을 사용한다. 외부 폰트 요청은 없다.
 
-이름은 40px, 섹션 제목은 32px, 회사명은 26px, 프로젝트·분류·기관·자격 제목은 24px, 이슈 제목은 fontSizes.issue의 20px이며 제목 굵기는 700이다. 이슈 번호는 제목과 같은 스타일, 이슈 설명은 fontSizes.meta의 14px·colors.muted로 표시한다. 해결 방향·성과 제목은 fontSizes.body의 16px·700 굵기와 colors.text의 진한 본문색으로 표시한다. 섹션 제목은 colors.headingStart에서 headingEnd로 이어지는 정적 그라데이션, 회사명과 이슈 제목은 headingStart, 링크는 link를 사용한다. 목록의 숫자·글머리표는 별도 강조색 없이 본문의 색상을 따른다. colors.accent의 #FF7500은 섹션 구분선의 짧은 장식에 사용한다. 인쇄·고대비 모드와 그라데이션 미지원 환경에는 단색 제목을 제공한다.
+이름은 40px, 섹션 제목은 32px, 회사명은 26px, 프로젝트·분류·기관·자격 제목은 24px, 이슈 제목은 fontSizes.issue의 20px이며 제목 굵기는 700이다. 이슈 번호는 제목과 같은 스타일, 이슈 설명은 fontSizes.meta의 14px·colors.muted로 표시한다. 해결 방향·성과 제목은 fontSizes.body의 16px·700 굵기와 colors.text의 진한 본문색으로 표시한다. 섹션 제목은 colors.headingStart에서 headingEnd로 이어지는 정적 그라데이션, 회사명은 headingStart, 이슈 제목은 issueHeading의 옅은 갈색 #AD6F46, 링크는 link를 사용한다. 목록의 숫자·글머리표는 별도 강조색 없이 본문의 색상을 따른다. colors.accent의 #FF7500은 섹션 구분선의 짧은 장식에 사용한다. 인쇄·고대비 모드와 그라데이션 미지원 환경에는 단색 제목을 제공한다.
 
 프로필과 첫 번째 표시 섹션 사이는 spacing.profile의 40px이며, 나머지 섹션 사이는 spacing.section의 80px이다. 웹·인쇄는 표시된 첫 섹션에 같은 규칙을 적용하며 PDF도 같은 테마를 사용한다. 섹션 제목과 내용은 sectionContent의 24px이다. 회사 사이는 company의 64px, 프로젝트 사이는 project의 48px 공간 중앙에 얇은 선을 둔다. 같은 프로젝트의 이슈 사이는 issue의 32px 여백만 사용하며 구분선을 추가하지 않는다. 기술 분류 사이는 item의 40px이다. 학력·자격 사이는 dividedItem의 72px을 구분선 위아래 36px씩 나눠 적용하며, 부모 간격과 자식 여백을 더한 값이 설정값과 일치한다. 위 간격은 구분선 두께를 제외한다.
 

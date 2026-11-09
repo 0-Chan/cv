@@ -23,7 +23,6 @@ export const displaySchema = z.strictObject({
     durationYear: textSchema,
     durationMonth: textSchema,
     issuedAt: textSchema,
-    projectDescription: textSchema,
     projectTechnologies: textSchema,
     projectRole: textSchema,
     issue: textSchema,

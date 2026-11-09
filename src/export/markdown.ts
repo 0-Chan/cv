@@ -139,10 +139,7 @@ export function renderResumeMarkdown(
           for (const project of experience.projects) {
             children.push(
               heading(4, project.title),
-              ...labeledParagraphs(
-                display.labels.projectDescription,
-                project.description,
-              ),
+              ...paragraphs(project.description),
             );
             if (project.technologies.length) {
               children.push(

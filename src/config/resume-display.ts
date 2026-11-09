@@ -13,7 +13,6 @@ export const resumeDisplayConfig = {
     durationYear: "년",
     durationMonth: "개월",
     issuedAt: "취득",
-    projectDescription: "프로젝트 설명",
     projectTechnologies: "기술 스택",
     projectRole: "핵심 역할",
     issue: "이슈",

@@ -162,6 +162,7 @@ function createStyles(theme: ResumeTheme) {
     },
     item: { marginTop: pt(spacing.item) },
     project: { marginTop: pt(spacing.sectionContent) },
+    projectTitle: { marginBottom: pt(spacing.compact) },
     projectDivider: {
       borderTopWidth: 0.75,
       borderTopColor: colors.border,
@@ -525,16 +526,18 @@ export function ResumePdfDocument({
                         <Text
                           style={[
                             styles.title,
+                            styles.projectTitle,
                             ...(projectIndex === 0 ? [styles.project] : []),
                           ]}
                           minPresenceAhead={96}
                         >
                           {project.title}
                         </Text>
-                        <LabeledRich
-                          label={display.labels.projectDescription}
+                        <Rich
                           styles={styles}
                           content={project.description}
+                          secondary
+                          compact
                         />
                         {project.technologies.length > 0 && (
                           <Text style={[styles.compact, styles.meta]}>

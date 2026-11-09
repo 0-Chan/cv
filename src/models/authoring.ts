@@ -15,7 +15,6 @@ const project = z.strictObject({
   description: textSchema,
   role: textSchema,
   issues: z.array(issue).min(1),
-  technologies: strings.default([]),
   links: webLinks.default({}),
 });
 const experience = z

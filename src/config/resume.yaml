@@ -8,7 +8,7 @@ profile:
     "https://github.com/0-chan": https://github.com/0-chan
 
 summary:
-  lead: 복잡한 데이터를 직관적이고 안정적인 사용자 경험으로 연결하는 프론트엔드 개발을 지향합니다.
+  lead: 복잡한 데이터를 이해하기 쉽게 표현하고, 안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
   body: |
     ROS1, roslibjs 기반 로봇 제어 UI 개발과 제조 현장 6곳의 로봇 시스템 구축·검증을 경험했습니다.
 
@@ -28,12 +28,6 @@ experiences:
     projects:
       - title: 소셜 마케팅 데이터 대시보드
         description: YouTube·Instagram 콘텐츠 및 광고 성과를 통합 조회하고 비교하는 B2B 데이터 분석 대시보드
-        technologies:
-          - React
-          - Recharts
-          - Storybook
-          - AWS ECS Fargate
-          - Terraform
         role: 데이터 시각화, UI 품질 검증, 배포 환경 구축
         issues:
           - title: 데이터 구조와 계산 방식이 제각각인 성과 지표
@@ -57,11 +51,6 @@ experiences:
         description: >-
           임직원을 위한 사내 정보 에이전트·범용 AI 채팅 포털.
           모델 3종과 사내 에이전트 4종을 한 화면에서 제공하고 직원별 외부 AI 구독 대체
-        technologies:
-          - Next.js
-          - Vercel AI SDK
-          - SWR
-          - AWS
         role: >-
           스트리밍 채팅 프론트엔드 개발, 이후 AWS 인프라 운영으로 담당 범위 확대
         issues:
@@ -86,11 +75,6 @@ experiences:
     projects:
       - title: ROS 기반 로봇 진단 및 제어 대시보드
         description: ROS 기반 서빙 로봇의 센서 데이터, 동작 상태, 이동 제어 기능을 제공하는 웹 대시보드 개발
-        technologies:
-          - ROS1
-          - roslibjs
-          - JavaScript
-          - PWA
         role: 로봇 센서 데이터 시각화, 이동 제어 UI, 태블릿 환경 지원
         issues:
           - title: 실시간 로봇 데이터 처리

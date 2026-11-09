@@ -16,7 +16,7 @@
 - 최상위 모델은 profile, summary, experiences, skills, education, certifications다. Zod 스키마와 추론된 TypeScript 타입으로 계약을 공유한다.
 - 필수값·날짜·링크 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
 - 콘텐츠 항목에는 ID를 두지 않으며 자동 생성도 하지 않는다. 섹션 표시 설정의 고정 키만 사용한다. 재입사 구분은 지원 범위에 포함하지 않는다. 작성 문장은 Markdown을 사용한다. 내부에서는 문단과 text·strong·emphasis·code·link·break 노드로 표현하며 HTML 문자열을 저장하지 않는다.
-- 회사 수준 업무 요약과 프로젝트를 분리한다. 프로젝트는 설명·기술 스택·핵심 역할과 이슈 목록을 가지며, 이슈별 제목·문제 설명·해결 방향·성과를 별도 필드로 둔다.
+- 회사 수준 업무 요약과 프로젝트를 분리한다. 프로젝트는 설명·주요 기여와 이슈 목록을 가지며, 이슈별 제목·문제 설명·해결 방향·성과를 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 근속 기간은 제공된 연월의 입·퇴사월을 포함해 계산한다. `isCurrent: true`일 때만 빌드 기준월을 종료월로 사용한다. 날짜가 없거나 연도만 있으면 근속 기간을 생략하며 누락된 월을 추정하지 않는다.
 - 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
 
@@ -51,8 +51,8 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 ## 화면 계약
 
 - 이름 h1 → 섹션 h2 → 회사 h3 → 프로젝트 h4 → 이슈 h5 → 해결 방향·성과 h6 위계를 유지한다.
-- 프로젝트 순서는 제목 → 프로젝트 설명 → 기술 스택 → 핵심 역할 → 이슈 목록 → 선택적 링크다. 각 이슈는 `이슈1. 제목` 형태의 h5 → 문제 설명 → 해결 방향(번호 목록) → 성과(글머리표)로 표시한다. 긴 제목은 잘라내지 않고 자연스럽게 줄바꿈한다.
-- 프로젝트 설명은 라벨 없이 프로젝트 제목 바로 아래에 4px 간격으로 표시한다. 기술 스택·핵심 역할은 라벨과 내용의 dl로 표시한다. 640px 미만에서는 라벨 위·내용 아래로, 그 이상에서는 라벨 열과 내용 열로 배치한다. 데스크톱 행 사이는 4px이며 모바일은 라벨·내용 사이 4px, 다음 정보 묶음까지 8px다. 설명·기술 스택·핵심 역할은 모두 14px 보조색으로 통일하며 핵심 역할에 크기·색상 강조를 추가하지 않는다. 문장 강조는 YAML에서 선택한 특정 문구의 Markdown strong으로만 표현한다. 기술 스택은 비어 있으면 해당 행을 생략한다. 핵심 역할과 하나 이상의 이슈는 필수다. 모든 블록은 본문 시작점에 맞춰 추가 들여쓰기를 만들지 않는다.
+- 프로젝트 순서는 제목 → 프로젝트 설명 → 주요 기여 → 이슈 목록 → 선택적 링크다. 각 이슈는 `이슈1. 제목` 형태의 h5 → 문제 설명 → 해결 방향(번호 목록) → 성과(글머리표)로 표시한다. 긴 제목은 잘라내지 않고 자연스럽게 줄바꿈한다.
+- 프로젝트 설명은 라벨 없이 프로젝트 제목 바로 아래에 4px 간격으로 표시한다. 주요 기여는 라벨과 내용의 dl로 표시한다. 640px 미만에서는 라벨 위·내용 아래로, 그 이상에서는 라벨 열과 내용 열로 배치하며 라벨·내용 사이는 4px다. 설명·주요 기여는 모두 14px 보조색으로 통일하며 문장 강조는 YAML에서 선택한 특정 문구의 Markdown strong으로만 표현한다. 주요 기여와 하나 이상의 이슈는 필수다. 모든 블록은 본문 시작점에 맞춰 추가 들여쓰기를 만들지 않는다.
 - 경력은 프로젝트만, 요약만, 둘 다 있는 형태를 지원한다. 각 내용은 자신에게 속한 위치에서 한 번만 출력한다.
 - 선택값이 없으면 요소와 여백을 함께 생략한다. 빈 섹션은 제목·구분선도 생략한다.
 - 로고·배지 없는 항목에 고정된 빈 이미지 열을 남기지 않는다. 이미지에는 대체 텍스트를 제공한다.
@@ -79,7 +79,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | profile | name, role, contacts(label·value), links(label·href) |
 | summary | lead?(RichText), format(paragraphs/list), items(content) |
 | experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
-| projects | title, description(프로젝트 설명), role(핵심 역할), technologies, issues, links |
+| projects | title, description(프로젝트 설명), role(주요 기여), issues, links |
 | project issues | title, description(문제 상황), approach(번호 목록), outcomes(성과 목록) |
 | skills | category, items(content: RichText) |
 | education | institution, program, startDate?, endDate?, description? |
@@ -93,7 +93,7 @@ API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 
 
 ## YAML 작성 형식과 변환
 
-작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열·문자열 목록 또는 `{ lead?, body?, items? }` 객체로 작성한다. 문자열의 각 문단은 개별 문단 항목으로 변환하고 목록 형식도 유지한다. 객체의 lead는 프로필의 이름·직무 바로 아래에 표시하는 RichText, body는 빈 줄로 구분한 본문 문자열이며 format: paragraphs의 항목으로 변환한다. items는 format: list의 항목 목록으로 변환하며 body와 동시에 작성하면 오류다. 첫 문장과 본문·목록은 각각 생략할 수 있다. 본문·목록이 없으면 빈 소개 섹션을 생략하되 lead는 프로필에 표시한다. 소개의 visible: false는 lead와 본문을 함께 숨긴다. 프로젝트 issues의 description은 Markdown 문자열, approach·outcomes는 Markdown 문자열 목록으로 작성한다. 프로젝트의 평면 highlights 형식은 지원하지 않는다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
+작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그는 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열·문자열 목록 또는 `{ lead?, body?, items? }` 객체로 작성한다. 문자열의 각 문단은 개별 문단 항목으로 변환하고 목록 형식도 유지한다. 객체의 lead는 프로필의 이름·직무 바로 아래에 표시하는 RichText, body는 빈 줄로 구분한 본문 문자열이며 format: paragraphs의 항목으로 변환한다. items는 format: list의 항목 목록으로 변환하며 body와 동시에 작성하면 오류다. 첫 문장과 본문·목록은 각각 생략할 수 있다. 본문·목록이 없으면 빈 소개 섹션을 생략하되 lead는 프로필에 표시한다. 소개의 visible: false는 lead와 본문을 함께 숨긴다. 프로젝트 issues의 description은 Markdown 문자열, approach·outcomes는 Markdown 문자열 목록으로 작성한다. 프로젝트의 평면 highlights 형식은 지원하지 않는다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
 
 profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목록만 빈 목록으로 변환한다. 입력된 빈 문자열·null·잘못된 타입은 오류이며 전체 파일 누락이나 빈 파일을 정상 빈 데이터로 대체하지 않는다. 날짜는 따옴표로 감싼 YYYY 또는 YYYY-MM 문자열이다. 실제 작성 예시는 README에 둔다.
 
@@ -108,7 +108,7 @@ Markdown은 CommonMark의 문단·굵게·기울임·인라인 코드·직접 �
 
 Astro 페이지는 getResumePageData를 한 번 호출하고 문서 레이아웃에 테마를, React ResumePage에 콘텐츠·표시 설정을 전달한다. React 컴포넌트는 client 지시자 없이 HTML로 렌더링한다. RichText·InlineContent는 구조화된 문장을 React 요소로 표현하며 HTML 문자열을 삽입하지 않는다. 상태 없는 정적 목록은 배열 위치를 React key로 사용하고, 해당 lint 예외만 표현식에 명시한다. 콘텐츠 ID는 추가하지 않는다.
 
-테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개 본문에도 재사용하며 본문을 한 열로 배치한다. 제목 표시를 끈 섹션은 aria-label로 이름을 제공하고 제목을 가리키는 aria-labelledby는 출력하지 않는다. 소개의 첫 문장은 프로필에서 이름·직무 다음, 연락처 앞에 fontSizes.summaryLead의 20px·기울임으로 한 번만 표시하며 소개 본문에서 다시 출력하지 않는다. PDF는 해당 첫 문장에만 skewX(-10deg) 변환을 적용하고 Markdown에는 시각적 스타일을 추가하지 않는다. 이름·직무와 첫 문장, 첫 문장과 연락처 사이는 spacing.content의 12px이다. 소개 본문은 16px·기존 줄 높이·문단 사이 12px이며 들여쓰기는 없다. 목록으로 작성한 경우 항목 사이는 spacing.inline의 8px이다. PDF의 마지막 소개 문단에는 추가 아래 여백을 두지 않아 다음 섹션까지의 간격과 중복하지 않는다. 연락처 행 사이는 spacing.compact의 4px이며 웹·PDF에 동일하게 적용한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
+테마값은 레이아웃의 CSS 변수와 Tailwind @theme inline으로 연결한다. 가로·세로 페이지 여백은 각각 page-x·page-y 토큰을 사용한다. 공통 섹션은 소개 본문에도 재사용하며 본문을 한 열로 배치한다. 제목 표시를 끈 섹션은 aria-label로 이름을 제공하고 제목을 가리키는 aria-labelledby는 출력하지 않는다. 소개의 첫 문장은 프로필에서 이름·직무 다음, 연락처 앞에 fontSizes.summaryLead의 18px·기울임으로 한 번만 표시하며 소개 본문에서 다시 출력하지 않는다. PDF는 해당 첫 문장에만 skewX(-10deg) 변환을 적용하고 Markdown에는 시각적 스타일을 추가하지 않는다. 이름·직무와 첫 문장, 첫 문장과 연락처 사이는 spacing.content의 12px이다. 소개 본문은 16px·기존 줄 높이·문단 사이 12px이며 들여쓰기는 없다. 목록으로 작성한 경우 항목 사이는 spacing.inline의 8px이다. PDF의 마지막 소개 문단에는 추가 아래 여백을 두지 않아 다음 섹션까지의 간격과 중복하지 않는다. 연락처 행 사이는 spacing.compact의 4px이며 웹·PDF에 동일하게 적용한다. 내부 스크롤이나 고정 패널은 사용하지 않는다. 회사 로고는 widths.companyLogo의 32px로 회사명 바로 오른쪽에 spacing.inline의 8px 간격으로 배치한다. 직무·기간은 회사명 아래에서 본문 시작점에 맞춘다.
 
 GitHub Pages는 main push·매월 1일 09:10(Asia/Seoul) 예약 실행·수동 실행의 검사 성공 후 dist artifact를 배포한다. 월별 예약은 워크플로를 main에 push한 뒤 적용되며 웹·PDF·Markdown을 함께 갱신한다. GitHub 예약은 지연될 수 있고 공개 저장소의 60일 비활동으로 비활성화될 수 있으므로 재활성화·수동 실행 방법은 README에 안내한다. SITE_URL과 BASE_PATH는 Pages 메타데이터에서 읽으며 로컬 기본 base는 /다. 로컬 이미지에는 표시 경계에서 BASE_URL을 붙인다. 개인 도메인은 기본 주소 배포 이후에 연결한다.
 

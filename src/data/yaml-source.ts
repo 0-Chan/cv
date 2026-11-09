@@ -88,14 +88,7 @@ export function parseResumeYaml(
         highlights: sentences(highlights, `experiences.${index}.highlights`),
         projects: projects.map(
           (
-            {
-              description,
-              role,
-              issues,
-              technologies,
-              links: projectLinks,
-              ...project
-            },
+            { description, role, issues, links: projectLinks, ...project },
             projectIndex,
           ) => {
             const path = `experiences.${index}.projects.${projectIndex}`;
@@ -115,7 +108,6 @@ export function parseResumeYaml(
                   outcomes: sentences(issue.outcomes, `${issuePath}.outcomes`),
                 };
               }),
-              technologies: labels(technologies),
               links: links(projectLinks),
             };
           },

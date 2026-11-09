@@ -141,13 +141,6 @@ export function renderResumeMarkdown(
               heading(4, project.title),
               ...paragraphs(project.description),
             );
-            if (project.technologies.length) {
-              children.push(
-                paragraph(
-                  `${display.labels.projectTechnologies}: ${project.technologies.map((item) => item.label).join(", ")}`,
-                ),
-              );
-            }
             children.push(
               ...labeledParagraphs(display.labels.projectRole, project.role),
             );

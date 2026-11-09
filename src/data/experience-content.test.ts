@@ -57,7 +57,6 @@ const expectedProject = {
       outcomes: [{ content: paragraph("성과입니다.") }],
     },
   ],
-  technologies: [],
   links: [],
 };
 

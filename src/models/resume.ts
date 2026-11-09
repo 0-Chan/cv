@@ -23,7 +23,6 @@ export const projectSchema = z.strictObject({
   description: richTextSchema,
   role: richTextSchema,
   issues: z.array(projectIssueSchema).min(1),
-  technologies: z.array(labelSchema).default([]),
   links: z.array(webLinkSchema).default([]),
 });
 

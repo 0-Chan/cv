@@ -22,19 +22,7 @@ export function ProjectItem({
           </div>
         </div>
         <dl className="grid min-w-0 grid-cols-1 gap-x-inline gap-y-compact text-meta sm:grid-cols-[max-content_minmax(0,1fr)]">
-          {project.technologies.length > 0 && (
-            <>
-              <dt className="mt-compact font-medium text-muted first:mt-0 sm:mt-0">
-                {labels.projectTechnologies}:
-              </dt>
-              <dd className="min-w-0 text-muted">
-                {project.technologies.map((item) => item.label).join(", ")}
-              </dd>
-            </>
-          )}
-          <dt className="mt-compact font-medium text-muted first:mt-0 sm:mt-0">
-            {labels.projectRole}:
-          </dt>
+          <dt className="font-medium text-muted">{labels.projectRole}:</dt>
           <dd className="min-w-0 text-muted">
             <RichText content={project.role} compact />
           </dd>

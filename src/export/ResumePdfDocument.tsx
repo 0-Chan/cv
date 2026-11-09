@@ -541,16 +541,6 @@ export function ResumePdfDocument({
                           secondary
                           compact
                         />
-                        {project.technologies.length > 0 && (
-                          <Text style={[styles.compact, styles.meta]}>
-                            <Text style={styles.label}>
-                              {display.labels.projectTechnologies}:{" "}
-                            </Text>
-                            {project.technologies
-                              .map((item) => item.label)
-                              .join(", ")}
-                          </Text>
-                        )}
                         <LabeledRich
                           label={display.labels.projectRole}
                           styles={styles}

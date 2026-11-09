@@ -111,10 +111,6 @@
     content: "";
   }
 
-  .resume-highlights > li::marker {
-    color: var(--resume-color-headingStart);
-  }
-
   .resume-project + .resume-project {
     border-top: 1px solid var(--resume-color-border);
     padding-top: calc(var(--resume-space-project) / 2);

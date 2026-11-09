@@ -104,6 +104,7 @@ function createStyles(theme: ResumeTheme) {
     issueTitle: {
       fontSize: pt(fontSizes.issue),
       fontWeight: 700,
+      color: colors.headingStart,
       lineHeight: lineHeights.heading,
       marginBottom: pt(spacing.compact),
     },
@@ -177,7 +178,6 @@ function createStyles(theme: ResumeTheme) {
     compactBulletGap: { marginBottom: pt(spacing.compact) },
     // PDF 문단의 첫 인라인 조각에 걸린 들여쓰기만 적용된다.
     marker: {
-      color: colors.headingStart,
       textIndent: -pt(spacing.listIndent),
     },
     numberedMarker: { textIndent: -pt(spacing.listIndent + spacing.inline) },

@@ -22,7 +22,9 @@ export function ResumeSection({
         className={
           id === "experiences"
             ? "grid min-w-0 gap-company-half"
-            : "grid min-w-0 gap-item"
+            : id === "education" || id === "certifications"
+              ? "grid min-w-0 gap-divided-item-half"
+              : "grid min-w-0 gap-item"
         }
       >
         {children}

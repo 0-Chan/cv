@@ -7,7 +7,7 @@ export function EducationItem({
   education: ResumeData["education"][number];
 }) {
   return (
-    <article className="grid min-w-0 gap-content border-rule not-first:border-t not-first:pt-item">
+    <article className="grid min-w-0 gap-content border-rule not-first:border-t not-first:pt-divided-item-half">
       <header className="grid gap-inline">
         <h3 className="text-project font-bold leading-heading">
           {education.institution}

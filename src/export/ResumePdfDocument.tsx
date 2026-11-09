@@ -104,7 +104,7 @@ function createStyles(theme: ResumeTheme) {
       fontSize: pt(fontSizes.issue),
       fontWeight: 700,
       lineHeight: lineHeights.heading,
-      marginBottom: pt(spacing.content),
+      marginBottom: pt(spacing.inline),
     },
     issueNumber: {
       fontSize: pt(fontSizes.meta),
@@ -114,12 +114,13 @@ function createStyles(theme: ResumeTheme) {
       marginBottom: pt(spacing.compact),
     },
     issueHeading: { marginTop: pt(spacing.issue) },
+    firstIssueHeading: { marginTop: pt(spacing.content) },
     stage: {
       fontSize: pt(fontSizes.meta),
       fontWeight: 600,
       color: colors.muted,
       lineHeight: lineHeights.heading,
-      marginTop: pt(spacing.content),
+      marginTop: pt(spacing.inline),
     },
     label: { fontWeight: 500 },
     companyHeading: {
@@ -153,8 +154,9 @@ function createStyles(theme: ResumeTheme) {
     itemDivider: {
       borderTopWidth: 0.75,
       borderTopColor: colors.border,
-      marginVertical: pt(spacing.item / 2),
+      marginVertical: pt(spacing.dividedItem / 2),
     },
+    item: { marginTop: pt(spacing.item) },
     project: { marginTop: pt(spacing.sectionContent) },
     projectDivider: {
       borderTopWidth: 0.75,
@@ -163,6 +165,8 @@ function createStyles(theme: ResumeTheme) {
     },
     content: { marginTop: pt(spacing.content) },
     paragraph: { marginBottom: pt(spacing.content) },
+    compactParagraph: { marginBottom: pt(spacing.inline) },
+    inline: { marginTop: pt(spacing.inline) },
     compact: { marginTop: pt(spacing.compact) },
     meta: { fontSize: pt(fontSizes.meta), color: colors.muted },
     muted: { color: colors.muted },
@@ -173,8 +177,9 @@ function createStyles(theme: ResumeTheme) {
     bullet: {
       flexDirection: "row",
       gap: pt(spacing.inline),
-      marginBottom: pt(spacing.inline),
     },
+    bulletGap: { marginBottom: pt(spacing.inline) },
+    compactBulletGap: { marginBottom: pt(spacing.compact) },
     marker: {
       color: colors.headingStart,
       width: pt(spacing.listIndent),
@@ -242,10 +247,12 @@ function Inline({ nodes, styles }: { nodes: InlineNode[]; styles: PdfStyles }) {
 function Rich({
   content,
   muted = false,
+  compact = false,
   styles,
 }: {
   content: RichText;
   muted?: boolean;
+  compact?: boolean;
   styles: PdfStyles;
 }) {
   return content.map((paragraph, index) => (
@@ -253,7 +260,9 @@ function Rich({
       // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 시 PDF 문단 목록이다.
       key={index}
       style={[
-        ...(index < content.length - 1 ? [styles.paragraph] : []),
+        ...(index < content.length - 1
+          ? [compact ? styles.compactParagraph : styles.paragraph]
+          : []),
         ...(muted ? [styles.muted] : []),
       ]}
       orphans={2}
@@ -267,24 +276,34 @@ function List({
   items,
   styles,
   ordered = false,
+  compact = false,
 }: {
   items: { content: RichText }[];
   styles: PdfStyles;
   ordered?: boolean;
+  compact?: boolean;
 }) {
   return (
     items.length > 0 && (
-      <View style={styles.content}>
+      <View style={compact ? styles.compact : styles.content}>
         {items.map((item, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 성과·기술 목록이다.
-          <View key={index} style={styles.bullet}>
+          <View
+            // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 성과·기술 목록이다.
+            key={index}
+            style={[
+              styles.bullet,
+              ...(index < items.length - 1
+                ? [compact ? styles.compactBulletGap : styles.bulletGap]
+                : []),
+            ]}
+          >
             <Text
               style={[styles.marker, ...(ordered ? [styles.numberMarker] : [])]}
             >
               {ordered ? `${index + 1}.` : "•"}
             </Text>
             <View style={styles.bulletText}>
-              <Rich styles={styles} content={item.content} />
+              <Rich styles={styles} content={item.content} compact={compact} />
             </View>
           </View>
         ))}
@@ -308,7 +327,10 @@ function LabeledRich({
     <Text
       // biome-ignore lint/suspicious/noArrayIndexKey: PDF의 정적인 메타 문단이다.
       key={index}
-      style={[styles.compact, ...(secondary ? [styles.meta] : [])]}
+      style={[
+        index === 0 ? styles.compact : styles.inline,
+        ...(secondary ? [styles.meta] : []),
+      ]}
       orphans={2}
       widows={2}
     >
@@ -470,7 +492,11 @@ export function ResumePdfDocument({
                         // biome-ignore lint/suspicious/noArrayIndexKey: 이슈 번호는 빌드 시 표시 순서다.
                         <Fragment key={issueIndex}>
                           <View
-                            style={styles.issueHeading}
+                            style={
+                              issueIndex === 0
+                                ? styles.firstIssueHeading
+                                : styles.issueHeading
+                            }
                             wrap={false}
                             minPresenceAhead={54}
                           >
@@ -479,7 +505,11 @@ export function ResumePdfDocument({
                             </Text>
                             <Text style={styles.issueTitle}>{issue.title}</Text>
                           </View>
-                          <Rich styles={styles} content={issue.description} />
+                          <Rich
+                            styles={styles}
+                            content={issue.description}
+                            compact
+                          />
                           <Text style={styles.stage} minPresenceAhead={42}>
                             {display.labels.approach}
                           </Text>
@@ -487,11 +517,16 @@ export function ResumePdfDocument({
                             styles={styles}
                             items={issue.approach}
                             ordered
+                            compact
                           />
                           <Text style={styles.stage} minPresenceAhead={42}>
                             {display.labels.outcomes}
                           </Text>
-                          <List styles={styles} items={issue.outcomes} />
+                          <List
+                            styles={styles}
+                            items={issue.outcomes}
+                            compact
+                          />
                         </Fragment>
                       ))}
                       {project.links.map((link, linkIndex) => (
@@ -515,10 +550,7 @@ export function ResumePdfDocument({
                 // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 기술 분류 목록이다.
                 <Fragment key={index}>
                   <Text
-                    style={[
-                      styles.title,
-                      ...(index > 0 ? [styles.content] : []),
-                    ]}
+                    style={[styles.title, ...(index > 0 ? [styles.item] : [])]}
                     minPresenceAhead={60}
                   >
                     {group.category}

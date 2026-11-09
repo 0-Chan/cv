@@ -68,6 +68,7 @@ export const themeSchema = z.strictObject({
     project: space,
     issue: space,
     item: space,
+    dividedItem: space,
     content: space,
     inline: space,
     compact: space,

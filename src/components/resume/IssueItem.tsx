@@ -13,25 +13,25 @@ export function IssueItem({
   labels: ResumeDisplay["labels"];
 }) {
   return (
-    <section className="grid min-w-0 gap-content">
+    <section className="grid min-w-0 gap-inline">
       <header className="grid gap-compact">
         <p className="text-meta font-medium leading-heading text-muted">
           {labels.issue} {number}
         </p>
         <h5 className="text-issue font-bold leading-heading">{issue.title}</h5>
       </header>
-      <RichText content={issue.description} />
-      <div className="grid gap-inline">
+      <RichText content={issue.description} compact />
+      <div className="grid gap-compact">
         <h6 className="text-meta font-semibold text-muted">
           {labels.approach}
         </h6>
-        <Highlights items={issue.approach} ordered />
+        <Highlights items={issue.approach} ordered compact />
       </div>
-      <div className="grid gap-inline">
+      <div className="grid gap-compact">
         <h6 className="text-meta font-semibold text-muted">
           {labels.outcomes}
         </h6>
-        <Highlights items={issue.outcomes} />
+        <Highlights items={issue.outcomes} compact />
       </div>
     </section>
   );

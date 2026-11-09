@@ -11,21 +11,21 @@ export function ProjectItem({
   labels: ResumeDisplay["labels"];
 }) {
   return (
-    <article className="resume-project grid min-w-0 gap-section-content">
+    <article className="resume-project grid min-w-0 gap-content">
       <header className="grid min-w-0 gap-inline">
         <h4 className="text-project font-bold leading-heading">
           {project.title}
         </h4>
-        <dl className="grid min-w-0 grid-cols-1 gap-x-inline gap-y-compact text-meta sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-y-inline">
-          <dt className="mt-inline font-medium text-muted first:mt-0 sm:mt-0">
+        <dl className="grid min-w-0 grid-cols-1 gap-x-inline gap-y-compact text-meta sm:grid-cols-[max-content_minmax(0,1fr)]">
+          <dt className="mt-compact font-medium text-muted first:mt-0 sm:mt-0">
             {labels.projectDescription}:
           </dt>
           <dd className="min-w-0 text-muted">
-            <RichText content={project.description} />
+            <RichText content={project.description} compact />
           </dd>
           {project.technologies.length > 0 && (
             <>
-              <dt className="mt-inline font-medium text-muted sm:mt-0">
+              <dt className="mt-compact font-medium text-muted sm:mt-0">
                 {labels.projectTechnologies}:
               </dt>
               <dd className="min-w-0 text-muted">
@@ -33,11 +33,11 @@ export function ProjectItem({
               </dd>
             </>
           )}
-          <dt className="mt-inline font-medium text-muted sm:mt-0">
+          <dt className="mt-compact font-medium text-muted sm:mt-0">
             {labels.projectRole}:
           </dt>
           <dd className="min-w-0 text-body">
-            <RichText content={project.role} />
+            <RichText content={project.role} compact />
           </dd>
         </dl>
       </header>

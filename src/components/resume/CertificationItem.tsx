@@ -10,7 +10,7 @@ export function CertificationItem({
   labels: Pick<ResumeDisplay["labels"], "issuedAt">;
 }) {
   return (
-    <article className="flex min-w-0 items-start gap-content border-rule not-first:border-t not-first:pt-item">
+    <article className="flex min-w-0 items-start gap-content border-rule not-first:border-t not-first:pt-divided-item-half">
       {certification.badge && (
         <img
           src={assetUrl(certification.badge.src)}

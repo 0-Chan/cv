@@ -25,6 +25,7 @@
   --spacing-project-half: calc(var(--resume-space-project) / 2);
   --spacing-issue: var(--resume-space-issue);
   --spacing-item: var(--resume-space-item);
+  --spacing-divided-item-half: calc(var(--resume-space-dividedItem) / 2);
   --spacing-content: var(--resume-space-content);
   --spacing-inline: var(--resume-space-inline);
   --spacing-compact: var(--resume-space-compact);

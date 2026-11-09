@@ -13,6 +13,7 @@ import { Fragment, type ReactNode } from "react";
 import type { ResumeDisplay, ResumeTheme } from "../models/presentation";
 import type { ResumeData } from "../models/resume";
 import type { InlineNode, RichText } from "../models/rich-text";
+import { formatExperienceDuration } from "../presentation/experience-duration";
 import {
   formatPeriod,
   getProfileDetails,
@@ -468,135 +469,145 @@ export function ResumePdfDocument({
                 );
               break;
             case "experiences":
-              content = section.content.map((experience, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 재직 이력 목록이다.
-                <View key={index}>
-                  {index > 0 && (
-                    <View style={styles.companyDivider} minPresenceAhead={96} />
-                  )}
-                  <View wrap={false} minPresenceAhead={60}>
-                    <View style={styles.companyHeading}>
-                      <Text style={styles.company}>
-                        {experience.company.name}
-                      </Text>
-                      {experience.company.logo && (
-                        <Image
-                          src={imageSource(experience.company.logo.src)}
-                          style={styles.logo}
-                        />
-                      )}
-                    </View>
-                    <Text>{experience.role}</Text>
-                    {(experience.startDate ||
-                      experience.endDate ||
-                      experience.isCurrent) && (
-                      <Text style={styles.meta}>
-                        {formatPeriod(
-                          experience.startDate,
-                          experience.isCurrent
-                            ? display.labels.current
-                            : experience.endDate,
-                        )}
-                      </Text>
-                    )}
-                    <Tags styles={styles} items={experience.tags} />
-                  </View>
-                  <List styles={styles} items={experience.highlights} />
-                  {experience.projects.map((project, projectIndex) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 목록이다.
-                    <Fragment key={projectIndex}>
-                      {projectIndex > 0 && (
-                        <View
-                          style={styles.projectDivider}
-                          minPresenceAhead={120}
-                        />
-                      )}
-                      <Text
-                        style={[
-                          styles.title,
-                          ...(projectIndex === 0 ? [styles.project] : []),
-                        ]}
+              content = section.content.map((experience, index) => {
+                const duration = formatExperienceDuration(
+                  experience,
+                  display.labels,
+                );
+                return (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 재직 이력 목록이다.
+                  <View key={index}>
+                    {index > 0 && (
+                      <View
+                        style={styles.companyDivider}
                         minPresenceAhead={96}
-                      >
-                        {project.title}
-                      </Text>
-                      <LabeledRich
-                        label={display.labels.projectDescription}
-                        styles={styles}
-                        content={project.description}
                       />
-                      {project.technologies.length > 0 && (
-                        <Text style={[styles.compact, styles.meta]}>
-                          <Text style={styles.label}>
-                            {display.labels.projectTechnologies}:{" "}
-                          </Text>
-                          {project.technologies
-                            .map((item) => item.label)
-                            .join(", ")}
+                    )}
+                    <View wrap={false} minPresenceAhead={60}>
+                      <View style={styles.companyHeading}>
+                        <Text style={styles.company}>
+                          {experience.company.name}
+                        </Text>
+                        {experience.company.logo && (
+                          <Image
+                            src={imageSource(experience.company.logo.src)}
+                            style={styles.logo}
+                          />
+                        )}
+                      </View>
+                      <Text>{experience.role}</Text>
+                      {(experience.startDate ||
+                        experience.endDate ||
+                        experience.isCurrent) && (
+                        <Text style={styles.meta}>
+                          {formatPeriod(
+                            experience.startDate,
+                            experience.isCurrent
+                              ? display.labels.current
+                              : experience.endDate,
+                          )}
+                          {duration && ` (${duration})`}
                         </Text>
                       )}
-                      <LabeledRich
-                        label={display.labels.projectRole}
-                        styles={styles}
-                        content={project.role}
-                      />
-                      {project.issues.map((issue, issueIndex) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: 이슈 번호는 빌드 시 표시 순서다.
-                        <Fragment key={issueIndex}>
+                      <Tags styles={styles} items={experience.tags} />
+                    </View>
+                    <List styles={styles} items={experience.highlights} />
+                    {experience.projects.map((project, projectIndex) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 목록이다.
+                      <Fragment key={projectIndex}>
+                        {projectIndex > 0 && (
                           <View
-                            style={
-                              issueIndex === 0
-                                ? styles.firstIssueHeading
-                                : styles.issueHeading
-                            }
-                            wrap={false}
-                            minPresenceAhead={54}
-                          >
-                            <Text style={styles.issueTitle}>
-                              {display.labels.issue}
-                              {issueIndex + 1}. {issue.title}
-                            </Text>
-                          </View>
-                          <Rich
-                            styles={styles}
-                            content={issue.description}
-                            compact
-                            secondary
+                            style={styles.projectDivider}
+                            minPresenceAhead={120}
                           />
-                          <Text style={styles.stage} minPresenceAhead={42}>
-                            {display.labels.approach}
-                          </Text>
-                          <List
-                            styles={styles}
-                            items={issue.approach}
-                            ordered
-                            compact
-                          />
-                          <Text style={styles.stage} minPresenceAhead={42}>
-                            {display.labels.outcomes}
-                          </Text>
-                          <List
-                            styles={styles}
-                            items={issue.outcomes}
-                            compact
-                          />
-                        </Fragment>
-                      ))}
-                      {project.links.map((link, linkIndex) => (
+                        )}
                         <Text
-                          // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 링크 목록이다.
-                          key={linkIndex}
-                          style={[styles.meta, styles.content]}
+                          style={[
+                            styles.title,
+                            ...(projectIndex === 0 ? [styles.project] : []),
+                          ]}
+                          minPresenceAhead={96}
                         >
-                          <Link src={link.href} style={styles.link}>
-                            {link.label}
-                          </Link>
+                          {project.title}
                         </Text>
-                      ))}
-                    </Fragment>
-                  ))}
-                </View>
-              ));
+                        <LabeledRich
+                          label={display.labels.projectDescription}
+                          styles={styles}
+                          content={project.description}
+                        />
+                        {project.technologies.length > 0 && (
+                          <Text style={[styles.compact, styles.meta]}>
+                            <Text style={styles.label}>
+                              {display.labels.projectTechnologies}:{" "}
+                            </Text>
+                            {project.technologies
+                              .map((item) => item.label)
+                              .join(", ")}
+                          </Text>
+                        )}
+                        <LabeledRich
+                          label={display.labels.projectRole}
+                          styles={styles}
+                          content={project.role}
+                        />
+                        {project.issues.map((issue, issueIndex) => (
+                          // biome-ignore lint/suspicious/noArrayIndexKey: 이슈 번호는 빌드 시 표시 순서다.
+                          <Fragment key={issueIndex}>
+                            <View
+                              style={
+                                issueIndex === 0
+                                  ? styles.firstIssueHeading
+                                  : styles.issueHeading
+                              }
+                              wrap={false}
+                              minPresenceAhead={54}
+                            >
+                              <Text style={styles.issueTitle}>
+                                {display.labels.issue}
+                                {issueIndex + 1}. {issue.title}
+                              </Text>
+                            </View>
+                            <Rich
+                              styles={styles}
+                              content={issue.description}
+                              compact
+                              secondary
+                            />
+                            <Text style={styles.stage} minPresenceAhead={42}>
+                              {display.labels.approach}
+                            </Text>
+                            <List
+                              styles={styles}
+                              items={issue.approach}
+                              ordered
+                              compact
+                            />
+                            <Text style={styles.stage} minPresenceAhead={42}>
+                              {display.labels.outcomes}
+                            </Text>
+                            <List
+                              styles={styles}
+                              items={issue.outcomes}
+                              compact
+                            />
+                          </Fragment>
+                        ))}
+                        {project.links.map((link, linkIndex) => (
+                          <Text
+                            // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 링크 목록이다.
+                            key={linkIndex}
+                            style={[styles.meta, styles.content]}
+                          >
+                            <Link src={link.href} style={styles.link}>
+                              {link.label}
+                            </Link>
+                          </Text>
+                        ))}
+                      </Fragment>
+                    ))}
+                  </View>
+                );
+              });
               break;
             case "skills":
               content = section.content.map((group, index) => (

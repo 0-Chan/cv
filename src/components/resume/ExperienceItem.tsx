@@ -1,5 +1,6 @@
 import type { ResumeDisplay } from "../../models/presentation";
 import type { Experience } from "../../models/resume";
+import { formatExperienceDuration } from "../../presentation/experience-duration";
 import { assetUrl } from "./asset-url";
 import { Highlights } from "./Highlights";
 import { ProjectItem } from "./ProjectItem";
@@ -12,6 +13,7 @@ export function ExperienceItem({
   labels: ResumeDisplay["labels"];
 }) {
   const end = experience.isCurrent ? labels.current : experience.endDate;
+  const duration = formatExperienceDuration(experience, labels);
   return (
     <article className="grid min-w-0 gap-section-content border-rule not-first:border-t not-first:pt-company-half">
       <header className="grid gap-inline">
@@ -47,6 +49,7 @@ export function ExperienceItem({
                       {experience.endDate}
                     </time>
                   )}
+              {duration && ` (${duration})`}
             </p>
           )}
         </div>

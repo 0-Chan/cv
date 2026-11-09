@@ -158,6 +158,12 @@ summary:
 
 문법 오류에는 YAML 파일의 행·열과 오류 코드가, 내용 오류에는 필드 경로가 표시됩니다. 예를 들어 `resume.yaml.experiences.0.startDate`는 첫 번째 회사의 시작일입니다. 숫자로 읽힌 연도는 따옴표로 감싸고, 오타·누락·잘못된 형식을 고친 뒤 다시 빌드합니다.
 
+### 재직 기간
+
+경력의 날짜 뒤에는 입사월과 퇴사월을 포함한 근속 기간을 표시합니다. 예를 들어 `2021-01 ~ 2022-06`은 `2021-01 ~ 2022-06 (1년 6개월)`로 표시됩니다. 같은 달에 입·퇴사하면 `(1개월)`, 정확히 12개월이면 `(1년)`입니다. YAML에 근속 기간을 따로 입력하지 않습니다.
+
+`isCurrent: true`인 경력은 빌드 시 서울 시간대의 현재 월까지 계산합니다. 예를 들어 2026년 11월에 빌드하면 `2023-02 ~ 현재 (3년 10개월)`입니다. 웹·PDF·Markdown은 같은 계산 함수와 빌드 기준월을 사용합니다. 필요한 날짜가 없거나 연도만 입력한 경우, 현재 재직의 입사월이 기준월보다 미래인 경우에는 날짜 표시는 유지하고 괄호의 근속 기간만 생략합니다.
+
 ## 표시와 테마
 
 - `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다. 본문을 유지하고 제목·구분선만 숨기려면 `showTitle: false`를 지정합니다. 생략하면 제목을 표시하며, 현재 소개에만 `false`를 지정했습니다. 제목을 숨겨도 접근성 이름으로 사용할 `title`은 유지합니다. `labels`에서 프로젝트 설명·기술 스택·핵심 역할·이슈·해결 방향·성과의 표시 문구를 바꿉니다.
@@ -170,6 +176,8 @@ summary:
 소개 첫 문장은 웹·PDF에서 20px의 기울임으로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. Markdown에는 문장 내용을 유지합니다.
 
 경력 태그 칩의 배경색은 `colors.tagBackground`에서 조절합니다. 기본값은 `#DEDEDE`입니다. 이슈 제목 색상은 `colors.issueHeading`이며 기본값은 옅은 갈색 `#AD6F46`입니다.
+
+근속 기간의 `년`·`개월` 표시는 `src/config/resume-display.ts`의 `labels.durationYear`·`labels.durationMonth`에서 바꿉니다.
 
 화면의 프로젝트명 그림자는 `shadows.projectTitle`에서 조절합니다. `x`·`y`·`blur`는 px, `opacity`는 0~1이며 색상은 `colors.text`를 따릅니다. 인쇄·고대비 모드와 PDF에는 그림자를 적용하지 않습니다.
 
@@ -207,7 +215,11 @@ PDF와 Markdown은 빌드할 때 생성합니다. 콘텐츠나 섹션 표시 설
 
 ## GitHub Pages 배포
 
-워크플로는 `main` push 시 Node 버전 파일과 npm 12.2.0을 사용해 `npm ci`, `npm run verify`를 실행하고 성공한 `dist`만 배포합니다. 최초 사용 전 저장소 Settings → Pages → Source를 GitHub Actions로 설정해야 합니다. 공개 저장소는 GitHub Free에서 사용할 수 있으며 비공개 저장소는 Pages를 지원하는 요금제가 필요합니다.
+워크플로는 `main` push와 매월 1일 오전 9시 10분(Asia/Seoul)에 Node 버전 파일과 npm 12.2.0을 사용해 `npm ci`, `npm run verify`를 실행하고 성공한 `dist`만 배포합니다. 월별 빌드는 현재 재직의 근속 기간을 웹·PDF·Markdown에 함께 갱신합니다. 이 예약 실행은 워크플로 변경을 기본 브랜치인 `main`에 push한 뒤 적용됩니다. Actions의 **이력서 검사와 Pages 배포 → Run workflow**에서도 수동으로 실행할 수 있습니다.
+
+GitHub의 예약 실행은 지연될 수 있으며, 공개 저장소에서 60일간 활동이 없으면 자동으로 비활성화될 수 있습니다. 비활성화된 경우 Actions의 해당 워크플로에서 **Enable workflow**로 다시 켜고 **Run workflow**로 갱신합니다. 다음 빌드·배포 전까지 사이트에는 마지막으로 빌드한 근속 기간이 유지됩니다. 자세한 제약은 [GitHub의 schedule 안내](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)를 참고하세요.
+
+최초 사용 전 저장소 Settings → Pages → Source를 GitHub Actions로 설정해야 합니다. 공개 저장소는 GitHub Free에서 사용할 수 있으며 비공개 저장소는 Pages를 지원하는 요금제가 필요합니다.
 
 Pages에서 제공하는 origin과 base path를 `SITE_URL`, `BASE_PATH`로 전달하므로 저장소 이름을 코드에 적지 않습니다. 로컬 개발의 기본 경로는 `/`입니다. 하위 경로를 재현하려면 빌드와 preview에 같은 값을 전달합니다.
 

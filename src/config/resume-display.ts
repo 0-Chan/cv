@@ -10,6 +10,8 @@ export const resumeDisplayConfig = {
   ],
   labels: {
     current: "현재",
+    durationYear: "년",
+    durationMonth: "개월",
     issuedAt: "취득",
     projectDescription: "프로젝트 설명",
     projectTechnologies: "기술 스택",

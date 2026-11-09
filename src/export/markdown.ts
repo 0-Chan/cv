@@ -3,6 +3,7 @@ import { toMarkdown } from "mdast-util-to-markdown";
 import type { ResumeDisplay } from "../models/presentation";
 import type { ResumeData } from "../models/resume";
 import type { InlineNode, RichText } from "../models/rich-text";
+import { formatExperienceDuration } from "../presentation/experience-duration";
 import {
   formatPeriod,
   getProfileDetails,
@@ -124,7 +125,11 @@ export function renderResumeMarkdown(
             experience.startDate,
             experience.isCurrent ? display.labels.current : experience.endDate,
           );
-          if (period) children.push(paragraph(period));
+          const duration = formatExperienceDuration(experience, display.labels);
+          if (period)
+            children.push(
+              paragraph(`${period}${duration ? ` (${duration})` : ""}`),
+            );
           if (experience.tags.length) {
             children.push(
               paragraph(experience.tags.map((tag) => tag.label).join(" · ")),

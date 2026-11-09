@@ -20,6 +20,8 @@ export const displaySchema = z.strictObject({
   ).length(sectionIds.length),
   labels: z.strictObject({
     current: textSchema,
+    durationYear: textSchema,
+    durationMonth: textSchema,
     issuedAt: textSchema,
     projectDescription: textSchema,
     projectTechnologies: textSchema,

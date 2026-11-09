@@ -14,6 +14,7 @@ export function ResumeSection({
 }) {
   return (
     <section
+      data-resume-section={id}
       id={showTitle ? undefined : id}
       aria-labelledby={showTitle ? id : undefined}
       aria-label={showTitle ? undefined : title}

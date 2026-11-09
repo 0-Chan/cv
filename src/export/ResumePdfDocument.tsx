@@ -78,6 +78,7 @@ function createStyles(theme: ResumeTheme) {
       transformOrigin: "left bottom",
     },
     section: { marginTop: pt(spacing.section) },
+    afterSummary: { marginTop: pt(spacing.afterSummary) },
     sectionTitle: {
       fontSize: pt(fontSizes.section),
       fontWeight: 700,
@@ -426,6 +427,12 @@ export function ResumePdfDocument({
           ))}
         </View>
         {sections.map((section, sectionIndex) => {
+          const sectionSpacing =
+            sectionIndex === 0
+              ? undefined
+              : sections[sectionIndex - 1].id === "summary"
+                ? styles.afterSummary
+                : styles.section;
           let content: ReactNode;
           switch (section.id) {
             case "summary":
@@ -666,10 +673,7 @@ export function ResumePdfDocument({
           }
           if (!section.showTitle) {
             return (
-              <View
-                key={section.id}
-                style={sectionIndex > 0 ? styles.section : undefined}
-              >
+              <View key={section.id} style={sectionSpacing}>
                 {content}
               </View>
             );
@@ -679,7 +683,7 @@ export function ResumePdfDocument({
               <Text
                 style={[
                   styles.sectionTitle,
-                  ...(sectionIndex > 0 ? [styles.section] : []),
+                  ...(sectionSpacing ? [sectionSpacing] : []),
                 ]}
                 minPresenceAhead={96}
               >

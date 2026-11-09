@@ -36,6 +36,7 @@ export const resumeThemeConfig = {
     pageYMobile: 32,
     pageYDesktop: 64,
     profile: 40,
+    afterSummary: 40,
     section: 80,
     sectionContent: 24,
     company: 64,

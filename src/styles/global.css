@@ -83,6 +83,10 @@
     margin-top: var(--resume-space-profile);
   }
 
+  .resume-page > [data-resume-section="summary"] + section {
+    margin-top: var(--resume-space-afterSummary);
+  }
+
   .paper-surface {
     background-color: var(--paper-color, var(--resume-color-background));
     background-image: var(--paper-texture);

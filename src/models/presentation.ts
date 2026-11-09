@@ -73,6 +73,7 @@ export const themeSchema = z.strictObject({
     pageYMobile: space,
     pageYDesktop: space,
     profile: space,
+    afterSummary: space,
     section: space,
     sectionContent: space,
     company: space,

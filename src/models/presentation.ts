@@ -57,6 +57,14 @@ export const themeSchema = z.strictObject({
     bold: weight,
   }),
   lineHeights: z.strictObject({ heading: size, body: size }),
+  shadows: z.strictObject({
+    projectTitle: z.strictObject({
+      x: z.number(),
+      y: z.number(),
+      blur: space,
+      opacity: z.number().min(0).max(1),
+    }),
+  }),
   spacing: z.strictObject({
     pageXMobile: space,
     pageXDesktop: space,

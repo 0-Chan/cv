@@ -8,6 +8,7 @@
   --text-section: var(--resume-size-section);
   --text-company: var(--resume-size-company);
   --text-project: var(--resume-size-project);
+  --text-shadow-project-title: var(--resume-shadow-projectTitle);
   --text-issue: var(--resume-size-issue);
   --text-body: var(--resume-size-body);
   --text-meta: var(--resume-size-meta);

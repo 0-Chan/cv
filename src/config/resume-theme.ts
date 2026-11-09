@@ -26,6 +26,9 @@ export const resumeThemeConfig = {
   },
   fontWeights: { regular: 400, medium: 500, semibold: 600, bold: 700 },
   lineHeights: { heading: 1.35, body: 1.75 },
+  shadows: {
+    projectTitle: { x: 0, y: 1, blur: 2, opacity: 0.15 },
+  },
   spacing: {
     pageXMobile: 20,
     pageXDesktop: 40,

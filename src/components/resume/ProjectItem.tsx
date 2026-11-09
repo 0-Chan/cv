@@ -13,7 +13,7 @@ export function ProjectItem({
   return (
     <article className="resume-project grid min-w-0 gap-content">
       <header className="grid min-w-0 gap-inline">
-        <h4 className="text-project font-bold leading-heading">
+        <h4 className="text-project font-bold leading-heading text-shadow-project-title print:text-shadow-none forced-colors:text-shadow-none">
           {project.title}
         </h4>
         <dl className="grid min-w-0 grid-cols-1 gap-x-inline gap-y-compact text-meta sm:grid-cols-[max-content_minmax(0,1fr)]">

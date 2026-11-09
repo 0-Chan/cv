@@ -14,12 +14,10 @@ export function IssueItem({
 }) {
   return (
     <section className="grid min-w-0 gap-inline">
-      <header className="grid gap-compact">
-        <p className="text-meta font-medium leading-heading text-muted">
-          {labels.issue} {number}
-        </p>
-        <h5 className="text-issue font-bold leading-heading">{issue.title}</h5>
-      </header>
+      <h5 className="text-issue font-bold leading-heading">
+        {labels.issue}
+        {number}. {issue.title}
+      </h5>
       <RichText content={issue.description} compact />
       <div className="grid gap-compact">
         <h6 className="text-meta font-semibold text-muted">

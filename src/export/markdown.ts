@@ -148,8 +148,10 @@ export function renderResumeMarkdown(
             );
             project.issues.forEach((issue, index) => {
               children.push(
-                paragraph(`${display.labels.issue} ${index + 1}`),
-                heading(5, issue.title),
+                heading(
+                  5,
+                  `${display.labels.issue}${index + 1}. ${issue.title}`,
+                ),
                 ...paragraphs(issue.description),
                 heading(6, display.labels.approach),
                 ...highlights(issue.approach, true),

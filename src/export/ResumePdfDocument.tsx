@@ -106,13 +106,6 @@ function createStyles(theme: ResumeTheme) {
       lineHeight: lineHeights.heading,
       marginBottom: pt(spacing.inline),
     },
-    issueNumber: {
-      fontSize: pt(fontSizes.meta),
-      fontWeight: 500,
-      color: colors.muted,
-      lineHeight: lineHeights.heading,
-      marginBottom: pt(spacing.compact),
-    },
     issueHeading: { marginTop: pt(spacing.issue) },
     firstIssueHeading: { marginTop: pt(spacing.content) },
     stage: {
@@ -494,10 +487,10 @@ export function ResumePdfDocument({
                             wrap={false}
                             minPresenceAhead={54}
                           >
-                            <Text style={styles.issueNumber}>
-                              {display.labels.issue} {issueIndex + 1}
+                            <Text style={styles.issueTitle}>
+                              {display.labels.issue}
+                              {issueIndex + 1}. {issue.title}
                             </Text>
-                            <Text style={styles.issueTitle}>{issue.title}</Text>
                           </View>
                           <Rich
                             styles={styles}

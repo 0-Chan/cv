@@ -50,7 +50,7 @@ export const resumeThemeConfig = {
   widths: {
     content: 840,
     companyLogo: 32,
-    certificationBadge: 96,
+    certificationBadge: 128,
     sectionAccent: 53,
   },
   colors: {

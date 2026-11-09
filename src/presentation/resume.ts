@@ -1,5 +1,6 @@
 import type { ResumeDisplay } from "../models/presentation";
 import type { ResumeData } from "../models/resume";
+import type { InlineNode, RichText } from "../models/rich-text";
 
 export type VisibleResumeSection = {
   [Id in ResumeDisplay["sections"][number]["id"]]: {
@@ -80,6 +81,21 @@ export function getProfileDetails(profile: ResumeData["profile"]) {
     ...links.filter((link) => link.protocol === "tel:"),
     ...links.filter((link) => link.protocol === "mailto:"),
   ];
+}
+
+/** 기술 분류의 항목을 서식을 유지한 쉼표 구분 문단으로 표시한다. */
+export function getSkillGroupContent(
+  group: ResumeData["skills"][number],
+): RichText {
+  const children: InlineNode[] = [];
+  for (const [itemIndex, item] of group.items.entries()) {
+    if (itemIndex > 0) children.push({ type: "text", text: ", " });
+    for (const [paragraphIndex, paragraph] of item.content.entries()) {
+      if (paragraphIndex > 0) children.push({ type: "text", text: " " });
+      children.push(...paragraph.children);
+    }
+  }
+  return children.length ? [{ type: "paragraph", children }] : [];
 }
 
 export function formatPeriod(start?: string, end?: string): string {

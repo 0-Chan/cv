@@ -40,13 +40,13 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 개발 패널은 `src/dev`의 React TSX와 Shadow DOM 스타일로 구현한다. Astro integration의 `astro:config:setup`에서 `command === "dev"`일 때만 React 개발 런타임 초기화와 DEV 분기의 동적 import를 주입한다. 프로덕션 빌드와 preview에는 패널 진입 스크립트를 주입하지 않는다. 패널은 전달받은 초기 설정과 검증된 브라우저 저장값을 사용하며 컴포넌트에서 이력서 데이터에 접근하지 않는다. 조정값의 저장 키는 `dev:paper-texture`, 위치·열림 상태는 `dev:paper-texture:ui`다. 480px 이하에서는 접힌 상태로 시작하고 위치를 화면 안으로 제한한다.
 
-기본값은 시스템 한국어 폰트, 본문 16px·줄 높이 1.75, 최대 너비 840px이다. 좌우 여백은 모바일 20px·md 이상 40px로 본문의 최대 너비는 760px이다. 화면 크기에 관계없이 제목과 본문을 한 열로 배치한다. 소개·경력·기술 목록의 들여쓰기는 spacing.listIndent의 12px을 사용한다. 외부 폰트 요청은 없다.
+기본값은 시스템 한국어 폰트, 본문 16px·줄 높이 1.75, 최대 너비 840px이다. 좌우 여백은 모바일 20px·md 이상 40px로 본문의 최대 너비는 760px이다. 화면 크기에 관계없이 제목과 본문을 한 열로 배치한다. 소개·경력 목록의 들여쓰기는 spacing.listIndent의 12px을 사용한다. 기술은 들여쓰기 없는 쉼표 구분 문단으로 표시한다. 외부 폰트 요청은 없다.
 
 이름은 40px, 섹션 제목은 32px, 회사명은 26px, 프로젝트·기관 제목은 24px, 기술 분류 제목은 fontSizes.skillCategory의 20px, 자격 이름은 fontSizes.certification의 20px, 이슈 제목은 fontSizes.issue의 20px이며 제목 굵기는 700이다. 이슈 번호는 제목과 같은 스타일, 이슈 설명은 fontSizes.meta의 14px·colors.muted로 표시한다. 해결 방향·성과 제목은 fontSizes.body의 16px·700 굵기와 colors.text의 진한 본문색으로 표시한다. 섹션 제목은 colors.headingStart에서 headingEnd로 이어지는 정적 그라데이션, 회사명은 headingStart, 이슈 제목은 issueHeading의 옅은 갈색 #AD6F46, 링크는 link를 사용한다. 목록의 숫자·글머리표는 별도 강조색 없이 본문의 색상을 따른다. colors.accent의 #FF7500은 섹션 구분선의 짧은 장식에 사용한다. 인쇄·고대비 모드와 그라데이션 미지원 환경에는 단색 제목을 제공한다.
 
 프로필과 첫 번째 표시 섹션 사이는 spacing.profile의 40px이며, 소개 다음 섹션 사이는 spacing.afterSummary의 40px이다. 소개가 숨겨지거나 비어 있으면 이 간격은 적용하지 않는다. 나머지 섹션 사이는 spacing.section의 80px이다. 웹·인쇄는 표시된 섹션의 순서를 따르며 PDF도 같은 테마를 사용한다. 섹션 제목과 내용은 sectionContent의 24px이다. 회사 사이는 company의 64px, 프로젝트 사이는 project의 48px 공간 중앙에 얇은 선을 둔다. 같은 프로젝트의 이슈 사이는 issue의 32px 여백만 사용하며 구분선을 추가하지 않는다. 기술 분류 사이는 item의 40px이다. 학력·자격 사이는 dividedItem의 72px을 구분선 위아래 36px씩 나눠 적용하며, 부모 간격과 자식 여백을 더한 값이 설정값과 일치한다. 위 간격은 구분선 두께를 제외한다.
 
-프로젝트 정보와 첫 이슈는 content의 12px, 이슈 제목과 설명은 compact의 4px로 구분한다. 설명과 해결 방향·성과 블록 사이 및 문단 사이는 inline의 8px, 단계 제목과 목록·목록 항목은 compact의 4px이다. 이슈 번호와 제목은 `이슈1. 제목` 형식의 한 제목으로 표시한다. RichText·Highlights의 compact 옵션은 프로젝트에서만 사용하며 소개·회사 요약·기술 목록의 기본 내부 간격은 유지한다. 본문 강조는 600 굵기로 표시하며, 실제 콘텐츠의 소개·제품 설명·역할은 문장 전체 강조를 사용하지 않는다. 성과에서는 짧은 핵심 구절을 선택적으로 강조하고 기술 설명에서는 기술명만 강조한다.
+프로젝트 정보와 첫 이슈는 content의 12px, 이슈 제목과 설명은 compact의 4px로 구분한다. 설명과 해결 방향·성과 블록 사이 및 문단 사이는 inline의 8px, 단계 제목과 목록·목록 항목은 compact의 4px이다. 이슈 번호와 제목은 `이슈1. 제목` 형식의 한 제목으로 표시한다. RichText·Highlights의 compact 옵션은 프로젝트에서만 사용하며 소개·회사 요약의 기본 내부 간격은 유지한다. 본문 강조는 600 굵기로 표시하며, 실제 콘텐츠의 소개·제품 설명·역할은 문장 전체 강조를 사용하지 않는다. 성과에서는 짧은 핵심 구절을 선택적으로 강조하고 기술 설명에서는 기술명만 강조한다.
 
 ## 화면 계약
 
@@ -117,7 +117,7 @@ GitHub Pages는 main push·매월 1일 09:10(Asia/Seoul) 예약 실행·수동 �
 
 ## 기술·학력·자격 표시
 
-ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
+ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. 기술은 분류 제목 아래의 항목을 getSkillGroupContent로 `, `로 연결한 한 문단으로 표시하며 글머리표·들여쓰기를 사용하지 않는다. 웹·PDF·Markdown이 같은 문단을 사용하며 Markdown 서식·링크를 보존한다. 항목 내부의 여러 문단은 공백으로 연결하고 폭이 부족하면 자연스럽게 줄바꿈한다. YAML 작성 형식과 분류별 간격은 유지한다.
 
 각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 취득 사유는 선택 필드 reason의 Markdown 문자열을 로더에서 RichText로 변환하고 각 항목의 확인 링크 다음에 표시한다. 표시 문구는 labels.certificationReason에서 관리하며 웹·PDF는 14px 회색 텍스트, Markdown은 라벨과 문단으로 출력한다. 사유를 생략하면 라벨·여백도 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 128px 영역에서 비율을 유지하며 모든 화면에서 자격 텍스트 왼쪽 상단에 정렬한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.
 
@@ -125,7 +125,7 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 
 `src/presentation/resume.ts`의 getVisibleResumeSections는 검증된 ResumeData·ResumeDisplay에서 표시할 섹션·제목·내용을 반환한다. 화면·PDF·Markdown은 이 함수를 공유해 순서·숨김·빈 목록 처리를 일치시킨다. 프로필 연락처는 getProfileDetails로 관리하며 콘텐츠 모델은 바꾸지 않는다. HTTP(S) 프로필 링크를 먼저 각각 표시하고 contacts의 값은 작성 순서대로 ` / `로 연결한 일반 텍스트 한 행에 표시한다. contacts가 비어 있으면 행을 생략하고, 한 항목이면 구분자를 붙이지 않는다. 공간이 부족하면 줄바꿈하며 기존 tel·mailto 링크는 뒤에 별도 항목으로 유지한다.
 
-정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 목록과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
+정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 본문 문단과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 
 ResumeExport는 전달받은 프로필 이름으로 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 모바일·인쇄에서는 숨긴다. native details/summary의 키보드 동작을 사용하고, 작은 클라이언트 스크립트가 Escape·바깥 클릭·포커스 이탈 시 닫기와 window.print를 담당한다. React hydration과 PDF 생성 라이브러리를 클라이언트에 추가하지 않는다. 인쇄 CSS는 html·body 배경을 #fff로 지정해 종이 질감을 제거하고 제목은 단색으로 표시한다. 다운로드 파일은 데이터·표시·테마와 함께 재빌드·재배포할 때 갱신된다.
 

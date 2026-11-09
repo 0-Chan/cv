@@ -17,6 +17,7 @@ import { formatExperienceDuration } from "../presentation/experience-duration";
 import {
   formatPeriod,
   getProfileDetails,
+  getSkillGroupContent,
   getVisibleResumeSections,
   getVisibleSummaryLead,
 } from "../presentation/resume";
@@ -619,7 +620,7 @@ export function ResumePdfDocument({
                   >
                     {group.category}
                   </Text>
-                  <List styles={styles} items={group.items} />
+                  <Rich styles={styles} content={getSkillGroupContent(group)} />
                 </Fragment>
               ));
               break;

@@ -7,6 +7,7 @@ import { formatExperienceDuration } from "../presentation/experience-duration";
 import {
   formatPeriod,
   getProfileDetails,
+  getSkillGroupContent,
   getVisibleResumeSections,
   getVisibleSummaryLead,
 } from "../presentation/resume";
@@ -167,7 +168,10 @@ export function renderResumeMarkdown(
         break;
       case "skills":
         for (const group of section.content) {
-          children.push(heading(3, group.category), ...highlights(group.items));
+          children.push(
+            heading(3, group.category),
+            ...paragraphs(getSkillGroupContent(group)),
+          );
         }
         break;
       case "education":

@@ -190,13 +190,13 @@ function createStyles(theme: ResumeTheme) {
       textIndent: -pt(spacing.listIndent),
     },
     numberedMarker: { textIndent: -pt(spacing.listIndent + spacing.inline) },
-    tags: {
+    companyMeta: {
       flexDirection: "row",
       flexWrap: "wrap",
-      alignItems: "flex-start",
+      alignItems: "center",
       gap: pt(spacing.inline),
-      marginTop: pt(spacing.inline),
     },
+    period: { maxWidth: "100%", lineHeight: 1 },
     tag: {
       maxWidth: "100%",
       backgroundColor: colors.tagBackground,
@@ -371,18 +371,12 @@ function Tags({
   items: { label: string }[];
   styles: PdfStyles;
 }) {
-  return (
-    items.length > 0 && (
-      <View style={styles.tags}>
-        {items.map((item, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 태그 목록이다.
-          <View key={index} style={styles.tag} wrap={false}>
-            <Text style={styles.tagText}>{item.label}</Text>
-          </View>
-        ))}
-      </View>
-    )
-  );
+  return items.map((item, index) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 태그 목록이다.
+    <View key={index} style={styles.tag} wrap={false}>
+      <Text style={styles.tagText}>{item.label}</Text>
+    </View>
+  ));
 }
 
 export function ResumePdfDocument({
@@ -498,18 +492,25 @@ export function ResumePdfDocument({
                       <Text>{experience.role}</Text>
                       {(experience.startDate ||
                         experience.endDate ||
-                        experience.isCurrent) && (
-                        <Text style={styles.meta}>
-                          {formatPeriod(
-                            experience.startDate,
-                            experience.isCurrent
-                              ? display.labels.current
-                              : experience.endDate,
+                        experience.isCurrent ||
+                        experience.tags.length > 0) && (
+                        <View style={styles.companyMeta}>
+                          {(experience.startDate ||
+                            experience.endDate ||
+                            experience.isCurrent) && (
+                            <Text style={[styles.meta, styles.period]}>
+                              {formatPeriod(
+                                experience.startDate,
+                                experience.isCurrent
+                                  ? display.labels.current
+                                  : experience.endDate,
+                              )}
+                              {duration && ` (${duration})`}
+                            </Text>
                           )}
-                          {duration && ` (${duration})`}
-                        </Text>
+                          <Tags styles={styles} items={experience.tags} />
+                        </View>
                       )}
-                      <Tags styles={styles} items={experience.tags} />
                     </View>
                     <List styles={styles} items={experience.highlights} />
                     {experience.projects.map((project, projectIndex) => (

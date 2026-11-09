@@ -18,7 +18,7 @@ export function ProfileHeader({
         <p className="text-role text-muted">{profile.role}</p>
       </div>
       {summaryLead && (
-        <div className="text-summary-lead italic">
+        <div className="resume-lead-callout text-summary-lead">
           <RichText content={summaryLead} />
         </div>
       )}

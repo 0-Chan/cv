@@ -8,7 +8,9 @@ profile:
     "https://github.com/0-chan": https://github.com/0-chan
 
 summary:
-  lead: 복잡한 데이터를 이해하기 쉽게 표현하고, 안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
+  lead: |-
+    복잡한 데이터를 이해하기 쉽게 표현하고,\
+    안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
   body: |
     ROS1, roslibjs 기반 로봇 제어 UI 개발과 제조 현장 6곳의 로봇 시스템 구축·검증을 경험했습니다.
 

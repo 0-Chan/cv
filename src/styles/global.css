@@ -89,6 +89,15 @@
     margin-top: var(--resume-space-afterSummary);
   }
 
+  .resume-lead-callout {
+    break-inside: avoid;
+    border-left: 3px solid var(--resume-color-accent);
+    border-radius: 4px;
+    background-color: var(--resume-color-surface);
+    padding: var(--resume-space-content);
+    color: var(--resume-color-text);
+  }
+
   .paper-surface {
     background-color: var(--paper-color, var(--resume-color-background));
     background-image: var(--paper-texture);
@@ -212,6 +221,17 @@
     display: block;
     max-width: none;
     padding: 0;
+  }
+
+  .resume-highlights {
+    padding-left: calc(
+      var(--resume-space-listIndent) +
+      var(--resume-space-inline)
+    );
+  }
+
+  .resume-page > [data-resume-section="education"] {
+    break-inside: avoid;
   }
 
   h1,

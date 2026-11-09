@@ -74,11 +74,14 @@ function createStyles(theme: ResumeTheme) {
     role: { fontSize: pt(fontSizes.role), color: colors.muted },
     contact: { fontSize: pt(fontSizes.meta) },
     contactGap: { marginBottom: pt(spacing.compact) },
-    // 나눔고딕에 기울임체가 없어 소개 첫 문장에만 기울임 변환을 적용한다.
     summaryLead: {
       fontSize: pt(fontSizes.summaryLead),
-      transform: "skewX(-10deg)",
-      transformOrigin: "left bottom",
+      color: colors.text,
+      backgroundColor: colors.surface,
+      borderLeftWidth: pt(3),
+      borderLeftColor: colors.accent,
+      borderRadius: pt(4),
+      padding: pt(spacing.content),
     },
     section: { marginTop: pt(spacing.section) },
     afterSummary: { marginTop: pt(spacing.afterSummary) },
@@ -410,6 +413,7 @@ export function ResumePdfDocument({
           </View>
           {summaryLead && (
             <View
+              wrap={false}
               style={[
                 styles.summaryLead,
                 ...(details.length ? [styles.paragraph] : []),
@@ -570,7 +574,7 @@ export function ResumePdfDocument({
                               compact
                               secondary
                             />
-                            <Text style={styles.stage} minPresenceAhead={42}>
+                            <Text style={styles.stage} minPresenceAhead={72}>
                               {display.labels.approach}
                             </Text>
                             <List
@@ -579,7 +583,7 @@ export function ResumePdfDocument({
                               ordered
                               compact
                             />
-                            <Text style={styles.stage} minPresenceAhead={42}>
+                            <Text style={styles.stage} minPresenceAhead={72}>
                               {display.labels.outcomes}
                             </Text>
                             <List

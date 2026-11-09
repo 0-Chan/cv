@@ -440,7 +440,9 @@ export function ResumePdfDocument({
                           ...(section.content.lead && index === 0
                             ? [styles.content]
                             : []),
-                          styles.paragraph,
+                          ...(index < section.content.items.length - 1
+                            ? [styles.paragraph]
+                            : []),
                         ]}
                       >
                         <Rich styles={styles} content={item.content} />

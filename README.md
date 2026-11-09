@@ -129,15 +129,18 @@ summary:
   - 두 번째 소개 문장입니다.
 ```
 
-첫 문장 뒤에 목록을 이어 쓰려면 `lead`와 `items`를 구분합니다. `lead`와 목록은 각각 생략할 수 있습니다.
+첫 문장과 본문을 구분하려면 `lead`와 `body`를 사용합니다. 본문은 빈 줄로 문단을 구분합니다.
 
 ```yaml
 summary:
   lead: 소개의 첫 문장입니다.
-  items:
-    - 첫 번째 요약입니다.
-    - 두 번째 요약입니다.
+  body: |
+    첫 번째 소개 문단입니다.
+
+    두 번째 소개 문단입니다.
 ```
+
+첫 문장과 본문은 각각 생략할 수 있습니다. 첫 문장 뒤에 목록을 표시하려면 `body` 대신 `items`에 문자열 목록을 작성합니다. `body`와 `items`는 동시에 사용할 수 없습니다.
 
 - 회사 요약(`highlights`)과 프로젝트(`projects`)는 각각 생략할 수 있습니다. 배열에 적은 순서가 유지됩니다.
 - 날짜는 `startDate: "2024"`, `endDate: "2024-03"`처럼 따옴표를 붙인 연도·연월입니다. 일 단위는 지원하지 않습니다.
@@ -160,7 +163,7 @@ summary:
 
 프로필과 첫 번째 표시 섹션 사이 간격은 `spacing.profile`로 조절하며 기본값은 40px입니다. 나머지 간격은 `spacing.section`·`company`·`project`·`issue`로 묶음별 조절합니다. `spacing.item`은 기술 분류 사이, `spacing.dividedItem`은 학력·자격 구분선 양쪽을 합친 간격이며 구분선 두께는 제외합니다.
 
-연락처 행 사이는 `spacing.compact`의 4px입니다. 소개의 첫 문장과 목록은 `spacing.content`의 12px, 목록 항목은 `spacing.inline`의 8px로 구분합니다. 소개 제목을 숨겨도 프로필에서 소개 본문까지 40px, 다음 섹션까지 80px 간격은 유지합니다. 웹·PDF·Markdown은 같은 소개 내용과 제목 표시 설정을 사용합니다.
+연락처 행 사이는 `spacing.compact`의 4px입니다. 소개의 첫 문장과 본문, 본문 문단 사이는 `spacing.content`의 12px로 구분합니다. 본문은 들여쓰기 없이 표시하며 목록으로 작성한 경우에만 `spacing.inline`의 8px 간격을 사용합니다. 소개 제목을 숨겨도 프로필에서 소개 본문까지 40px, 다음 섹션까지 80px 간격은 유지합니다. 웹·PDF·Markdown은 같은 소개 내용과 제목 표시 설정을 사용합니다.
 
 소개 첫 문장은 웹·PDF에서 20px의 기울임으로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. Markdown에는 문장 내용을 유지합니다.
 

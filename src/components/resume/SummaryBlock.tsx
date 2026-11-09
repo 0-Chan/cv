@@ -25,7 +25,7 @@ export function SummaryBlock({
           (summary.format === "list" ? (
             <Highlights items={summary.items} />
           ) : (
-            <div className="grid min-w-0 gap-item">
+            <div className="grid min-w-0 gap-content">
               {summary.items.map((item, index) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 소개 문단이다.
                 <RichText key={index} content={item.content} />

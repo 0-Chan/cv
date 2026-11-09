@@ -41,6 +41,8 @@ export function parseResumeYaml(
   const data = parseConfig(resumeAuthoringSchema, raw, filename);
   const markdown = (value: string, path: string) =>
     parseResumeMarkdown(value, `${filename}.${path}`);
+  const paragraphs = (value: string, path: string) =>
+    markdown(value, path).map((paragraph) => ({ content: [paragraph] }));
   const sentences = (values: string[], path: string) =>
     values.map((value, index) => ({
       content: markdown(value, `${path}.${index}`),
@@ -52,9 +54,7 @@ export function parseResumeYaml(
   if (typeof data.summary === "string") {
     summary = {
       format: "paragraphs",
-      items: markdown(data.summary, "summary").map((paragraph) => ({
-        content: [paragraph],
-      })),
+      items: paragraphs(data.summary, "summary"),
     };
   } else if (data.summary === undefined || Array.isArray(data.summary)) {
     summary = {
@@ -62,12 +62,12 @@ export function parseResumeYaml(
       items: sentences(data.summary ?? [], "summary"),
     };
   } else {
+    const { lead, body, items } = data.summary;
     summary = {
-      ...(data.summary.lead === undefined
-        ? {}
-        : { lead: markdown(data.summary.lead, "summary.lead") }),
-      format: "list",
-      items: sentences(data.summary.items, "summary.items"),
+      ...(lead === undefined ? {} : { lead: markdown(lead, "summary.lead") }),
+      ...(body === undefined
+        ? { format: "list", items: sentences(items ?? [], "summary.items") }
+        : { format: "paragraphs", items: paragraphs(body, "summary.body") }),
     };
   }
   return {

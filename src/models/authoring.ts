@@ -75,10 +75,19 @@ export const resumeAuthoringSchema = z.strictObject({
     .union([
       textSchema,
       strings,
-      z.strictObject({
-        lead: textSchema.optional(),
-        items: strings.default([]),
-      }),
+      z
+        .strictObject({
+          lead: textSchema.optional(),
+          body: textSchema.optional(),
+          items: strings.optional(),
+        })
+        .refine(
+          ({ body, items }) => body === undefined || items === undefined,
+          {
+            path: ["body"],
+            message: "소개 본문은 body 또는 items 중 하나만 작성합니다.",
+          },
+        ),
     ])
     .optional(),
   experiences: z.array(experience).default([]),

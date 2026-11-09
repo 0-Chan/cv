@@ -54,7 +54,7 @@ export function ExperienceItem({
           <ul className="flex flex-wrap gap-inline text-tag text-muted">
             {experience.tags.map((tag, index) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 태그 목록이다.
-              <li key={index} className="bg-surface px-inline">
+              <li key={index} className="bg-tag-surface px-inline">
                 {tag.label}
               </li>
             ))}

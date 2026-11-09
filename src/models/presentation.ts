@@ -83,6 +83,7 @@ export const themeSchema = z.strictObject({
   colors: z.strictObject({
     background: color,
     surface: color,
+    tagBackground: color,
     text: color,
     muted: color,
     border: color,

@@ -39,6 +39,7 @@
   --container-resume: var(--resume-width-content);
   --color-page: var(--resume-color-background);
   --color-surface: var(--resume-color-surface);
+  --color-tag-surface: var(--resume-color-tagBackground);
   --color-ink: var(--resume-color-text);
   --color-muted: var(--resume-color-muted);
   --color-rule: var(--resume-color-border);

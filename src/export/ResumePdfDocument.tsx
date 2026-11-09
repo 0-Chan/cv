@@ -189,7 +189,7 @@ function createStyles(theme: ResumeTheme) {
     tag: {
       fontSize: pt(fontSizes.tag),
       color: colors.muted,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.tagBackground,
       paddingHorizontal: pt(spacing.inline),
     },
   });

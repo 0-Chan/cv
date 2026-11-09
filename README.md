@@ -173,7 +173,7 @@ summary:
 
 외부 프로필 링크는 별도 행에 표시하고, `profile.contacts`의 값은 작성 순서대로 ` / `로 연결해 한 행에 표시합니다. 전화번호와 일반 텍스트 이메일은 각각 `contacts`에 작성하면 됩니다. 공간이 부족하면 자연스럽게 줄바꿈합니다. 행 사이는 `spacing.compact`의 4px입니다. 이름·직무와 소개 첫 문장, 첫 문장과 연락처, 소개 본문 문단 사이는 `spacing.content`의 12px로 구분합니다. 본문은 들여쓰기 없이 표시하며 목록으로 작성한 경우에만 `spacing.inline`의 8px 간격을 사용합니다. 프로필의 마지막 연락처에서 소개 본문까지, 소개에서 다음 섹션까지 각각 40px 간격을 유지합니다. 웹·PDF·Markdown은 이름·직무 → 소개 첫 문장 → 연락처 → 소개 본문 순서로 표시합니다.
 
-소개 첫 문장은 웹·PDF·인쇄에서 18px 일반체의 콜아웃으로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. 배경은 `colors.surface`, 3px 왼쪽 선은 `colors.accent`, 글자는 `colors.text`를 사용합니다. 모서리는 4px이고 내부 여백은 `spacing.content`의 12px입니다. 위 예시처럼 YAML 여러 줄 문자열에서 쉼표 뒤에 역슬래시를 넣으면 명시적으로 줄을 나눕니다. Markdown 복사에도 같은 줄바꿈을 유지하고 좁은 화면에서는 문장이 추가로 자연스럽게 줄바꿈됩니다.
+소개 첫 문장은 웹·PDF·인쇄에서 페이지 배경 위에 18px 일반체로 표시하며 크기는 `fontSizes.summaryLead`로 조절합니다. 글자는 `colors.text`, 내부 여백은 `spacing.content`의 12px를 사용하며 별도 배경색·테두리·둥근 모서리는 적용하지 않습니다. 위 예시처럼 YAML 여러 줄 문자열에서 쉼표 뒤에 역슬래시를 넣으면 명시적으로 줄을 나눕니다. Markdown 복사에도 같은 줄바꿈을 유지하고 좁은 화면에서는 문장이 추가로 자연스럽게 줄바꿈됩니다.
 
 경력 태그 칩의 배경색은 `colors.tagBackground`에서 조절합니다. 기본값은 `#DEDEDE`입니다. 이슈 제목 색상은 `colors.issueHeading`이며 기본값은 옅은 갈색 `#AD6F46`입니다.
 

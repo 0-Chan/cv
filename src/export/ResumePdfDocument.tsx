@@ -77,10 +77,6 @@ function createStyles(theme: ResumeTheme) {
     summaryLead: {
       fontSize: pt(fontSizes.summaryLead),
       color: colors.text,
-      backgroundColor: colors.surface,
-      borderLeftWidth: pt(3),
-      borderLeftColor: colors.accent,
-      borderRadius: pt(4),
       padding: pt(spacing.content),
     },
     section: { marginTop: pt(spacing.section) },

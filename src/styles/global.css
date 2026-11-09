@@ -91,9 +91,6 @@
 
   .resume-lead-callout {
     break-inside: avoid;
-    border-left: 3px solid var(--resume-color-accent);
-    border-radius: 4px;
-    background-color: var(--resume-color-surface);
     padding: var(--resume-space-content);
     color: var(--resume-color-text);
   }

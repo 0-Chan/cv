@@ -93,20 +93,6 @@ experiences:
     highlights:
       - ROS1·roslibjs 기반 **로봇 진단 대시보드** 개발 및 센서 데이터 시각화
       - 서빙 로봇의 이동 제어·상태 조회 웹 UI 개발 및 태블릿용 PWA 적용
-  - company: 인아오리엔탈모터(주)
-    logo:
-      src: /images/resume/ina-oriental-motor.png
-      alt: 인아오리엔탈모터 로고
-    role: 필드 엔지니어
-    startDate: "2019-08"
-    endDate: "2021-01"
-    isCurrent: false
-    tags:
-      - 협동 로봇(UR·두산로보틱스)
-    highlights:
-      - Python SDK 기반 로봇 제어 로직 구현 및 PLC·3D Vision 장비 연동
-      - "**6개 제조 현장**의 로봇 시스템 설치·가동 검증 및 작업자 교육"
-
 skills:
   프론트엔드:
     - >-

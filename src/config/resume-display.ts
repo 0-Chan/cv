@@ -11,5 +11,11 @@ export const resumeDisplayConfig = {
   labels: {
     current: "현재",
     issuedAt: "취득",
+    projectDescription: "프로젝트 설명",
+    projectTechnologies: "기술 스택",
+    projectRole: "핵심 역할",
+    issue: "이슈",
+    approach: "해결 방향",
+    outcomes: "성과",
   },
 } satisfies ResumeDisplay;

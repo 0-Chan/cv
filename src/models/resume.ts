@@ -11,11 +11,18 @@ import {
   webLinkSchema,
 } from "./shared";
 
+export const projectIssueSchema = z.strictObject({
+  title: textSchema,
+  description: richTextSchema,
+  approach: z.array(textItemSchema).min(1),
+  outcomes: z.array(textItemSchema).min(1),
+});
+
 export const projectSchema = z.strictObject({
   title: textSchema,
   description: richTextSchema,
-  role: richTextSchema.optional(),
-  highlights: z.array(textItemSchema).default([]),
+  role: richTextSchema,
+  issues: z.array(projectIssueSchema).min(1),
   technologies: z.array(labelSchema).default([]),
   links: z.array(webLinkSchema).default([]),
 });
@@ -90,3 +97,4 @@ export type ResumeInput = z.input<typeof resumeSchema>;
 export type ResumeData = z.output<typeof resumeSchema>;
 export type Experience = z.output<typeof experienceSchema>;
 export type Project = z.output<typeof projectSchema>;
+export type ProjectIssue = z.output<typeof projectIssueSchema>;

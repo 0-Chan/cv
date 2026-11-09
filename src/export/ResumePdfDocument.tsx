@@ -70,7 +70,7 @@ function createStyles(theme: ResumeTheme) {
     },
     role: { fontSize: pt(fontSizes.role), color: colors.muted },
     contact: { fontSize: pt(fontSizes.meta), marginBottom: pt(spacing.inline) },
-    section: { marginBottom: pt(spacing.section) },
+    section: { marginTop: pt(spacing.section) },
     sectionTitle: {
       fontSize: pt(fontSizes.section),
       fontWeight: 700,
@@ -99,6 +99,12 @@ function createStyles(theme: ResumeTheme) {
       fontWeight: 700,
       lineHeight: lineHeights.heading,
       marginBottom: pt(spacing.inline),
+    },
+    issueTitle: {
+      fontSize: pt(fontSizes.body),
+      fontWeight: 700,
+      lineHeight: lineHeights.heading,
+      marginBottom: pt(spacing.content),
     },
     companyHeading: {
       flexDirection: "row",
@@ -153,6 +159,7 @@ function createStyles(theme: ResumeTheme) {
       width: pt(spacing.listIndent),
       flexShrink: 0,
     },
+    numberMarker: { width: pt(spacing.listIndent + spacing.inline) },
     bulletText: { flex: 1, minWidth: 0 },
     tags: {
       flexDirection: "row",
@@ -238,9 +245,11 @@ function Rich({
 function List({
   items,
   styles,
+  ordered = false,
 }: {
   items: { content: RichText }[];
   styles: PdfStyles;
+  ordered?: boolean;
 }) {
   return (
     items.length > 0 && (
@@ -248,7 +257,11 @@ function List({
         {items.map((item, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 성과·기술 목록이다.
           <View key={index} style={styles.bullet}>
-            <Text style={styles.marker}>•</Text>
+            <Text
+              style={[styles.marker, ...(ordered ? [styles.numberMarker] : [])]}
+            >
+              {ordered ? `${index + 1}.` : "•"}
+            </Text>
             <View style={styles.bulletText}>
               <Rich styles={styles} content={item.content} />
             </View>
@@ -257,6 +270,31 @@ function List({
       </View>
     )
   );
+}
+
+function LabeledRich({
+  label,
+  content,
+  styles,
+  muted = false,
+}: {
+  label: string;
+  content: RichText;
+  styles: PdfStyles;
+  muted?: boolean;
+}) {
+  return content.map((paragraph, index) => (
+    <Text
+      // biome-ignore lint/suspicious/noArrayIndexKey: PDF의 정적인 메타 문단이다.
+      key={index}
+      style={[styles.compact, ...(muted ? [styles.muted] : [])]}
+      orphans={2}
+      widows={2}
+    >
+      {index === 0 && <Text style={styles.bold}>{label}: </Text>}
+      <Inline nodes={paragraph.children} styles={styles} />
+    </Text>
+  ));
 }
 function Tags({
   items,
@@ -315,7 +353,7 @@ export function ResumePdfDocument({
             </Text>
           ))}
         </View>
-        {sections.map((section) => {
+        {sections.map((section, sectionIndex) => {
           let content: ReactNode;
           switch (section.id) {
             case "summary":
@@ -368,22 +406,65 @@ export function ResumePdfDocument({
                   <List styles={styles} items={experience.highlights} />
                   {experience.projects.map((project, projectIndex) => (
                     // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 목록이다.
-                    <View key={projectIndex} style={styles.project}>
-                      <Text style={styles.title} minPresenceAhead={60}>
+                    <Fragment key={projectIndex}>
+                      <Text
+                        style={[styles.title, styles.project]}
+                        minPresenceAhead={96}
+                      >
                         {project.title}
                       </Text>
-                      <Rich
+                      <LabeledRich
+                        label={display.labels.projectDescription}
                         styles={styles}
                         content={project.description}
                         muted
                       />
-                      {project.role && (
-                        <View style={styles.compact}>
-                          <Rich styles={styles} content={project.role} />
-                        </View>
+                      {project.technologies.length > 0 && (
+                        <Text style={styles.compact}>
+                          <Text style={styles.bold}>
+                            {display.labels.projectTechnologies}:{" "}
+                          </Text>
+                          {project.technologies
+                            .map((item) => item.label)
+                            .join(", ")}
+                        </Text>
                       )}
-                      <List styles={styles} items={project.highlights} />
-                      <Tags styles={styles} items={project.technologies} />
+                      <LabeledRich
+                        label={display.labels.projectRole}
+                        styles={styles}
+                        content={project.role}
+                      />
+                      {project.issues.map((issue, issueIndex) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: 이슈 번호는 빌드 시 표시 순서다.
+                        <Fragment key={issueIndex}>
+                          <Text
+                            style={[styles.issueTitle, styles.project]}
+                            minPresenceAhead={54}
+                          >
+                            {display.labels.issue} {issueIndex + 1} —{" "}
+                            {issue.title}
+                          </Text>
+                          <Rich styles={styles} content={issue.description} />
+                          <Text
+                            style={[styles.bold, styles.content]}
+                            minPresenceAhead={42}
+                          >
+                            {display.labels.approach}
+                          </Text>
+                          <List
+                            styles={styles}
+                            items={issue.approach}
+                            ordered
+                          />
+                          <Text
+                            style={[styles.bold, styles.content]}
+                            minPresenceAhead={42}
+                          >
+                            {display.labels.outcomes}
+                          </Text>
+                          <List styles={styles} items={issue.outcomes} />
+                        </Fragment>
+                      ))}
                       {project.links.map((link, linkIndex) => (
                         <Text
                           // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 프로젝트 링크 목록이다.
@@ -395,7 +476,7 @@ export function ResumePdfDocument({
                           </Link>
                         </Text>
                       ))}
-                    </View>
+                    </Fragment>
                   ))}
                 </View>
               ));
@@ -478,13 +559,19 @@ export function ResumePdfDocument({
               break;
           }
           return (
-            <View key={section.id} style={styles.section}>
-              <Text style={styles.sectionTitle} minPresenceAhead={96}>
+            <Fragment key={section.id}>
+              <Text
+                style={[
+                  styles.sectionTitle,
+                  ...(sectionIndex > 0 ? [styles.section] : []),
+                ]}
+                minPresenceAhead={96}
+              >
                 {section.title}
               </Text>
               <View style={styles.accent} />
               {content}
-            </View>
+            </Fragment>
           );
         })}
       </Page>

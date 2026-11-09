@@ -4,11 +4,17 @@ import { contactUrlSchema } from "./urls";
 
 const strings = z.array(textSchema);
 const webLinks = z.record(textSchema, z.httpUrl());
+const issue = z.strictObject({
+  title: textSchema,
+  description: textSchema,
+  approach: strings.min(1),
+  outcomes: strings.min(1),
+});
 const project = z.strictObject({
   title: textSchema,
   description: textSchema,
-  role: textSchema.optional(),
-  highlights: strings.default([]),
+  role: textSchema,
+  issues: z.array(issue).min(1),
   technologies: strings.default([]),
   links: webLinks.default({}),
 });

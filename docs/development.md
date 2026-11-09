@@ -16,7 +16,7 @@
 - 최상위 모델은 profile, summary, experiences, skills, education, certifications다. Zod 스키마와 추론된 TypeScript 타입으로 계약을 공유한다.
 - 필수값·날짜·링크 검증과 선택값 정규화는 로더 경계에서 수행한다. 오류는 필드 경로를 포함하되 전체 이력서를 로그에 출력하지 않는다.
 - 콘텐츠 항목에는 ID를 두지 않으며 자동 생성도 하지 않는다. 섹션 표시 설정의 고정 키만 사용한다. 재입사 구분은 지원 범위에 포함하지 않는다. 작성 문장은 Markdown을 사용한다. 내부에서는 문단과 text·strong·emphasis·code·link·break 노드로 표현하며 HTML 문자열을 저장하지 않는다.
-- 회사 수준 업무 요약과 프로젝트, 프로젝트의 제품 소개와 담당 역할을 별도 필드로 둔다.
+- 회사 수준 업무 요약과 프로젝트를 분리한다. 프로젝트는 설명·기술 스택·핵심 역할과 이슈 목록을 가지며, 이슈별 제목·문제 설명·해결 방향·성과를 별도 필드로 둔다.
 - 날짜는 선택 가능하고 입력 정밀도를 유지한다. 현재 재직은 명시적으로 판단하며 개월 수를 생성하지 않는다.
 - 날짜는 YYYY 또는 YYYY-MM만 허용한다. 선택값도 빈 문자열·공백·null은 거부한다. 시작·종료 정밀도가 다르면 가능한 기간이 겹치는 경우 허용한다. 현재 재직과 종료일 동시 지정은 거부한다.
 
@@ -48,9 +48,9 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 ## 화면 계약
 
-- 이름 h1 → 섹션 h2 → 회사 h3 → 프로젝트 h4 위계를 유지한다.
-- 프로젝트 순서는 제목 → 제품 소개 → 선택적 역할 → 수행 내용·성과 → 선택적 기술·링크다.
-- 제품 소개와 역할은 한 블록 안에서 위아래로 배치하고 spacing.compact 간격을 사용한다. 소개는 본문 크기를 유지한 채 colors.muted 색상을 적용한다. 별도의 역할 제목 없이 역할 본문을 표시하며, 역할이 없으면 소개만 표시한다. 콘텐츠의 description과 role은 별도 필드로 유지한다.
+- 이름 h1 → 섹션 h2 → 회사 h3 → 프로젝트 h4 → 이슈 h5 위계를 유지한다.
+- 프로젝트 순서는 제목 → 프로젝트 설명 → 기술 스택 → 핵심 역할 → 이슈 목록 → 선택적 링크다. 각 이슈는 번호와 제목 → 문제 설명 → 해결 방향(번호 목록) → 성과(글머리표)로 표시한다.
+- 프로젝트 설명·기술 스택·핵심 역할은 라벨과 내용의 dl로 표시한다. 기술 스택은 비어 있으면 해당 행을 생략한다. 핵심 역할과 하나 이상의 이슈는 필수다. 이슈 제목은 본문 크기와 제목 굵기로 프로젝트명과 구별하고, 모든 블록은 본문 시작점에 맞춰 추가 들여쓰기를 만들지 않는다. 반복 간격은 기존 content·project 토큰을 사용한다.
 - 경력은 프로젝트만, 요약만, 둘 다 있는 형태를 지원한다. 각 내용은 자신에게 속한 위치에서 한 번만 출력한다.
 - 선택값이 없으면 요소와 여백을 함께 생략한다. 빈 섹션은 제목·구분선도 생략한다.
 - 로고·배지 없는 항목에 고정된 빈 이미지 열을 남기지 않는다. 이미지에는 대체 텍스트를 제공한다.
@@ -77,12 +77,13 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | profile | name, role, contacts(label·value), links(label·href) |
 | summary | format(paragraphs/list), items(content) |
 | experiences | company(name·logo?), role, startDate?, endDate?, isCurrent, tags, highlights, projects |
-| projects | title, description(제품 소개), role?, highlights, technologies, links |
+| projects | title, description(프로젝트 설명), role(핵심 역할), technologies, issues, links |
+| project issues | title, description(문제 상황), approach(번호 목록), outcomes(성과 목록) |
 | skills | category, items(content: RichText) |
 | education | institution, program, startDate?, endDate?, description? |
 | certifications | name, issuer, issuedAt?, badge?, verificationLink? |
 
-문장인 content·description·프로젝트 role은 문단 배열이다. 각 문단은 인라인 노드 목록을 가지며 strong·emphasis·link는 자식 노드를 갖는다. 일반 줄바꿈은 텍스트 안에 보존하고 Markdown의 명시적 줄바꿈은 break 노드로 표현한다. 렌더러는 텍스트를 이스케이프해야 하며 HTML을 직접 삽입하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
+문장인 content·프로젝트/이슈 description·프로젝트 role은 문단 배열이다. 이슈의 approach·outcomes는 content를 갖는 항목 배열이며 각 목록은 하나 이상이어야 한다. 각 문단은 인라인 노드 목록을 가지며 strong·emphasis·link는 자식 노드를 갖는다. 일반 줄바꿈은 텍스트 안에 보존하고 Markdown의 명시적 줄바꿈은 break 노드로 표현한다. 렌더러는 텍스트를 이스케이프해야 하며 HTML을 직접 삽입하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
 
 `src/data/resume.ts`의 `getResumeData()`는 콘텐츠를, `getResumePageData()`는 `{ resume, display, theme }`를 반환한다. 페이지는 후자만 호출한다. 검증 오류는 `ResumeValidationError.issues`에 필드 경로와 메시지를 제공하며 원본 값을 오류 메시지에 넣지 않는다. 공급 함수 예외는 그대로 전파한다.
 
@@ -90,7 +91,7 @@ API는 위 여섯 영역의 JSON을 반환하는 형태를 권장한다. 다른 
 
 ## YAML 작성 형식과 변환
 
-작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
+작성용 계약은 `src/models/authoring.ts`의 `ResumeAuthoringInput`이다. 내부 모델과 달리 회사명은 문자열, 문장은 Markdown 문자열, 기술·태그는 문자열 배열이다. 기술 섹션의 문자열은 단순 기술명과 Markdown 설명을 모두 지원하고 내부 모델의 content로 변환한다. 태그와 프로젝트의 관련 기술은 일반 텍스트 label로 변환한다. 연락처·링크·기술 분류는 이름을 키로 하는 매핑이다. 소개는 문자열 또는 문자열 목록이며 문자열의 각 문단은 소개의 개별 문단 항목으로 변환한다. 프로젝트 issues의 description은 Markdown 문자열, approach·outcomes는 Markdown 문자열 목록으로 작성한다. 프로젝트의 평면 highlights 형식은 지원하지 않는다. 회사 logo는 작성 시 회사 항목 바로 아래에 두고 변환 후 company 안으로 이동한다. 자격 verificationLink는 이름과 주소 한 쌍의 매핑이다.
 
 profile의 이름·직무는 필수다. 생략된 최상위 섹션과 선택 목록만 빈 목록으로 변환한다. 입력된 빈 문자열·null·잘못된 타입은 오류이며 전체 파일 누락이나 빈 파일을 정상 빈 데이터로 대체하지 않는다. 날짜는 따옴표로 감싼 YYYY 또는 YYYY-MM 문자열이다. 실제 작성 예시는 README에 둔다.
 
@@ -123,3 +124,5 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 목록과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 
 ResumeExport는 전달받은 프로필 이름으로 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 모바일·인쇄에서는 숨긴다. native details/summary의 키보드 동작을 사용하고, 작은 클라이언트 스크립트가 Escape·바깥 클릭·포커스 이탈 시 닫기와 window.print를 담당한다. React hydration과 PDF 생성 라이브러리를 클라이언트에 추가하지 않는다. 인쇄 CSS는 html·body 배경을 #fff로 지정해 종이 질감을 제거하고 제목은 단색으로 표시한다. 다운로드 파일은 데이터·표시·테마와 함께 재빌드·재배포할 때 갱신된다.
+
+프로젝트 UI는 전달받은 모델과 표시 문구만 사용하며 IssueItem이 이슈별 설명과 두 종류의 목록을 렌더링한다. 기존 Highlights의 ordered 옵션으로 ol·ul을 선택한다. PDF·Markdown도 동일 모델의 이슈 배열을 순서대로 출력한다. PDF에서는 긴 이슈 전체를 나눔 금지 블록으로 묶지 않고 제목·단계 라벨이 후속 본문과 이어지도록 minPresenceAhead를 사용한다. 프로젝트·이슈 제목은 별도 컨테이너 없이 같은 문서 흐름에 두어 페이지 끝에서 보호 규칙이 적용되게 한다. Markdown 이슈 제목은 다섯 단계이며 해결 방향의 ordered 목록과 성과의 unordered 목록을 구분한다.

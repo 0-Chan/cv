@@ -36,11 +36,24 @@ const paragraphs = (content: RichText): BlockContent[] =>
     children: paragraph.children.map(inline),
   }));
 const text = (value: string): PhrasingContent => ({ type: "text", value });
+const labeledParagraphs = (label: string, content: RichText): BlockContent[] =>
+  content.map((item, index) => ({
+    type: "paragraph",
+    children: [
+      ...(index === 0
+        ? [
+            { type: "strong" as const, children: [text(`${label}:`)] },
+            text(" "),
+          ]
+        : []),
+      ...item.children.map(inline),
+    ],
+  }));
 const paragraph = (value: string): BlockContent => ({
   type: "paragraph",
   children: [text(value)],
 });
-const heading = (depth: 1 | 2 | 3 | 4, value: string): BlockContent => ({
+const heading = (depth: 1 | 2 | 3 | 4 | 5, value: string): BlockContent => ({
   type: "heading",
   depth,
   children: [text(value)],
@@ -50,12 +63,15 @@ const linkParagraph = (label: string, url: string): BlockContent => ({
   children: [{ type: "link", url, children: [text(label)] }],
 });
 
-function highlights(items: { content: RichText }[]): BlockContent[] {
+function highlights(
+  items: { content: RichText }[],
+  ordered = false,
+): BlockContent[] {
   return items.length
     ? [
         {
           type: "list",
-          ordered: false,
+          ordered,
           spread: false,
           children: items.map((item) => ({
             type: "listItem",
@@ -112,17 +128,34 @@ export function renderResumeMarkdown(
           for (const project of experience.projects) {
             children.push(
               heading(4, project.title),
-              ...paragraphs(project.description),
+              ...labeledParagraphs(
+                display.labels.projectDescription,
+                project.description,
+              ),
             );
-            if (project.role) children.push(...paragraphs(project.role));
-            children.push(...highlights(project.highlights));
             if (project.technologies.length) {
               children.push(
                 paragraph(
-                  project.technologies.map((item) => item.label).join(" · "),
+                  `${display.labels.projectTechnologies}: ${project.technologies.map((item) => item.label).join(", ")}`,
                 ),
               );
             }
+            children.push(
+              ...labeledParagraphs(display.labels.projectRole, project.role),
+            );
+            project.issues.forEach((issue, index) => {
+              children.push(
+                heading(
+                  5,
+                  `${display.labels.issue} ${index + 1} — ${issue.title}`,
+                ),
+                ...paragraphs(issue.description),
+                paragraph(display.labels.approach),
+                ...highlights(issue.approach, true),
+                paragraph(display.labels.outcomes),
+                ...highlights(issue.outcomes),
+              );
+            });
             children.push(
               ...project.links.map((link) =>
                 linkParagraph(link.label, link.href),

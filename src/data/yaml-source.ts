@@ -78,7 +78,7 @@ export function parseResumeYaml(
             {
               description,
               role,
-              highlights,
+              issues,
               technologies,
               links: projectLinks,
               ...project
@@ -89,10 +89,19 @@ export function parseResumeYaml(
             return {
               ...project,
               description: markdown(description, `${path}.description`),
-              ...(role === undefined
-                ? {}
-                : { role: markdown(role, `${path}.role`) }),
-              highlights: sentences(highlights, `${path}.highlights`),
+              role: markdown(role, `${path}.role`),
+              issues: issues.map((issue, issueIndex) => {
+                const issuePath = `${path}.issues.${issueIndex}`;
+                return {
+                  title: issue.title,
+                  description: markdown(
+                    issue.description,
+                    `${issuePath}.description`,
+                  ),
+                  approach: sentences(issue.approach, `${issuePath}.approach`),
+                  outcomes: sentences(issue.outcomes, `${issuePath}.outcomes`),
+                };
+              }),
               technologies: labels(technologies),
               links: links(projectLinks),
             };

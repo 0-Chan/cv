@@ -20,6 +20,12 @@ export const displaySchema = z.strictObject({
   labels: z.strictObject({
     current: textSchema,
     issuedAt: textSchema,
+    projectDescription: textSchema,
+    projectTechnologies: textSchema,
+    projectRole: textSchema,
+    issue: textSchema,
+    approach: textSchema,
+    outcomes: textSchema,
   }),
 });
 

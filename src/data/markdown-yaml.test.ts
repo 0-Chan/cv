@@ -94,7 +94,21 @@ describe("Markdown과 YAML 콘텐츠 변환", () => {
             company: "회사 A",
             role: "직무",
             isCurrent: false,
-            projects: [{ title: "프로젝트 A", description }],
+            projects: [
+              {
+                title: "프로젝트 A",
+                description,
+                role: "핵심 역할입니다.",
+                issues: [
+                  {
+                    title: "이슈 A",
+                    description: "문제 상황입니다.",
+                    approach: ["해결 방향입니다."],
+                    outcomes: ["성과입니다."],
+                  },
+                ],
+              },
+            ],
           },
         ],
       });

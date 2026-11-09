@@ -6,7 +6,7 @@ export function SkillGroup({ group }: { group: ResumeData["skills"][number] }) {
 
   return (
     <div className="grid min-w-0 gap-inline">
-      <h3 className="text-project font-bold leading-heading">
+      <h3 className="text-skill-category font-bold leading-heading">
         {group.category}
       </h3>
       <Highlights items={group.items} />

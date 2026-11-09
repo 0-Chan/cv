@@ -151,6 +151,7 @@ function createStyles(theme: ResumeTheme) {
     },
     certificationText: { flex: 1, minWidth: 0 },
     certificationTitle: { fontSize: pt(fontSizes.certification) },
+    skillCategory: { fontSize: pt(fontSizes.skillCategory) },
     companyDivider: {
       borderTopWidth: 0.75,
       borderTopColor: colors.border,
@@ -619,7 +620,11 @@ export function ResumePdfDocument({
                 // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 기술 분류 목록이다.
                 <Fragment key={index}>
                   <Text
-                    style={[styles.title, ...(index > 0 ? [styles.item] : [])]}
+                    style={[
+                      styles.title,
+                      styles.skillCategory,
+                      ...(index > 0 ? [styles.item] : []),
+                    ]}
                     minPresenceAhead={60}
                   >
                     {group.category}
@@ -707,16 +712,10 @@ export function ResumePdfDocument({
           }
           return (
             <Fragment key={section.id}>
-              <Text
-                style={[
-                  styles.sectionTitle,
-                  ...(sectionSpacing ? [sectionSpacing] : []),
-                ]}
-                minPresenceAhead={144}
-              >
-                {section.title}
-              </Text>
-              <View style={styles.accent} />
+              <View style={sectionSpacing} wrap={false} minPresenceAhead={144}>
+                <Text style={styles.sectionTitle}>{section.title}</Text>
+                <View style={styles.accent} />
+              </View>
               {content}
             </Fragment>
           );

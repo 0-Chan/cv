@@ -113,10 +113,15 @@ skills:
     - TypeScript
     - React
     - Next.js
+  상태 관리:
+    - TanStack Query(서버)
+    - Zustand(클라이언트)
   테스트·협업:
     - Git
     - Vitest
     - Testing Library
+  성능:
+    - Lighthouse
   인프라·배포:
     - AWS
     - Terraform

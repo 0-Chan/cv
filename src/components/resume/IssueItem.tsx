@@ -20,13 +20,13 @@ export function IssueItem({
       </h5>
       <RichText content={issue.description} compact />
       <div className="grid gap-compact">
-        <h6 className="text-meta font-semibold text-muted">
+        <h6 className="text-body font-bold leading-heading text-ink">
           {labels.approach}
         </h6>
         <Highlights items={issue.approach} ordered compact />
       </div>
       <div className="grid gap-compact">
-        <h6 className="text-meta font-semibold text-muted">
+        <h6 className="text-body font-bold leading-heading text-ink">
           {labels.outcomes}
         </h6>
         <Highlights items={issue.outcomes} compact />

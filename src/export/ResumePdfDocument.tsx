@@ -109,9 +109,9 @@ function createStyles(theme: ResumeTheme) {
     issueHeading: { marginTop: pt(spacing.issue) },
     firstIssueHeading: { marginTop: pt(spacing.content) },
     stage: {
-      fontSize: pt(fontSizes.meta),
-      fontWeight: 600,
-      color: colors.muted,
+      fontSize: pt(fontSizes.body),
+      fontWeight: 700,
+      color: colors.text,
       lineHeight: lineHeights.heading,
       marginTop: pt(spacing.inline),
     },

@@ -190,14 +190,21 @@ function createStyles(theme: ResumeTheme) {
     tags: {
       flexDirection: "row",
       flexWrap: "wrap",
+      alignItems: "flex-start",
       gap: pt(spacing.inline),
       marginTop: pt(spacing.inline),
     },
     tag: {
-      fontSize: pt(fontSizes.tag),
-      color: colors.muted,
+      maxWidth: "100%",
       backgroundColor: colors.tagBackground,
       paddingHorizontal: pt(spacing.inline),
+      paddingVertical: pt(spacing.compact),
+    },
+    tagText: {
+      fontSize: pt(fontSizes.tag),
+      // 본문에서 계산된 줄 높이를 상속하지 않고 태그 글자 크기로 맞춘다.
+      lineHeight: 1,
+      color: colors.muted,
     },
   });
 }
@@ -366,9 +373,9 @@ function Tags({
       <View style={styles.tags}>
         {items.map((item, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 태그 목록이다.
-          <Text key={index} style={styles.tag}>
-            {item.label}
-          </Text>
+          <View key={index} style={styles.tag} wrap={false}>
+            <Text style={styles.tagText}>{item.label}</Text>
+          </View>
         ))}
       </View>
     )

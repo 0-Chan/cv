@@ -138,11 +138,14 @@ export function parseResumeYaml(
           }),
     })),
     certifications: data.certifications.map(
-      ({ verificationLink, ...entry }) => ({
+      ({ verificationLink, reason, ...entry }, index) => ({
         ...entry,
         ...(verificationLink === undefined
           ? {}
           : { verificationLink: links(verificationLink)[0] }),
+        ...(reason === undefined
+          ? {}
+          : { reason: markdown(reason, `certifications.${index}.reason`) }),
       }),
     ),
   };

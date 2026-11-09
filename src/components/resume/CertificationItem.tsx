@@ -1,13 +1,14 @@
 import type { ResumeDisplay } from "../../models/presentation";
 import type { ResumeData } from "../../models/resume";
 import { assetUrl } from "./asset-url";
+import { RichText } from "./RichText";
 
 export function CertificationItem({
   certification,
   labels,
 }: {
   certification: ResumeData["certifications"][number];
-  labels: Pick<ResumeDisplay["labels"], "issuedAt">;
+  labels: Pick<ResumeDisplay["labels"], "issuedAt" | "certificationReason">;
 }) {
   return (
     <article className="flex min-w-0 items-start gap-content border-rule not-first:border-t not-first:pt-divided-item-half">
@@ -38,6 +39,14 @@ export function CertificationItem({
               {certification.verificationLink.label}
             </a>
           </p>
+        )}
+        {certification.reason && (
+          <dl className="grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] gap-compact text-meta text-muted">
+            <dt>{labels.certificationReason}:</dt>
+            <dd className="min-w-0">
+              <RichText content={certification.reason} compact />
+            </dd>
+          </dl>
         )}
       </div>
     </article>

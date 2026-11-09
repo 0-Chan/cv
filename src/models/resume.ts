@@ -65,6 +65,7 @@ export const certificationSchema = z.strictObject({
   name: textSchema,
   issuer: textSchema,
   issuedAt: dateSchema.optional(),
+  reason: richTextSchema.optional(),
   badge: imageSchema.optional(),
   verificationLink: webLinkSchema.optional(),
 });

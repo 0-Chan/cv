@@ -55,6 +55,7 @@ const certification = z.strictObject({
   name: textSchema,
   issuer: textSchema,
   issuedAt: dateSchema.optional(),
+  reason: textSchema.optional(),
   badge: imageSchema.optional(),
   verificationLink: webLinks
     .refine(

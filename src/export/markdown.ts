@@ -200,6 +200,14 @@ export function renderResumeMarkdown(
               ),
             );
           }
+          if (item.reason) {
+            children.push(
+              ...labeledParagraphs(
+                display.labels.certificationReason,
+                item.reason,
+              ),
+            );
+          }
         }
         break;
     }

@@ -83,7 +83,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 | project issues | title, description(문제 상황), approach(번호 목록), outcomes(성과 목록) |
 | skills | category, items(content: RichText) |
 | education | institution, program, startDate?, endDate?, description? |
-| certifications | name, issuer, issuedAt?, badge?, verificationLink? |
+| certifications | name, issuer, issuedAt?, badge?, verificationLink?, reason?(RichText) |
 
 문장인 content·프로젝트/이슈 description·프로젝트 role은 문단 배열이다. 이슈의 approach·outcomes는 content를 갖는 항목 배열이며 각 목록은 하나 이상이어야 한다. 각 문단은 인라인 노드 목록을 가지며 strong·emphasis·link는 자식 노드를 갖는다. 일반 줄바꿈은 텍스트 안에 보존하고 Markdown의 명시적 줄바꿈은 break 노드로 표현한다. 렌더러는 텍스트를 이스케이프해야 하며 HTML을 직접 삽입하지 않는다. 이미지 구조는 `{ src, alt }`이며 루트 상대 경로 또는 HTTP(S) 주소를 사용한다. 링크는 HTTP(S), 프로필 링크는 추가로 mailto·tel을 허용한다. 주소의 형식을 검증하며 실제 접근 가능 여부는 검사하지 않는다.
 
@@ -119,7 +119,7 @@ GitHub Pages는 main push·매월 1일 09:10(Asia/Seoul) 예약 실행·수동 �
 
 ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한다. 기술은 빈 분류를 제외한 뒤 남은 분류가 없으면 섹션을 생략한다. SkillGroup·EducationItem·CertificationItem의 props는 ResumeData의 해당 항목 타입을 사용한다. SkillGroup은 Highlights를 재사용해 기술명과 설명을 세로 글머리표 목록으로 표시하고 Markdown 강조를 렌더링한다. 단순 기술명도 동일한 목록 구조로 표시한다.
 
-각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 128px 영역에서 비율을 유지하며 모든 화면에서 자격 텍스트 왼쪽 상단에 정렬한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.
+각 분류·기관·자격 이름은 h3로 표시하고 공통 ResumeSection을 재사용한다. 학력 설명은 RichText로 렌더링한다. 학력 기간은 양쪽 값이 있을 때만 구분자를 표시하며 날짜 정밀도를 바꾸지 않는다. 자격 취득 문구는 표시 설정에서 받고 날짜가 없으면 날짜 영역을 생략한다. 자격 취득 사유는 선택 필드 reason의 Markdown 문자열을 로더에서 RichText로 변환하고 각 항목의 확인 링크 다음에 표시한다. 표시 문구는 labels.certificationReason에서 관리하며 웹·PDF는 14px 회색 텍스트, Markdown은 라벨과 문단으로 출력한다. 사유를 생략하면 라벨·여백도 생략한다. 자격 만료 필드는 지원하지 않는다. 배지는 assetUrl로 배포 경로를 반영하며 이미지가 없으면 빈 열을 만들지 않는다. 배지는 테마의 certificationBadge 크기 128px 영역에서 비율을 유지하며 모든 화면에서 자격 텍스트 왼쪽 상단에 정렬한다. 현재 PNG 배지 두 개는 도안의 크기를 유지하면서 위쪽 흰 여백만 제거한 자산을 사용한다.
 
 ## 내보내기
 

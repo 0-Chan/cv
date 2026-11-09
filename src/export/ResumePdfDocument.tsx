@@ -685,6 +685,13 @@ export function ResumePdfDocument({
                           </Link>
                         </Text>
                       )}
+                      {item.reason && (
+                        <LabeledRich
+                          label={display.labels.certificationReason}
+                          content={item.reason}
+                          styles={styles}
+                        />
+                      )}
                     </View>
                   </View>
                 </View>

@@ -1,7 +1,14 @@
 import type { ResumeData } from "../../models/resume";
 import { getProfileDetails } from "../../presentation/resume";
+import { RichText } from "./RichText";
 
-export function ProfileHeader({ profile }: { profile: ResumeData["profile"] }) {
+export function ProfileHeader({
+  profile,
+  summaryLead,
+}: {
+  profile: ResumeData["profile"];
+  summaryLead?: ResumeData["summary"]["lead"];
+}) {
   const details = getProfileDetails(profile);
 
   return (
@@ -10,6 +17,11 @@ export function ProfileHeader({ profile }: { profile: ResumeData["profile"] }) {
         <h1 className="text-name font-bold leading-heading">{profile.name}</h1>
         <p className="text-role text-muted">{profile.role}</p>
       </div>
+      {summaryLead && (
+        <div className="text-summary-lead italic">
+          <RichText content={summaryLead} />
+        </div>
+      )}
       {details.length > 0 && (
         <ul className="grid min-w-0 grid-cols-1 gap-compact text-meta text-muted">
           {details.map((item, index) => (

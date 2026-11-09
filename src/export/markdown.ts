@@ -7,6 +7,7 @@ import {
   formatPeriod,
   getProfileDetails,
   getVisibleResumeSections,
+  getVisibleSummaryLead,
 } from "../presentation/resume";
 
 function inline(node: InlineNode): PhrasingContent {
@@ -90,9 +91,11 @@ export function renderResumeMarkdown(
   resume: ResumeData,
   display: ResumeDisplay,
 ): string {
+  const summaryLead = getVisibleSummaryLead(resume, display);
   const children: BlockContent[] = [
     heading(1, resume.profile.name),
     paragraph(resume.profile.role),
+    ...(summaryLead ? paragraphs(summaryLead) : []),
     ...getProfileDetails(resume.profile).map((detail) =>
       detail.href
         ? linkParagraph(detail.label, detail.href)
@@ -104,7 +107,6 @@ export function renderResumeMarkdown(
     switch (section.id) {
       case "summary":
         children.push(
-          ...(section.content.lead ? paragraphs(section.content.lead) : []),
           ...(section.content.format === "list"
             ? highlights(section.content.items)
             : section.content.items.flatMap((item) =>

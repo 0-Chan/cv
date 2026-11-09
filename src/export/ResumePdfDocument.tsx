@@ -17,6 +17,7 @@ import {
   formatPeriod,
   getProfileDetails,
   getVisibleResumeSections,
+  getVisibleSummaryLead,
 } from "../presentation/resume";
 
 Font.register({
@@ -395,6 +396,7 @@ export function ResumePdfDocument({
   const styles = createStyles(theme);
   const sections = getVisibleResumeSections(resume, display);
   const details = getProfileDetails(resume.profile);
+  const summaryLead = getVisibleSummaryLead(resume, display);
   return (
     <Document
       title={`${resume.profile.name} · ${resume.profile.role}`}
@@ -407,6 +409,16 @@ export function ResumePdfDocument({
             <Text style={styles.name}>{resume.profile.name}</Text>
             <Text style={styles.role}>{resume.profile.role}</Text>
           </View>
+          {summaryLead && (
+            <View
+              style={[
+                styles.summaryLead,
+                ...(details.length ? [styles.paragraph] : []),
+              ]}
+            >
+              <Rich styles={styles} content={summaryLead} />
+            </View>
+          )}
           {details.map((detail, index) => (
             <Text
               // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 시 프로필 연락처 목록이다.
@@ -436,35 +448,24 @@ export function ResumePdfDocument({
           let content: ReactNode;
           switch (section.id) {
             case "summary":
-              content = (
-                <>
-                  {section.content.lead && (
-                    <View style={styles.summaryLead}>
-                      <Rich styles={styles} content={section.content.lead} />
+              content =
+                section.content.format === "list" ? (
+                  <List styles={styles} items={section.content.items} />
+                ) : (
+                  section.content.items.map((item, index) => (
+                    <View
+                      // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 소개 문단이다.
+                      key={index}
+                      style={[
+                        ...(index < section.content.items.length - 1
+                          ? [styles.paragraph]
+                          : []),
+                      ]}
+                    >
+                      <Rich styles={styles} content={item.content} />
                     </View>
-                  )}
-                  {section.content.format === "list" ? (
-                    <List styles={styles} items={section.content.items} />
-                  ) : (
-                    section.content.items.map((item, index) => (
-                      <View
-                        // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 소개 문단이다.
-                        key={index}
-                        style={[
-                          ...(section.content.lead && index === 0
-                            ? [styles.content]
-                            : []),
-                          ...(index < section.content.items.length - 1
-                            ? [styles.paragraph]
-                            : []),
-                        ]}
-                      >
-                        <Rich styles={styles} content={item.content} />
-                      </View>
-                    ))
-                  )}
-                </>
-              );
+                  ))
+                );
               break;
             case "experiences":
               content = section.content.map((experience, index) => (
@@ -685,7 +686,7 @@ export function ResumePdfDocument({
                   styles.sectionTitle,
                   ...(sectionSpacing ? [sectionSpacing] : []),
                 ]}
-                minPresenceAhead={96}
+                minPresenceAhead={144}
               >
                 {section.title}
               </Text>

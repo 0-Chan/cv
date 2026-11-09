@@ -20,7 +20,7 @@ export function getVisibleResumeSections(
     if (!visible) continue;
     switch (id) {
       case "summary":
-        if (resume.summary.lead?.length || resume.summary.items.length) {
+        if (resume.summary.items.length) {
           result.push({ id, title, showTitle, content: resume.summary });
         }
         break;
@@ -47,6 +47,17 @@ export function getVisibleResumeSections(
     }
   }
   return result;
+}
+
+export function getVisibleSummaryLead(
+  resume: ResumeData,
+  display: ResumeDisplay,
+) {
+  return display.sections.some(
+    (section) => section.id === "summary" && section.visible,
+  )
+    ? resume.summary.lead
+    : undefined;
 }
 
 export function getProfileDetails(profile: ResumeData["profile"]) {

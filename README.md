@@ -1,3 +1,5 @@
+![이력서 페이지 미리보기](assets/images/airy-floating-resume.png)
+
 # Astro 이력서 프로젝트
 
 이력서 콘텐츠, 섹션 표시 설정, 디자인 테마를 UI와 분리하는 정적 이력서 웹페이지 프로젝트입니다.

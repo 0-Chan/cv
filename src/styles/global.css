@@ -72,6 +72,14 @@
 }
 
 @layer components {
+  .resume-page > section {
+    margin-top: var(--resume-space-section);
+  }
+
+  .resume-page > :first-child + section {
+    margin-top: var(--resume-space-profile);
+  }
+
   .paper-surface {
     background-color: var(--paper-color, var(--resume-color-background));
     background-image: var(--paper-texture);
@@ -170,10 +178,6 @@
     display: block;
     max-width: none;
     padding: 0;
-  }
-
-  main > :not(:first-child) {
-    margin-top: var(--resume-space-section);
   }
 
   h1,

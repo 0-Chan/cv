@@ -56,7 +56,7 @@ function createStyles(theme: ResumeTheme) {
       paddingVertical: 36,
       paddingHorizontal: 40,
     },
-    profile: { marginBottom: pt(spacing.section) },
+    profile: { marginBottom: pt(spacing.profile) },
     profileTitle: {
       flexDirection: "row",
       alignItems: "baseline",
@@ -69,7 +69,8 @@ function createStyles(theme: ResumeTheme) {
       lineHeight: lineHeights.heading,
     },
     role: { fontSize: pt(fontSizes.role), color: colors.muted },
-    contact: { fontSize: pt(fontSizes.meta), marginBottom: pt(spacing.inline) },
+    contact: { fontSize: pt(fontSizes.meta) },
+    contactGap: { marginBottom: pt(spacing.inline) },
     section: { marginTop: pt(spacing.section) },
     sectionTitle: {
       fontSize: pt(fontSizes.section),
@@ -104,7 +105,7 @@ function createStyles(theme: ResumeTheme) {
       fontSize: pt(fontSizes.issue),
       fontWeight: 700,
       lineHeight: lineHeights.heading,
-      marginBottom: pt(spacing.inline),
+      marginBottom: pt(spacing.compact),
     },
     issueHeading: { marginTop: pt(spacing.issue) },
     firstIssueHeading: { marginTop: pt(spacing.content) },
@@ -162,24 +163,24 @@ function createStyles(theme: ResumeTheme) {
     inline: { marginTop: pt(spacing.inline) },
     compact: { marginTop: pt(spacing.compact) },
     meta: { fontSize: pt(fontSizes.meta), color: colors.muted },
-    muted: { color: colors.muted },
     link: { color: colors.link, textDecoration: "underline" },
     bold: { fontWeight: 700 },
     emphasis: { textDecoration: "underline" },
     code: { backgroundColor: colors.surface },
     bullet: {
-      flexDirection: "row",
-      gap: pt(spacing.inline),
+      paddingLeft: pt(spacing.listIndent),
+    },
+    numberedBullet: {
+      paddingLeft: pt(spacing.listIndent + spacing.inline),
     },
     bulletGap: { marginBottom: pt(spacing.inline) },
     compactBulletGap: { marginBottom: pt(spacing.compact) },
+    // PDF 문단의 첫 인라인 조각에 걸린 들여쓰기만 적용된다.
     marker: {
       color: colors.headingStart,
-      width: pt(spacing.listIndent),
-      flexShrink: 0,
+      textIndent: -pt(spacing.listIndent),
     },
-    numberMarker: { width: pt(spacing.listIndent + spacing.inline) },
-    bulletText: { flex: 1, minWidth: 0 },
+    numberedMarker: { textIndent: -pt(spacing.listIndent + spacing.inline) },
     tags: {
       flexDirection: "row",
       flexWrap: "wrap",
@@ -239,12 +240,12 @@ function Inline({ nodes, styles }: { nodes: InlineNode[]; styles: PdfStyles }) {
 }
 function Rich({
   content,
-  muted = false,
+  secondary = false,
   compact = false,
   styles,
 }: {
   content: RichText;
-  muted?: boolean;
+  secondary?: boolean;
   compact?: boolean;
   styles: PdfStyles;
 }) {
@@ -256,7 +257,7 @@ function Rich({
         ...(index < content.length - 1
           ? [compact ? styles.compactParagraph : styles.paragraph]
           : []),
-        ...(muted ? [styles.muted] : []),
+        ...(secondary ? [styles.meta] : []),
       ]}
       orphans={2}
       widows={2}
@@ -284,20 +285,38 @@ function List({
             // biome-ignore lint/suspicious/noArrayIndexKey: 정적인 PDF 성과·기술 목록이다.
             key={index}
             style={[
-              styles.bullet,
               ...(index < items.length - 1
                 ? [compact ? styles.compactBulletGap : styles.bulletGap]
                 : []),
             ]}
           >
-            <Text
-              style={[styles.marker, ...(ordered ? [styles.numberMarker] : [])]}
-            >
-              {ordered ? `${index + 1}.` : "•"}
-            </Text>
-            <View style={styles.bulletText}>
-              <Rich styles={styles} content={item.content} compact={compact} />
-            </View>
+            {item.content.map((paragraph, paragraphIndex) => (
+              <Text
+                // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 시 목록 문단이다.
+                key={paragraphIndex}
+                style={[
+                  styles.bullet,
+                  ...(ordered ? [styles.numberedBullet] : []),
+                  ...(paragraphIndex < item.content.length - 1
+                    ? [compact ? styles.compactParagraph : styles.paragraph]
+                    : []),
+                ]}
+                orphans={2}
+                widows={2}
+              >
+                {paragraphIndex === 0 && (
+                  <Text
+                    style={[
+                      styles.marker,
+                      ...(ordered ? [styles.numberedMarker] : []),
+                    ]}
+                  >
+                    {ordered ? `${index + 1}.\u00a0\u00a0` : "•\u00a0"}
+                  </Text>
+                )}
+                <Inline styles={styles} nodes={paragraph.children} />
+              </Text>
+            ))}
           </View>
         ))}
       </View>
@@ -361,6 +380,7 @@ export function ResumePdfDocument({
 }) {
   const styles = createStyles(theme);
   const sections = getVisibleResumeSections(resume, display);
+  const details = getProfileDetails(resume.profile);
   return (
     <Document
       title={`${resume.profile.name} · ${resume.profile.role}`}
@@ -373,9 +393,15 @@ export function ResumePdfDocument({
             <Text style={styles.name}>{resume.profile.name}</Text>
             <Text style={styles.role}>{resume.profile.role}</Text>
           </View>
-          {getProfileDetails(resume.profile).map((detail, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 시 프로필 연락처 목록이다.
-            <Text key={index} style={styles.contact}>
+          {details.map((detail, index) => (
+            <Text
+              // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 시 프로필 연락처 목록이다.
+              key={index}
+              style={[
+                styles.contact,
+                ...(index < details.length - 1 ? [styles.contactGap] : []),
+              ]}
+            >
               {detail.href ? (
                 <Link src={detail.href} style={styles.link}>
                   {detail.label}
@@ -496,6 +522,7 @@ export function ResumePdfDocument({
                             styles={styles}
                             content={issue.description}
                             compact
+                            secondary
                           />
                           <Text style={styles.stage} minPresenceAhead={42}>
                             {display.labels.approach}

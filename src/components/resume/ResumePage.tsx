@@ -20,7 +20,7 @@ export function ResumePage({
 }) {
   const sections = getVisibleResumeSections(resume, display);
   return (
-    <main className="mx-auto grid w-full max-w-resume gap-section px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
+    <main className="resume-page mx-auto grid w-full max-w-resume px-page-x-mobile py-page-y-mobile md:px-page-x-desktop md:py-page-y-desktop">
       <div className="flex min-w-0 items-start gap-content">
         <ProfileHeader profile={resume.profile} />
         <ResumeExport name={resume.profile.name} />

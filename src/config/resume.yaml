@@ -12,7 +12,7 @@ summary:
     복잡한 데이터를 이해하기 쉽게 표현하고,\
     안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
   body: |
-    ROS1, roslibjs 기반 로봇 제어 UI 개발과 제조 현장 6곳의 로봇 시스템 구축·검증을 경험했습니다.
+    ROS1, roslibjs 기반 모바일 로봇 검증 UI 개발과 제조 현장 6곳의 협동 로봇 시스템 구축 경험했습니다.
 
     이후 React, Next.js 기반 B2B 데이터 대시보드와 AI 포털을 개발하며 **데이터 시각화**, **실시간 스트리밍**, 비동기 UI 구현 역량을 쌓았습니다.
 
@@ -26,22 +26,26 @@ experiences:
     isCurrent: true
     tags:
       - 마케팅
-      - Internal Product
+      - 사내 시스템
     projects:
       - title: 소셜 마케팅 데이터 대시보드
         description: YouTube·Instagram 콘텐츠 및 광고 성과를 통합 조회하고 비교하는 B2B 데이터 분석 대시보드
         role: 데이터 시각화, UI 품질 검증, 배포 환경 구축
         issues:
-          - title: 데이터 구조와 계산 방식이 제각각인 성과 지표
+          - title: 지표 특성을 구분되지 않아 따른 수치 왜곡
             description: >-
-              지표별 데이터 구조가 다른 SNS 성과 데이터를 같은 기준으로 맞춰 비교하도록 통합 시각화하는 요구사항
+              누적 조회수는 최종값, 클릭률은 재계산값을 써야 하는 등 지표마다 기간 값 산출 방식이 달라,
+              일괄 합산하거나 평균하면 틀린 수치가 표시됨
             approach:
-              - API 응답 모델과 차트 렌더링 모델을 분리하여 채널별 데이터 변환 로직을 독립적으로 구성
-              - Recharts 기반 공통 차트 컴포넌트를 설계하여 시계열 데이터와 채널별 비교 지표를 재사용 가능하게 구성
-              - 광고 성과와 자연 발생 성과를 구분하는 데이터 표현 규칙을 정의하여 지표 해석의 일관성 확보
-              - 차트 데이터 변환 비용을 측정하고 필요시 메모이제이션을 적용하여 반복 계산 최소화
+              - |-
+                지표 22종을 일별 발생값, 시점, 비율, 도달 4가지 성격으로 분류하고 표시 규칙 정의
+
+                (비율·도달은 백엔드 집계값을 그대로 사용, 시점값은 증감으로 표시)
+              - 공통 차트 컴포넌트가 지표별로 설정된 값 포맷, 축, 툴팁, 절대값/변화량 모드를 받아 렌더
+              - 플랫폼별 정의가 다른 지표는 합산하지 않고 나란히 표시
             outcomes:
-              - 콘텐츠 주요 성과 지표를 한 화면에서 조회 및 비교하는 환경 제공하여 광고 제작 방향에 대한 운영 지원
+              - 공통 차트 하나를 3개 화면에 재사용해 같은 지표의 화면 간 불일치와 왜곡을 제거
+              - 지표 추가 시 성격만 지정하면 규칙이 자동 적용되어 확장 비용 최소화
           - title: 배포 환경 구축
             description: Next.js 무중단 배포와 CI/CD를 지원하는 실행 환경을 구성 필요
             approach:
@@ -63,6 +67,25 @@ experiences:
               - 외부 모델과 사내 에이전트의 응답 유형별 채팅 UI 반영 로직 구현
             outcomes:
               - 스트리밍 응답을 **채팅 UI에 실시간 반영**
+          - title: 긴 대화의 성능 최적화
+            description: 대화가 길어질수록 모든 메시지를 한 번에 불러와 그리고, 스트리밍 중에는 답변 전체를 다시 렌더링해 화면이 느려졌습니다.
+            approach:
+              - 최근 메시지만 먼저 불러오고, 위로 스크롤하면 이전 메시지를 이어 불러오는 구간 단위 로딩 (Incremental Loading) 적용
+              - 화면에 보이는 메시지만 그리는 가상 스크롤 적용
+              - 스트리밍 중에는 마크다운을 블록 단위로 메모해 새로 생기는 블록만 렌더링
+            outcomes:
+              - 긴 대화의 **첫 화면 표시 시간 50% 단축**
+              - 스트리밍 중 **렌더링 비용 70% 감소**
+      - title: 사내 운영 도구 개발
+        description: 정산 검수, 근무 현황 대시보드를 제공하는 사내 ERP
+        role: 프론트엔드 개발, 요구사항 정의 단계부터 참여
+        issues:
+          - title: 정산 검수와 근무시간 취합 자동화
+            description: 정산 검수와 근무시간 취합에 수작업이 반복되고, 비고와 금액은 규칙만으로 대조하기 어려움
+            approach:
+              - 정산 검수와 근무시간 취합을 시스템화하고, 비고와 금액을 비교하는 **LLM 검수 보조 기능** 연동
+            outcomes:
+              - 불일치 항목을 화면에 표시해 수작업을 줄이고 **업무 효율 개선**
   - company: 코가로보틱스
     logo:
       src: /images/resume/coga-robotics.png
@@ -110,6 +133,8 @@ skills:
     - TypeScript
     - React
     - Next.js
+    - Recharts
+    - Tailwind CSS
   상태 관리:
     - TanStack Query(서버)
     - Zustand(클라이언트)
@@ -123,6 +148,9 @@ skills:
     - AWS
     - Terraform
     - GitHub Actions
+  Tool:
+    - Claude Code
+    - Codex
 
 education:
   - institution: 한서대학교
@@ -138,10 +166,10 @@ certifications:
       src: /images/resume/aws-solutions-architect-associate.png
       alt: AWS Certified Solutions Architect Associate 자격 배지
     reason: >-
-      실무 경험을 바탕으로 Well-Architected 설계 원칙 이해와 전문성 강화를 위해 취득
+      고가용성과 보안 및 비용 설계를 체계적으로 학습하여, 안정적인 클라우드 아키텍처 설계 역량을 갖추기 위해 취득
   - name: AWS Certified AI Practitioner (AIF-C01)
     issuer: Amazon Web Services (AWS)
     badge:
       src: /images/resume/aws-ai-practitioner.png
       alt: AWS Certified AI Practitioner 자격 배지
-    reason: AI 기초 지식 습득을 위해 취득
+    reason: AI에 대한 관심으로 AWS AI 서비스 간 차이와 용도를 파악하기 위해 취득

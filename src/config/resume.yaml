@@ -134,6 +134,9 @@ skills:
     - AWS
     - Terraform
     - GitHub Actions
+  Tool:
+    - Claude Code
+    - Codex
 
 education:
   - institution: 한서대학교

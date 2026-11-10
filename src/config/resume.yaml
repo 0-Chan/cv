@@ -76,6 +76,16 @@ experiences:
             outcomes:
               - 긴 대화의 **첫 화면 표시 시간 50% 단축**
               - 스트리밍 중 **렌더링 비용 70% 감소**
+      - title: 사내 운영 도구 개발
+        description: 정산 검수, 근무 현황 대시보드를 제공하는 사내 ERP
+        role: 프론트엔드 개발, 요구사항 정의 단계부터 참여
+        issues:
+          - title: 정산 검수와 근무시간 취합 자동화
+            description: 정산 검수와 근무시간 취합에 수작업이 반복되고, 비고와 금액은 규칙만으로 대조하기 어려움
+            approach:
+              - 정산 검수와 근무시간 취합을 시스템화하고, 비고와 금액을 비교하는 **LLM 검수 보조 기능** 연동
+            outcomes:
+              - 불일치 항목을 화면에 표시해 수작업을 줄이고 **업무 효율 개선**
   - company: 코가로보틱스
     logo:
       src: /images/resume/coga-robotics.png

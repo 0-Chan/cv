@@ -44,7 +44,7 @@ export const resumeThemeConfig = {
     company: 64,
     project: 48,
     issue: 32,
-    item: 40,
+    item: 24,
     dividedItem: 72,
     content: 12,
     inline: 8,

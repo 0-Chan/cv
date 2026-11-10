@@ -169,7 +169,7 @@ summary:
 - `src/config/resume-display.ts`: `sections` 배열의 순서·`title`·`visible`을 수정합니다. 다섯 섹션은 각각 한 번 포함하며 숨길 때는 `visible: false`를 사용합니다. 본문을 유지하고 제목·구분선만 숨기려면 `showTitle: false`를 지정합니다. 생략하면 제목을 표시하며, 현재 소개에만 `false`를 지정했습니다. 제목을 숨겨도 접근성 이름으로 사용할 `title`은 유지합니다. `labels`에서 주요 기여·이슈·해결 방향·성과·자격 취득 사유의 표시 문구를 바꿉니다. 프로젝트의 `description`은 라벨 없이 제목 바로 아래에 회색 텍스트로 표시합니다.
 - `src/config/resume-theme.ts`: 폰트·크기·간격·색상·너비를 수정합니다. 기술 분류 제목 크기는 `fontSizes.skillCategory`, 자격증 이름 크기는 `fontSizes.certification`, 이슈 제목 크기는 `fontSizes.issue`, 이슈 사이 간격은 `spacing.issue`로 조절합니다. 회사 로고는 `widths.companyLogo`, 자격증 배지는 `widths.certificationBadge`, 구분선의 주황색 길이는 `widths.sectionAccent`로 조절합니다. 섹션 제목의 그라데이션은 `colors.headingStart`·`headingEnd`, 장식 색상은 `accent`에서 변경합니다. 크기·간격·너비는 px 숫자, 줄 높이는 배수, 색상은 `#RRGGBB`입니다.
 
-프로필과 첫 번째 표시 섹션 사이 간격은 `spacing.profile`로 조절하며 기본값은 40px입니다. 소개 다음 섹션까지의 간격은 `spacing.afterSummary`의 40px입니다. 나머지 간격은 `spacing.section`·`company`·`project`·`issue`로 묶음별 조절합니다. `spacing.item`은 기술 분류 사이, `spacing.dividedItem`은 학력·자격 구분선 양쪽을 합친 간격이며 구분선 두께는 제외합니다.
+프로필과 첫 번째 표시 섹션 사이 간격은 `spacing.profile`로 조절하며 기본값은 40px입니다. 소개 다음 섹션까지의 간격은 `spacing.afterSummary`의 40px입니다. 나머지 간격은 `spacing.section`·`company`·`project`·`issue`로 묶음별 조절합니다. `spacing.item`은 기술 분류 사이의 24px 간격, `spacing.dividedItem`은 학력·자격 구분선 양쪽을 합친 간격이며 구분선 두께는 제외합니다.
 
 외부 프로필 링크는 별도 행에 표시하고, `profile.contacts`의 값은 작성 순서대로 쉼표와 공백 한 칸(`, `)으로 연결해 한 행에 표시합니다. 전화번호와 일반 텍스트 이메일은 각각 `contacts`에 작성하면 됩니다. 공간이 부족하면 자연스럽게 줄바꿈합니다. 행 사이는 `spacing.compact`의 4px입니다. 이름·직무와 소개 첫 문장, 첫 문장과 연락처, 소개 본문 문단 사이는 `spacing.content`의 12px로 구분합니다. 본문은 들여쓰기 없이 표시하며 목록으로 작성한 경우에만 `spacing.inline`의 8px 간격을 사용합니다. 프로필의 마지막 연락처에서 소개 본문까지, 소개에서 다음 섹션까지 각각 40px 간격을 유지합니다. 웹·PDF·Markdown은 이름·직무 → 소개 첫 문장 → 연락처 → 소개 본문 순서로 표시합니다.
 

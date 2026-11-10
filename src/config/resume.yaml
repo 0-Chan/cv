@@ -90,6 +90,20 @@ experiences:
               - 로봇의 센서와 동작 상태를 웹에서 실시간으로 확인할 수 있는 진단 환경 구축
               - 통신과 화면 표시의 책임을 나눠, 새 진단 항목을 쉽게 추가하고 유지보수할 수 있는 구조 마련
 
+  - company: 인아오리엔탈모터(주)
+    logo:
+      src: /images/resume/ina-oriental-motor.png
+      alt: 인아오리엔탈모터 로고
+    role: 필드 엔지니어
+    startDate: "2019-08"
+    endDate: "2021-01"
+    isCurrent: false
+    tags:
+      - 협동 로봇(UR·두산로보틱스)
+    highlights:
+      - Python SDK 기반 로봇 제어 로직 구현 및 PLC·3D Vision 장비 연동
+      - "**6개 제조 현장**의 로봇 시스템 설치·가동 검증 및 작업자 교육"
+
 skills:
   프론트엔드:
     - JavaScript

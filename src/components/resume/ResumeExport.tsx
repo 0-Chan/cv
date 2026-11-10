@@ -79,12 +79,6 @@ export function ResumeExport({
         </div>
       </details>
       <textarea hidden readOnly data-resume-markdown defaultValue={markdown} />
-      <p
-        className="resume-export-status"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 ---
+import { ResumeExportToaster } from "../components/resume/ResumeExportToaster";
 import { ResumePage } from "../components/resume/ResumePage";
 import { getResumePageData } from "../data/resume";
 import { renderResumeMarkdown } from "../export/markdown";
@@ -13,7 +14,5 @@ const markdown = renderResumeMarkdown(resume, display);
   theme={theme}
 >
   <ResumePage resume={resume} display={display} markdown={markdown} />
-  <script>
-  import "../scripts/resume-export";
-  </script>
+  <ResumeExportToaster client:media="(min-width: 1024px)" />
 </ResumeLayout>

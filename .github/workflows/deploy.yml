@@ -39,8 +39,8 @@ jobs:
       - name: 검사와 정적 빌드
         run: npm run verify
         env:
-          SITE_URL: ${{ steps.pages.outputs.origin }}
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: https://resume.0-chan.kim
+          BASE_PATH: /
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist

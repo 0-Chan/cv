@@ -73,7 +73,7 @@ export function getProfileDetails(profile: ResumeData["profile"]) {
     ...(profile.contacts.length
       ? [
           {
-            label: profile.contacts.map((contact) => contact.value).join(" | "),
+            label: profile.contacts.map((contact) => contact.value).join(", "),
             href: undefined,
           },
         ]

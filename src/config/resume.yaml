@@ -12,7 +12,7 @@ summary:
     복잡한 데이터를 이해하기 쉽게 표현하고,\
     안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
   body: |
-    ROS1, roslibjs 기반 로봇 제어 UI 개발과 제조 현장 6곳의 로봇 시스템 구축·검증을 경험했습니다.
+    ROS1, roslibjs 기반 모바일 로봇 검증 UI 개발과 제조 현장 6곳의 협동 로봇 시스템 구축 경험했습니다.
 
     이후 React, Next.js 기반 B2B 데이터 대시보드와 AI 포털을 개발하며 **데이터 시각화**, **실시간 스트리밍**, 비동기 UI 구현 역량을 쌓았습니다.
 
@@ -26,7 +26,7 @@ experiences:
     isCurrent: true
     tags:
       - 마케팅
-      - Internal Product
+      - 사내 시스템
     projects:
       - title: 소셜 마케팅 데이터 대시보드
         description: YouTube·Instagram 콘텐츠 및 광고 성과를 통합 조회하고 비교하는 B2B 데이터 분석 대시보드
@@ -145,4 +145,4 @@ certifications:
     badge:
       src: /images/resume/aws-ai-practitioner.png
       alt: AWS Certified AI Practitioner 자격 배지
-    reason: AI 기초 지식 습득을 위해 취득
+    reason: AI에 대한 관심으로 AWS AI 서비스 간 차이와 용도를 파악하기 위해 취득

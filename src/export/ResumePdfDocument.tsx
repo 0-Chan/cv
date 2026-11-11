@@ -23,14 +23,18 @@ import {
 } from "../presentation/resume";
 
 Font.register({
-  family: "ResumeKorean",
+  family: "Pretendard",
   fonts: [
     {
-      src: resolve("assets/fonts/nanum-gothic/NanumGothic-Regular.ttf"),
+      src: resolve("assets/fonts/pretendard/Pretendard-Regular.ttf"),
       fontWeight: 400,
     },
     {
-      src: resolve("assets/fonts/nanum-gothic/NanumGothic-Bold.ttf"),
+      src: resolve("assets/fonts/pretendard/Pretendard-Medium.ttf"),
+      fontWeight: 500,
+    },
+    {
+      src: resolve("assets/fonts/pretendard/Pretendard-Bold.ttf"),
       fontWeight: 700,
     },
   ],
@@ -53,7 +57,7 @@ function createStyles(theme: ResumeTheme) {
     page: {
       backgroundColor: "#ffffff",
       color: colors.text,
-      fontFamily: "ResumeKorean",
+      fontFamily: "Pretendard",
       fontSize: pt(fontSizes.body),
       lineHeight: lineHeights.body,
       paddingVertical: 36,

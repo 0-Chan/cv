@@ -40,7 +40,7 @@ Tailwind는 @tailwindcss/vite로 통합한다. 레이아웃에서 테마값을 C
 
 개발 패널은 `src/dev`의 React TSX와 Shadow DOM 스타일로 구현한다. Astro integration의 `astro:config:setup`에서 `command === "dev"`일 때만 React 개발 런타임 초기화와 DEV 분기의 동적 import를 주입한다. 프로덕션 빌드와 preview에는 패널 진입 스크립트를 주입하지 않는다. 패널은 전달받은 초기 설정과 검증된 브라우저 저장값을 사용하며 컴포넌트에서 이력서 데이터에 접근하지 않는다. 조정값의 저장 키는 `dev:paper-texture`, 위치·열림 상태는 `dev:paper-texture:ui`다. 480px 이하에서는 접힌 상태로 시작하고 위치를 화면 안으로 제한한다.
 
-기본값은 시스템 한국어 폰트, 본문 16px·줄 높이 1.75, 최대 너비 840px이다. 좌우 여백은 모바일 20px·md 이상 40px로 본문의 최대 너비는 760px이다. 화면 크기에 관계없이 제목과 본문을 한 열로 배치한다. 소개·경력 목록의 들여쓰기는 spacing.listIndent의 12px을 사용한다. 기술은 들여쓰기 없는 쉼표 구분 문단으로 표시한다. 외부 폰트 요청은 없다.
+기본값은 로컬 Pretendard 가변 WOFF2, 본문 16px·줄 높이 1.75, 최대 너비 840px이다. 좌우 여백은 모바일 20px·md 이상 40px로 본문의 최대 너비는 760px이다. 화면 크기에 관계없이 제목과 본문을 한 열로 배치한다. 소개·경력 목록의 들여쓰기는 spacing.listIndent의 12px을 사용한다. 기술은 들여쓰기 없는 쉼표 구분 문단으로 표시한다. 웹폰트는 Vite가 생성한 자산 경로로 제공하며 외부 폰트 서버에 요청하지 않는다. `font-display: swap`과 preload를 사용하고 글꼴 설정은 테마에서 관리한다.
 
 이름은 40px, 섹션 제목은 32px, 회사명은 26px, 프로젝트·기관 제목은 24px, 기술 분류 제목은 fontSizes.skillCategory의 20px, 자격 이름은 fontSizes.certification의 20px, 이슈 제목은 fontSizes.issue의 20px이며 제목 굵기는 700이다. 이슈 번호는 제목과 같은 스타일, 이슈 설명은 fontSizes.meta의 14px·colors.muted로 표시한다. 해결 방향·성과 제목은 fontSizes.body의 16px·700 굵기와 colors.text의 진한 본문색으로 표시한다. 섹션 제목은 colors.headingStart에서 headingEnd로 이어지는 정적 그라데이션, 회사명은 headingStart, 이슈 제목은 issueHeading의 옅은 갈색 #AD6F46, 링크는 link를 사용한다. 목록의 숫자·글머리표는 별도 강조색 없이 본문의 색상을 따른다. colors.accent의 #FF7500은 섹션 구분선의 짧은 장식에 사용한다. 인쇄·고대비 모드와 그라데이션 미지원 환경에는 단색 제목을 제공한다.
 
@@ -127,7 +127,7 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 
 `src/presentation/resume.ts`의 getVisibleResumeSections는 검증된 ResumeData·ResumeDisplay에서 표시할 섹션·제목·내용을 반환한다. 화면·PDF·Markdown은 이 함수를 공유해 순서·숨김·빈 목록 처리를 일치시킨다. 프로필 연락처는 getProfileDetails로 관리하며 콘텐츠 모델은 바꾸지 않는다. HTTP(S) 프로필 링크를 먼저 각각 표시하고 contacts의 값은 작성 순서대로 쉼표와 공백 한 칸(`, `)으로 연결한 일반 텍스트 한 행에 표시한다. contacts가 비어 있으면 행을 생략하고, 한 항목이면 구분자를 붙이지 않는다. 공간이 부족하면 줄바꿈하며 기존 tel·mailto 링크는 뒤에 별도 항목으로 유지한다.
 
-정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 나눔고딕 TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 본문 문단과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. 나눔고딕에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
+정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 Pretendard Regular·Medium·Bold TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 본문 문단과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. Pretendard에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 
 ResumeExport는 전달받은 프로필 이름으로 PDF 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 메뉴는 PDF 다운로드·프린터 출력 다음에 구분선과 MD 복사하기를 배치한다. Export 버튼의 IconFileExport와 각 항목의 IconFileTypePdf·IconPrinter·IconMarkdown은 @tabler/icons-react의 정적 SVG이며 18px·stroke 1.75·currentColor를 사용한다. 아이콘은 aria-hidden·focusable=false로 장식 처리한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 메뉴·알림을 모바일·인쇄에서는 숨긴다.
 

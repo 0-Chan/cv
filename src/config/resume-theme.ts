@@ -12,7 +12,7 @@ const paper = {
 export const resumeThemeConfig = {
   paper,
   fontFamily:
-    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
+    '"Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
   fontSizes: {
     name: 40,
     role: 20,

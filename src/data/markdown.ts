@@ -1,15 +1,17 @@
 import type { Nodes } from "mdast";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { gfmTableFromMarkdown } from "mdast-util-gfm-table";
+import { highlightMarkFromMarkdown } from "mdast-util-highlight-mark";
 import { gfmTable } from "micromark-extension-gfm-table";
+import { highlightMark } from "micromark-extension-highlight-mark";
 import type { InlineNode, RichText } from "../models/rich-text";
 import { contactUrlSchema } from "../models/urls";
 import { ResumeValidationError } from "./validation";
 
 export function parseResumeMarkdown(value: string, path: string): RichText {
   const root = fromMarkdown(value, {
-    extensions: [gfmTable()],
-    mdastExtensions: [gfmTableFromMarkdown()],
+    extensions: [gfmTable(), highlightMark()],
+    mdastExtensions: [gfmTableFromMarkdown(), highlightMarkFromMarkdown],
   });
   function fail(message: string): never {
     throw new ResumeValidationError([{ path, message }]);
@@ -26,6 +28,8 @@ export function parseResumeMarkdown(value: string, path: string): RichText {
       case "strong":
       case "emphasis":
         return { type: node.type, children: node.children.map(inline) };
+      case "highlight":
+        return { type: "mark", children: node.children.map(inline) };
       case "link": {
         if (!contactUrlSchema.safeParse(node.url).success)
           fail("문장 안 링크는 HTTP(S), mailto 또는 tel 주소여야 합니다.");
@@ -40,7 +44,7 @@ export function parseResumeMarkdown(value: string, path: string): RichText {
       }
       default:
         return fail(
-          "지원하지 않는 Markdown 문법입니다. 문장에는 강조·기울임·인라인 코드·직접 링크만 사용하고 목록은 YAML로 작성하세요.",
+          "지원하지 않는 Markdown 문법입니다. 문장에는 굵은 강조·배경 강조·기울임·인라인 코드·직접 링크만 사용하고 목록은 YAML로 작성하세요.",
         );
     }
   }

@@ -61,6 +61,7 @@ export const resumeThemeConfig = {
     background: paper.color,
     surface: "#f5f5f5",
     tagBackground: "#dedede",
+    highlightBackground: "#f1e1c8",
     text: "#171717",
     muted: "#4b4b4b",
     border: "#d4d4d4",

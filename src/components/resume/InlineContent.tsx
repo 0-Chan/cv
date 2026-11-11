@@ -28,6 +28,13 @@ export function InlineContent({ nodes }: { nodes: InlineNode[] }) {
           </em>
         );
         break;
+      case "mark":
+        content = (
+          <mark className="resume-mark">
+            <InlineContent nodes={node.children} />
+          </mark>
+        );
+        break;
       case "link":
         content = (
           <a href={node.href} title={node.title}>

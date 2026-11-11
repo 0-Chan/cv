@@ -3,7 +3,7 @@ import { contactUrlSchema } from "./urls";
 
 export type InlineNode =
   | { type: "text" | "code"; text: string }
-  | { type: "strong" | "emphasis"; children: InlineNode[] }
+  | { type: "strong" | "emphasis" | "mark"; children: InlineNode[] }
   | { type: "link"; href: string; title?: string; children: InlineNode[] }
   | { type: "break" };
 
@@ -17,6 +17,10 @@ export const inlineNodeSchema: z.ZodType<InlineNode> = z.lazy(() =>
     }),
     z.strictObject({
       type: z.literal("emphasis"),
+      children: z.array(inlineNodeSchema).min(1),
+    }),
+    z.strictObject({
+      type: z.literal("mark"),
       children: z.array(inlineNodeSchema).min(1),
     }),
     z.strictObject({

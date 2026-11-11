@@ -184,6 +184,7 @@ function createStyles(theme: ResumeTheme) {
     link: { color: colors.link, textDecoration: "underline" },
     bold: { fontWeight: 700 },
     emphasis: { textDecoration: "underline" },
+    mark: { backgroundColor: colors.highlightBackground },
     code: { backgroundColor: colors.surface },
     bullet: {
       paddingLeft: pt(spacing.listIndent),
@@ -242,10 +243,17 @@ function Inline({ nodes, styles }: { nodes: InlineNode[]; styles: PdfStyles }) {
           </Text>
         );
         break;
-      // 나눔고딕은 기울임체가 없어 밑줄로 강조를 유지한다.
+      // 등록한 글꼴은 기울임체가 없어 밑줄로 강조를 유지한다.
       case "emphasis":
         content = (
           <Text style={styles.emphasis}>
+            <Inline styles={styles} nodes={node.children} />
+          </Text>
+        );
+        break;
+      case "mark":
+        content = (
+          <Text style={styles.mark}>
             <Inline styles={styles} nodes={node.children} />
           </Text>
         );

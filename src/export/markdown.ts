@@ -1,4 +1,5 @@
 import type { BlockContent, PhrasingContent, Root } from "mdast";
+import { highlightMarkToMarkdown } from "mdast-util-highlight-mark";
 import { toMarkdown } from "mdast-util-to-markdown";
 import type { ResumeDisplay } from "../models/presentation";
 import type { ResumeData } from "../models/resume";
@@ -23,6 +24,8 @@ function inline(node: InlineNode): PhrasingContent {
     case "strong":
     case "emphasis":
       return { type: node.type, children: node.children.map(inline) };
+    case "mark":
+      return { type: "highlight", children: node.children.map(inline) };
     case "link":
       return {
         type: "link",
@@ -210,5 +213,10 @@ export function renderResumeMarkdown(
     }
   }
   const document: Root = { type: "root", children };
-  return toMarkdown(document, { bullet: "-", emphasis: "*", strong: "*" });
+  return toMarkdown(document, {
+    bullet: "-",
+    emphasis: "*",
+    strong: "*",
+    extensions: [highlightMarkToMarkdown],
+  });
 }

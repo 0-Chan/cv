@@ -83,6 +83,14 @@
   strong {
     font-weight: var(--resume-weight-semibold);
   }
+  .resume-mark {
+    background-color: var(--resume-color-highlightBackground);
+    color: inherit;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 
 @layer components {
@@ -243,6 +251,12 @@
 }
 
 @media (forced-colors: active) {
+  .resume-mark {
+    background: transparent;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
   .paper-surface {
     background: Canvas;
   }

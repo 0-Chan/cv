@@ -92,6 +92,7 @@
   .resume-lead-callout {
     break-inside: avoid;
     padding: var(--resume-space-content);
+    padding-left: 0;
     color: var(--resume-color-text);
   }
 

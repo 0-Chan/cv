@@ -12,7 +12,7 @@ summary:
     복잡한 데이터를 이해하기 쉽게 표현하고,\
     안정적인 사용자 경험을 제공하는 프론트엔드 개발을 지향합니다.
   body: |
-    ROS1, roslibjs 기반 모바일 로봇 검증 웹 UI 개발과 제조 현장 6곳의 협동 로봇 시스템 구축을 경험했습니다.
+    ROS1, roslibjs 기반 모바일 로봇 검증용 웹 UI 개발과 제조 현장 6곳의 협동 로봇 시스템 구축을 경험했습니다.
 
     이후 React 기반 B2B 데이터 대시보드와 AI 채팅 포털을 개발하며 **데이터 시각화**, **실시간 스트리밍**, 비동기 UI 구현 역량을 쌓았습니다.
 
@@ -29,7 +29,7 @@ experiences:
       - 사내 시스템
     projects:
       - title: 소셜 마케팅 데이터 대시보드
-        description: YouTube·Instagram 광고 성과를 통합 조회, 비교하는 B2B 데이터 분석 대시보드
+        description: YouTube·Instagram 광고 성과를 통합 조회하고 비교하는 B2B 데이터 분석 대시보드
         role: 데이터 시각화, BFF 응답 정규화, UI 품질 검증, 배포 환경 구축
         issues:
           - title: API 응답 변경에 대응하는 데이터 정규화
@@ -82,8 +82,8 @@ experiences:
               이상 징후를 효율적으로 확인할 필요가 있었습니다.
             approach:
               - 정산 검수와 근무시간 취합 기능을 구현해 반복 업무 시스템화
-              - 사전 정의된 검수 기준을 활용한 LLM 기반 정산 이상 징후 탐지 및 경고 UI 구현
-              - 이상 징후 발생 시 Slack Webhook을 통한 알림 기능 연동
+              - 사전 정의된 검수 기준을 활용한 LLM 기반 이상 징후 탐지 및 경고 UI 구현
+              - 정산 이상 징후 발생 시 Slack Webhook을 통한 알림 기능 연동
             outcomes:
               - 반복적인 정산 검수 및 근무시간 취합 작업 간소화
               - 의심 항목을 우선 확인할 수 있도록 개선해 검수 효율 향상
@@ -101,7 +101,7 @@ experiences:
     projects:
       - title: ROS 기반 로봇 진단 및 제어 대시보드
         description: 서빙 로봇의 센서·동작 상태를 실시간으로 확인하고, 이동 제어와 조립 상태 점검을 지원하는 웹 대시보드
-        role: 센서 데이터 시각화, 이동 제어·조립 점검 UI 개발
+        role: 센서 데이터 시각화, 제어 및 점검 UI 개발
         issues:
           - title: 실시간 센서 데이터 처리 및 로봇 조립 상태 점검
             description: >-
@@ -113,7 +113,7 @@ experiences:
               - ROS 제어 명령을 순차 전송해 현장 사용자가 로봇의 동작과 조립 상태를 쉽게 점검하는 직관적인 UI 구현
             outcomes:
               - 로봇의 실시간 상태 모니터링과 제어 명령을 통한 조립 상태 점검을 웹 대시보드로 통합
-              - 통신 처리와 화면 표시를 분리해 진단 항목 추가 및 유지보수가 용이한 구조 마련
+              - 통신 처리 로직과 화면 표시 로직을 분리해 진단 항목 추가 및 유지보수가 용이한 구조 마련
 
   - company: 인아오리엔탈모터(주)
     logo:
@@ -126,7 +126,7 @@ experiences:
     tags:
       - 협동 로봇(UR·두산로보틱스)
     highlights:
-      - Python SDK 기반 로봇 제어 로직 구현 및 PLC 및 3D Vision 장비 연동
+      - Python SDK 기반 로봇 제어 로직 구현, PLC 및 3D Vision 장비 연동
       - "**6개 제조 현장**의 협동 로봇 시스템 설치 후 검증"
 
 skills:
@@ -144,11 +144,13 @@ skills:
     - Git
     - Vitest
     - Testing Library
+    - Playwright
   성능 측정:
     - Lighthouse
     - React DevTools Profiler
   인프라·배포:
     - AWS
+    - GCP
     - Terraform
     - GitHub Actions
   Tool:

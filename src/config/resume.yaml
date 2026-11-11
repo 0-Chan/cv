@@ -29,7 +29,7 @@ experiences:
       - 사내 시스템
     projects:
       - title: 소셜 마케팅 데이터 대시보드
-        description: YouTube·Instagram 콘텐츠 및 광고 성과를 통합 조회하고 비교하는 B2B 데이터 분석 대시보드
+        description: YouTube·Instagram 광고 성과를 통합 조회, 비교하는 B2B 데이터 분석 대시보드
         role: 데이터 시각화, UI 품질 검증, 배포 환경 구축
         issues:
           - title: 대시보드 지표 계산 방식의 복잡성
@@ -146,11 +146,10 @@ skills:
   상태 관리:
     - TanStack Query(서버 상태)
     - Zustand(클라이언트 상태)
-  테스트·협업:
+  협업·테스트:
     - Git
     - Vitest
     - Testing Library
-    - Slack
   성능 측정:
     - Lighthouse
     - React DevTools Profiler
@@ -161,6 +160,8 @@ skills:
   Tool:
     - Claude Code
     - Codex
+    - cmux
+    - Slack
 
 education:
   - institution: 한서대학교
@@ -175,8 +176,7 @@ certifications:
     badge:
       src: /images/resume/aws-solutions-architect-associate.png
       alt: AWS Certified Solutions Architect Associate 자격 배지
-    reason: >-
-      고가용성과 보안 및 비용 설계를 체계적으로 학습하여, 안정적인 클라우드 아키텍처 설계 역량을 갖추기 위해 취득
+    reason: AWS 인프라 구축 실무에서 체계적인 학습의 필요성을 느껴 안정적인 클라우드 아키텍처 설계 역량을 강화하고자 취득
   - name: AWS Certified AI Practitioner (AIF-C01)
     issuer: Amazon Web Services (AWS)
     badge:

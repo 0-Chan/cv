@@ -1,3 +1,4 @@
+import { IconArrowRight, IconCheck } from "@tabler/icons-react";
 import type { ResumeDisplay } from "../../models/presentation";
 import type { ProjectIssue } from "../../models/resume";
 import { Highlights } from "./Highlights";
@@ -23,14 +24,24 @@ export function IssueItem({
           <RichText content={issue.description} compact />
         </div>
       </header>
-      <div className="grid gap-compact">
-        <h6 className="text-body font-bold leading-heading text-ink">
+      <div className="grid gap-inline pt-inline">
+        <h6 className="flex items-center gap-inline text-body font-bold leading-heading text-ink">
+          <IconArrowRight
+            className="size-[1em] shrink-0"
+            aria-hidden="true"
+            focusable="false"
+          />
           {labels.approach}
         </h6>
         <Highlights items={issue.approach} ordered compact />
       </div>
-      <div className="grid gap-compact">
-        <h6 className="text-body font-bold leading-heading text-ink">
+      <div className="grid gap-inline pt-inline">
+        <h6 className="flex items-center gap-inline text-body font-bold leading-heading text-ink">
+          <IconCheck
+            className="size-[1em] shrink-0"
+            aria-hidden="true"
+            focusable="false"
+          />
           {labels.outcomes}
         </h6>
         <Highlights items={issue.outcomes} compact />

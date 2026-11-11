@@ -47,10 +47,10 @@ experiences:
               서비스 중단을 최소화할 수 있는 운영 환경이 필요했습니다.
             approach:
               - 기존 Terraform 구조를 참고해 ECS Fargate 기반 서비스 인프라 구성
-              - GitHub Actions를 활용해 Docker 이미지 빌드 → ECR 푸시 → ECS 서비스 배포까지 자동화
-              - ECS와 ALB를 활용한 Blue/Green 배포 방식으로 기존 서비스를 유지하며 신규 버전으로 트래픽 전환
+              - GitHub Actions로 Docker 이미지 빌드 → ECR 푸시 → ECS 서비스 배포까지 자동화
+              - ECS·ALB 기반 Blue/Green 배포와 이전 버전으로의 트래픽 복구 절차 구성
             outcomes:
-              - CI/CD 자동화와 Blue/Green 배포를 통해 반복 작업을 줄이고 신속한 서비스 롤백 체계 확보
+              - 반복적인 배포 작업을 줄이고, 배포 이상 시 이전 버전으로 복구할 수 있는 운영 체계 확보
       - title: 사내 AI 채팅 포털
         description: 임직원이 사내 정보 검색 에이전트와 프론티어 AI 모델을 통합 이용할 수 있는 서비스
         role: 실시간 스트리밍 채팅 UI 개발, AWS 인프라 운영

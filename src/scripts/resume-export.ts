@@ -87,7 +87,7 @@ export function initializeResumeExport(root: HTMLElement): () => void {
             throw new Error("Clipboard unavailable");
           // 사용자 클릭의 권한을 유지하도록 다른 비동기 작업보다 먼저 호출한다.
           const result = navigator.clipboard.writeText(markdown.value);
-          toast.loading("MD를 복사하는 중입니다", {
+          toast.loading("Markdown 포맷으로 복사합니다.", {
             ...toastOptions,
             duration: Number.POSITIVE_INFINITY,
             closeButton: false,
@@ -96,7 +96,7 @@ export function initializeResumeExport(root: HTMLElement): () => void {
           await result;
           if (!isCurrent(current)) return;
           close(menu.open && menu.contains(document.activeElement));
-          toast.success("MD를 복사했습니다", toastOptions);
+          toast.success("Markdown 포맷으로 복사합니다.", toastOptions);
         } catch {
           if (!isCurrent(current)) return;
           failedCopy = true;

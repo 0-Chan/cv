@@ -140,8 +140,8 @@ skills:
     - Recharts
     - Tailwind CSS
   상태 관리:
-    - TanStack Query(서버 상태)
-    - Zustand(클라이언트 상태)
+    - TanStack Query (서버 상태)
+    - Zustand (클라이언트 상태)
   협업·테스트:
     - Git
     - Vitest
@@ -152,7 +152,6 @@ skills:
     - React DevTools Profiler
   인프라·배포:
     - AWS
-    - GCP
     - Terraform
     - GitHub Actions
   도구:

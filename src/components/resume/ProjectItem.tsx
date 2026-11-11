@@ -28,7 +28,7 @@ export function ProjectItem({
           </dd>
         </dl>
       </header>
-      <div className="grid min-w-0 gap-issue">
+      <div className="grid min-w-0 gap-issue pt-content">
         {project.issues.map((issue, index) => (
           <IssueItem
             // biome-ignore lint/suspicious/noArrayIndexKey: 빌드 전용 이슈 목록이며 번호는 표시 순서다.

@@ -12,7 +12,7 @@ export function ProjectItem({
 }) {
   return (
     <article className="resume-project grid min-w-0 gap-content">
-      <header className="grid min-w-0 gap-inline">
+      <header className="grid min-w-0 gap-[calc(var(--resume-space-inline)*0.75)]">
         <div className="grid min-w-0 gap-compact">
           <h4 className="text-project font-bold leading-heading text-shadow-project-title print:text-shadow-none forced-colors:text-shadow-none">
             {project.title}

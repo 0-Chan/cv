@@ -136,7 +136,7 @@ export function renderResumeMarkdown(
             );
           if (experience.tags.length) {
             children.push(
-              paragraph(experience.tags.map((tag) => tag.label).join(" · ")),
+              paragraph(experience.tags.map((tag) => tag.label).join(", ")),
             );
           }
           children.push(...highlights(experience.highlights));

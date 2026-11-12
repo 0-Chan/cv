@@ -4,9 +4,9 @@
 
 ## 현재 단계
 
-- 현재: 제공한 logo.png 원본을 96px PNG favicon으로 적용하고 같은 이미지로 16·32·48px ICO를 생성했다. 기존 SVG·32px PNG와 참조를 제거하고 ICO에 캐시 구분 쿼리를 붙였다. 이력서 콘텐츠와 본문 UI는 유지한다.
-- 검증: 원본 PNG와 복사본·빌드 산출물의 일치, ICO의 세 크기, 루트·/cv/ 빌드와 favicon 경로를 확인했다. PNG·ICO의 HTTP 200과 MIME, Chrome 새 창의 실제 탭 아이콘 표시를 확인했다. 필수 커밋 검사는 Husky로 수행하며 임시 preview 서버를 종료했다. Safari의 favicon 표시는 미검증이다.
-- 다음: 원격 push는 별도 요청으로 진행한다. 기존 Markdown 배경 강조 테스트 diff는 사용자 승인 후 반영하며 Chrome·Safari의 Export 복사·인쇄, 월별 예약 실행·종이 패널 검토는 남아 있다.
+- 현재: SNS 마케팅 대시보드의 기존 첫 이슈를 통합 조회, 지표 표시 기준, 화면 성능의 세 이슈로 교체하고 기존 배포 이슈는 네 번째로 유지했다. resume.yaml의 가운뎃점은 문맥에 맞게 대체하고 Markdown 태그 구분자는 쉼표로 변경했다. PDF 배경 패치와 재설치 시 자동 적용 설정도 함께 적용했다.
+- 검증: npm run verify의 Astro, Biome, 기존 테스트 96개와 빌드가 통과했다. 생성 Markdown의 네 이슈 순서와 가운뎃점이 없는 것을 확인했다. 이번 콘텐츠 변경 후의 브라우저 화면과 PDF 배치는 미검증이다.
+- 다음: 변경된 콘텐츠의 브라우저 화면과 PDF 배치를 검토한다. 기존 Markdown 배경 강조 테스트 diff는 사용자 승인 후 반영하며 Chrome과 Safari의 Export 복사 및 인쇄, 여러 줄 강조와 중첩 서식, 월별 예약 실행, 종이 패널, Safari favicon 검토는 남아 있다.
 - Husky hook과 기존 테스트 96개를 유지한다. 이번 변경에서 테스트 코드·fixture·mock·snapshot·테스트 도구는 추가하거나 수정하지 않았다.
 
 ## 작업 규칙

@@ -8,6 +8,7 @@
   },
   "packageManager": "npm@12.2.0",
   "scripts": {
+    "postinstall": "patch-package --error-on-fail",
     "prepare": "husky",
     "dev": "astro dev",
     "preview": "astro preview",
@@ -49,6 +50,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "husky": "9.1.7",
+    "patch-package": "8.0.1",
     "typescript": "5.9.3",
     "vitest": "5.1.0"
   }

@@ -1,0 +1,20 @@
+diff --git a/node_modules/@react-pdf/render/lib/index.js b/node_modules/@react-pdf/render/lib/index.js
+index 98aca2b..f868418 100644
+--- a/node_modules/@react-pdf/render/lib/index.js
++++ b/node_modules/@react-pdf/render/lib/index.js
+@@ -1424,10 +1424,13 @@ const renderLine = (ctx, line) => {
+         if (run.attributes.backgroundColor) {
+             const xAdvance = run.xAdvance ?? 0;
+             const overflowRight = isLastRun ? line.overflowRight ?? 0 : 0;
++            // Keep inline backgrounds within font metrics, excluding line leading.
++            const runAscent = run.ascent ?? lineAscent;
++            const runDescent = run.descent ?? 0;
+             const backgroundRect = {
+                 x: 0,
+-                y: -lineAscent,
+-                height: line.box.height,
++                y: -runAscent,
++                height: runAscent - runDescent,
+                 width: xAdvance - overflowRight,
+             };
+             renderBackground$1(ctx, backgroundRect, run.attributes.backgroundColor);

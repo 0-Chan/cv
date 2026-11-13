@@ -5,8 +5,8 @@
 ## 현재 단계
 
 - 현재: 공통 로더와 Markdown 생성 함수를 재사용해 이력서 전체 원문을 제공하는 /llms.txt 정적 엔드포인트를 추가했다. /resume.md와 같은 본문을 생성하며 기존 콘텐츠와 UI는 유지한다.
-- 검증: npm run verify의 Astro, Biome, 기존 테스트 96개와 빌드가 통과했다. 두 정적 파일과 로컬 HTTP 본문이 8,414바이트로 일치한다. 정적 미리보기의 200 text/plain 응답과 개발 서버의 UTF-8 응답 헤더를 확인하고 임시 서버를 종료했다. 실제 배포 URL은 미검증이다.
-- 다음: 원격 push와 배포는 별도 요청 시 진행하고 실제 /llms.txt의 응답과 본문을 확인한다. 콘텐츠의 브라우저 화면과 PDF 배치, 기존 Markdown 배경 강조 테스트 diff의 사전 승인, Chrome과 Safari의 Export 복사 및 인쇄, 여러 줄 강조와 중첩 서식, 월별 예약 실행, 종이 패널, Safari favicon 검토는 남아 있다.
+- 검증: npm run verify의 Astro, Biome, 기존 테스트 96개와 빌드가 통과했다. 정적 파일, 로컬 HTTP 및 공개 URL의 본문이 8,414바이트로 일치한다. 공개 /llms.txt의 200 text/plain; charset=utf-8 응답과 GitHub Pages 배포 성공을 확인했다. 임시 서버는 종료했다.
+- 다음: 콘텐츠의 브라우저 화면과 PDF 배치, 기존 Markdown 배경 강조 테스트 diff의 사전 승인, Chrome과 Safari의 Export 복사 및 인쇄, 여러 줄 강조와 중첩 서식, 월별 예약 실행, 종이 패널, Safari favicon 검토는 남아 있다.
 - Husky hook과 기존 테스트 96개를 유지한다. 이번 변경에서 테스트 코드·fixture·mock·snapshot·테스트 도구는 추가하거나 수정하지 않았다.
 
 ## 작업 규칙

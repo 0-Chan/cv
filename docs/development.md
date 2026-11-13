@@ -133,6 +133,8 @@ ResumePage는 공통 표시 함수가 선택한 섹션을 순서대로 처리한
 
 정적 엔드포인트 resume.pdf.ts·resume.md.ts는 getResumePageData로 데이터를 읽고 빌드 시 파일을 생성한다. PDF는 @react-pdf/renderer의 JSX와 로컬 Pretendard Regular·Medium·Bold TTF를 사용하며, 테마의 px 값을 pt로 변환한다. A4 페이지 배경은 #ffffff이고 여백은 좌우 40pt·상하 36pt다. 짧은 회사 정보 헤더는 한 페이지에 유지하되 긴 회사·프로젝트 전체를 나눔 금지 블록으로 만들지 않는다. 기술 분류 제목은 별도 컨테이너 없이 본문 문단과 같은 흐름에 배치해 minPresenceAhead가 적용되게 한다. 문단에는 orphans·widows를 사용한다. Pretendard에 없는 기울임체는 밑줄로 강조한다. Markdown은 구조화된 문장을 mdast로 변환하고 mdast-util-to-markdown으로 직렬화한다. 장식용 이미지는 제외한다. 생성 오류는 전파하며 생성된 파일을 Git에 저장하지 않는다. 원문 참고 PDF와 별도로 사용자가 다운로드하도록 생성한 PDF만 배포한다.
 
+`src/pages/llms.txt.ts`는 같은 로더와 Markdown 생성 함수를 사용해 `/llms.txt`에 이력서 전체 원문을 제공한다. 본문은 `/resume.md`와 같은 UTF-8 Markdown이다. 엔드포인트는 `text/plain; charset=utf-8`로 응답하며, 정적 배포 후의 전송 헤더는 호스팅 서버가 결정한다. 빌드 시 `dist/llms.txt`를 생성하므로 GitHub Pages에서도 별도 서버 없이 제공하며, 콘텐츠 변경은 재빌드와 재배포 후 반영된다.
+
 ResumeExport는 전달받은 프로필 이름으로 PDF 다운로드 파일명을 만들고 BASE_URL을 반영한 정적 파일 링크를 표시한다. 메뉴는 PDF 다운로드·프린터 출력 다음에 구분선과 MD 복사하기를 배치한다. Export 버튼의 IconFileExport와 각 항목의 IconFileTypePdf·IconPrinter·IconMarkdown은 @tabler/icons-react의 정적 SVG이며 18px·stroke 1.75·currentColor를 사용한다. 아이콘은 aria-hidden·focusable=false로 장식 처리한다. 1024px 이상에서 프로필 오른쪽 위에 일반 문서 흐름으로 배치하고 메뉴·알림을 모바일·인쇄에서는 숨긴다.
 
 페이지는 빌드 시 renderResumeMarkdown으로 만든 원문을 ResumePage·ResumeExport의 markdown 문자열 prop으로 전달한다. 원문은 React가 HTML 이스케이프하는 숨겨진 읽기 전용 textarea에 저장하고, 클릭 이벤트 안에서 navigator.clipboard.writeText를 바로 호출한다. Markdown 생성 코드를 클라이언트에 포함하거나 클릭 후 네트워크로 원문을 읽지 않는다. 기존 resume.md 엔드포인트는 같은 생성 함수를 사용해 유지한다.
